@@ -13,60 +13,68 @@ namespace Speciale
         public intensityObject(
             double mu0, // dødsintensitet til tid 0 
             double tau0, // surrender intensitet til tid 0
+            double r0, // Rente tiltid 0
+            List<double> r,
             List<double> mu,
+            List<double> tau,
             List<double> xVal,
             double horizon = 40, //angivet i år
-            double gridpoints = 100, // finheden af min simulering. 100 svarer til 100 punkter pr. år
-            double X_1_start = 0.001, //  tilhører mu
-            double X_2_start = 0.001 // tilhører også mu
+            double gridpoints = 1, // finheden af min simulering. 100 svarer til 100 punkter pr. år
+            double W_1_start = 0, 
+            double W_2_start = 0 
         )
         {
             this.mu0 = mu0;
             this.tau0 = tau0;
-            this.X_1_start = X_1_start;
-            this.X_2_start = X_2_start;
+            this.r0 = r0;
+            this.W_1_start = W_1_start;
+            this.W_2_start = W_2_start;
             this.horizon = horizon;
             this.gridpoints = gridpoints;
             this.mu = new List<double> ();
+            this.tau = new List<double>();
+            this.r = new List<double>();
             this.xVal = new List<double>();
   
         }
 
-        internal void exportMuToExcept()
+        internal void exportTxt()
         {
             string path = @"/Users/ViktorJeppesen/Documents/Studie/Aktuar/Advanced/muData.txt";
             using (var writer = File.CreateText(path))
             {
-                writer.WriteLine("x-values mu-values" + "\n");
+                writer.WriteLine("x-values mu-values tau-values r-values" + "\n");
                 Assert.IsTrue(xVal.Count == mu.Count);
                 for (int i=0; i < xVal.Count-1; i++)
                 {
-                    writer.WriteLine(xVal[i] + " " +mu[i] + "\n");
+                    writer.WriteLine(xVal[i] + " " +mu[i]+ " "+tau[i] +" " + r[i]+ "\n");
 
                 }
             }
             Console.WriteLine("Ny fil er nu på i advanced mappen");
-            Console.WriteLine("test");
         }
 
         public void simulateMu()
         {
-            List<double> X_1 = new List<double>(); X_1.Add(X_1_start);
-            List<double> X_2 = new List<double>(); X_2.Add(X_2_start);
-            // Først simulerer vi X'erne helt igennem
+            List<double> W_1 = new List<double>(); W_1.Add(W_1_start);
+            List<double> W_2 = new List<double>(); W_2.Add(W_2_start);
+            // Først simulerer vi W'erne helt igennem
 
-            //Det her er X parametre, vi kan overveje om de skal gives med ind som parametre
-            double alpha1 = -0.5; double alpha2 = -0.2;double sigma1 = 0.0001;double sigma2 = 0.0001;double c1 = 1.08; double x1Extension = -100;
+            double a1 = 0.1; double b1 = 0.1;double sigma1 = 0.01; double a2 = 0.2; double b2 = 0.2; double sigma2 = 0.01; xVal.Add(0);
             for (int i = 1; i < horizon*gridpoints; i++) {
-                X_1.Add(-alpha1 * X_1[i-1] * (1 / gridpoints) + sigma1 * normalDist.Sample());
-                X_2.Add(-alpha2 * X_2[i-1] * (1 / gridpoints) + sigma2 * normalDist.Sample());
+                xVal.Add(i / gridpoints);
+                W_1.Add(normalDist.Sample());
+                W_2.Add(normalDist.Sample());
             }
 
             // konstruerer mu
-            for (int j = 0; j < horizon*gridpoints; j++)
+            r.Add(r0); tau.Add(tau0); mu.Add(mu0);
+            for (int j = 1; j < horizon*gridpoints; j++)
             {
-                xVal.Add(j/gridpoints);
-                mu.Add(X_1[j] + X_2[j] + Math.Pow(c1, x1Extension + xVal[j]) );
+                tau.Add(a1 * (b1 - tau[j - 1]) * (1 / gridpoints) + sigma1 * W_1[j - 1]);
+                r.Add(a2 * (b2 - r[j - 1]) * (1 / gridpoints) + sigma2 * W_2[j - 1]);
+                mu.Add(0.0005 + Math.Pow(10, (5.728 + 0.038 * -10))); // Danicas kvindedødelighed
+
             }
 
         }
@@ -78,12 +86,15 @@ namespace Speciale
 
         public double mu0 { get; }
         public double tau0 { get; }
+        public double r0 { get; }
         public double horizon { get; }
         public double gridpoints { get; }
+        List<double> r { get; }
         List<double> mu { get; }
+        List<double> tau { get; }
         List<double> xVal { get; }
-        public double X_1_start { get; }
-        public double X_2_start { get; }
+        public double W_1_start { get; }
+        public double W_2_start { get; }
 
 
         public static double Interpolate1D(double value, List<double> x, List<double> y, double lower, double upper)
