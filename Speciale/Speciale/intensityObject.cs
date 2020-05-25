@@ -46,6 +46,7 @@ namespace Speciale
                 }
             }
             Console.WriteLine("Ny fil er nu på i advanced mappen");
+            Console.WriteLine("test");
         }
 
         public void simulateMu()
