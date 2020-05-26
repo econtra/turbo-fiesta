@@ -19,7 +19,7 @@ namespace Speciale
             List<double> tau,
             List<double> xVal,
             double horizon = 40, //angivet i år
-            double gridpoints = 1, // finheden af min simulering. 100 svarer til 100 punkter pr. år
+            int gridpoints = 1, // finheden af min simulering. 100 svarer til 100 punkter pr. år
             double W_1_start = 0, 
             double W_2_start = 0 
         )
@@ -78,21 +78,30 @@ namespace Speciale
             }
 
         }
+
+
+
+
+
+
         // Lineær interpolation af mu hvis det vil bruges
         public double muFunction(double x)
         {
             return Interpolate1D(x, xVal, mu, 0D, 40D);
         }
-
+        public double rFunction(double x)
+        {
+            return Interpolate1D(x, xVal, r, 0D, 40D);
+        }
         public double mu0 { get; }
         public double tau0 { get; }
         public double r0 { get; }
         public double horizon { get; }
-        public double gridpoints { get; }
-        List<double> r { get; }
-        List<double> mu { get; }
-        List<double> tau { get; }
-        List<double> xVal { get; }
+        public int gridpoints { get; }
+        public List<double> r { get; }
+        public List<double> mu { get; }
+        public List<double> tau { get; }
+        public List<double> xVal { get; }
         public double W_1_start { get; }
         public double W_2_start { get; }
 
