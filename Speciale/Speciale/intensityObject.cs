@@ -14,14 +14,14 @@ namespace Speciale
             double mu0, // dødsintensitet til tid 0 
             double tau0, // surrender intensitet til tid 0
             double r0, // Rente tiltid 0
-            List<double> r,
-            List<double> mu,
-            List<double> tau,
-            List<double> xVal,
-            double horizon = 40, //angivet i år
+            int horizon = 40, //angivet i år
             int gridpoints = 1, // finheden af min simulering. 100 svarer til 100 punkter pr. år
             double W_1_start = 0, 
-            double W_2_start = 0 
+            double W_2_start = 0,
+            double[] r =null,
+            double[] mu =null,
+            double[] tau = null,
+            double[] xVal = null
         )
         {
             this.mu0 = mu0;
@@ -31,10 +31,10 @@ namespace Speciale
             this.W_2_start = W_2_start;
             this.horizon = horizon;
             this.gridpoints = gridpoints;
-            this.mu = new List<double> ();
-            this.tau = new List<double>();
-            this.r = new List<double>();
-            this.xVal = new List<double>();
+            this.mu = new double[this.horizon];
+            this.tau = new double[this.horizon];
+            this.r = new double[this.horizon];
+            this.xVal = new double[this.horizon];
   
         }
 
@@ -44,8 +44,8 @@ namespace Speciale
             using (var writer = File.CreateText(path))
             {
                 writer.WriteLine("x-values mu-values tau-values r-values" + "\n");
-                Assert.IsTrue(xVal.Count == mu.Count);
-                for (int i=0; i < xVal.Count-1; i++)
+                Assert.IsTrue(xVal.Length == mu.Length);
+                for (int i=0; i < xVal.Length - 1; i++)
                 {
                     writer.WriteLine(xVal[i] + " " +mu[i]+ " "+tau[i] +" " + r[i]+ "\n");
 
@@ -60,20 +60,20 @@ namespace Speciale
             List<double> W_2 = new List<double>(); W_2.Add(W_2_start);
             // Først simulerer vi W'erne helt igennem
 
-            double a1 = 0.1; double b1 = 0.1;double sigma1 = 0.01; double a2 = 0.2; double b2 = 0.2; double sigma2 = 0.01; xVal.Add(0);
+            double a1 = 0.1; double b1 = 0.1;double sigma1 = 0.01; double a2 = 0.2; double b2 = 0.2; double sigma2 = 0.01; xVal[0] =0;
             for (int i = 1; i < horizon*gridpoints; i++) {
-                xVal.Add(i / gridpoints);
+                xVal[i] = (i / gridpoints);
                 W_1.Add(normalDist.Sample());
                 W_2.Add(normalDist.Sample());
             }
 
             // konstruerer mu
-            r.Add(r0); tau.Add(tau0); mu.Add(mu0);
+            r[0] =r0; tau[0] =tau0; mu[0] =mu0;
             for (int j = 1; j < horizon*gridpoints; j++)
             {
-                tau.Add(a1 * (b1 - tau[j - 1]) * (1 / gridpoints) + sigma1 * W_1[j - 1]);
-                r.Add(a2 * (b2 - r[j - 1]) * (1 / gridpoints) + sigma2 * W_2[j - 1]);
-                mu.Add(0.0005 + Math.Pow(10, (5.728 + 0.038 * -10))); // Danicas kvindedødelighed
+                tau[j] = (a1 * (b1 - tau[j - 1]) * (1 / gridpoints) + sigma1 * W_1[j - 1]);
+                r[j] = (a2 * (b2 - r[j - 1]) * (1 / gridpoints) + sigma2 * W_2[j - 1]);
+                mu[j] = (0.0005 + Math.Pow(10, (5.728 + 0.038 * -10))); // Danicas kvindedødelighed
 
             }
 
@@ -96,19 +96,19 @@ namespace Speciale
         public double mu0 { get; }
         public double tau0 { get; }
         public double r0 { get; }
-        public double horizon { get; }
+        public int horizon { get; }
         public int gridpoints { get; }
-        public List<double> r { get; }
-        public List<double> mu { get; }
-        public List<double> tau { get; }
-        public List<double> xVal { get; }
+        public double[] r { get; }
+        public double[] mu { get; }
+        public double[] tau { get; }
+        public double[] xVal { get; }
         public double W_1_start { get; }
         public double W_2_start { get; }
 
 
-        public static double Interpolate1D(double value, List<double> x, List<double> y, double lower, double upper)
+        public static double Interpolate1D(double value, double[] x, double[] y, double lower, double upper)
         {
-            for (int i = 0; i < x.Count; i++)
+            for (int i = 0; i < x.Length; i++)
             {
                 if (value < x[i])
                 {

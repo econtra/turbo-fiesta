@@ -25,7 +25,7 @@ namespace Speciale
             ////simpletest.WriteData("C:/Users/Steffen/Dropbox (Keylane)/Speciale/Data/simpletest.csv");
             //test.WriteData("C:/Users/Steffen/Dropbox (Keylane)/Speciale/Data/test.csv");
 
-            var intensititer = new intensityObject(0.1, 0.1, 0.1, null, null, null, null, 40, 1, 0, 0);
+            var intensititer = new intensityObject(0.1, 0.1, 0.1, 40, 1, 0, 0, null, null, null, null);
             intensititer.simulateMu();
             intensititer.exportTxt();
 
