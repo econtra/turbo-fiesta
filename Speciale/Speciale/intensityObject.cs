@@ -54,13 +54,14 @@ namespace Speciale
             Console.WriteLine("Ny fil er nu på i advanced mappen");
         }
 
+        public double a1 = 0.1; public double b1 = 0.1;public double sigma1 = 0.01; public double a2 = 0.2;public double b2 = 0.2; public double sigma2 = 0.01; 
         public void simulateMu()
         {
+            xVal[0] = 0;
             List<double> W_1 = new List<double>(); W_1.Add(W_1_start);
             List<double> W_2 = new List<double>(); W_2.Add(W_2_start);
             // Først simulerer vi W'erne helt igennem
 
-            double a1 = 0.1; double b1 = 0.1;double sigma1 = 0.01; double a2 = 0.2; double b2 = 0.2; double sigma2 = 0.01; xVal[0] =0;
             for (int i = 1; i < horizon*gridpoints; i++) {
                 xVal[i] = (i / gridpoints);
                 W_1.Add(normalDist.Sample());
@@ -83,6 +84,11 @@ namespace Speciale
 
 
 
+        public double muZeroCupon(int start, int slut)
+        {
+            return Math.Exp(MathNet.Numerics.Integration.SimpsonRule.IntegrateThreePoint(x => muFunction(x), start, slut));
+        }
+
 
         // Lineær interpolation af mu hvis det vil bruges
         public double muFunction(double x)
@@ -104,7 +110,6 @@ namespace Speciale
         public double[] xVal { get; }
         public double W_1_start { get; }
         public double W_2_start { get; }
-
 
         public static double Interpolate1D(double value, double[] x, double[] y, double lower, double upper)
         {
