@@ -54,8 +54,8 @@ namespace Speciale
             Console.WriteLine("Ny fil er nu på i advanced mappen");
         }
 
-        public double a1 = 0.1; public double b1 = 0.1;public double sigma1 = 0.01; public double a2 = 0.2;public double b2 = 0.2; public double sigma2 = 0.01; 
-        public void simulate()
+        public double a2 = 0.5; public double b2 = 2;public double sigma2 = 0.0001; public double a1 = 0.5; public double b1 = 0.049; public double sigma1 = 0.00001; 
+        public void simulate(string method)
         {
             xVal[0] = 0;
             List<double> W_1 = new List<double>(); W_1.Add(W_1_start);
@@ -72,7 +72,14 @@ namespace Speciale
             r[0] =r0; tau[0] =tau0; mu[0] =mu0;
             for (int j = 1; j < horizon*gridpoints; j++)
             {
-                tau[j] = (a1 * (b1 - tau[j - 1]) * (1 / gridpoints) + sigma1 * W_1[j - 1]);
+                if (method == "cor")
+                {
+                    tau[j] = (a1 * (b1 - tau[j - 1]) * (1 / gridpoints) + sigma1* 0.9 * W_1[j - 1] + sigma1 *0.1 * W_2[j - 1] ) ;
+                }
+                else
+                {
+                    tau[j] = (a1 * (b1 - tau[j - 1]) * (1 / gridpoints) + sigma1 * W_1[j - 1]);
+                }
                 r[j] = (a2 * (b2 - r[j - 1]) * (1 / gridpoints) + sigma2 * W_2[j - 1]);
                 mu[j] = (0.0005 + Math.Pow(10, (5.728 + 0.038 *j -10))); // Danicas kvindedødelighed
 
