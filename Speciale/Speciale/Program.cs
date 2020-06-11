@@ -42,6 +42,7 @@ namespace Speciale
             var ab = new double[timeHorizon+1, timeHorizon+1];
             var interestContainer = new List<double[]>(timeHorizon);
             ab[0, 0] = 0;
+            ab[1, 0] = 0;
             double result = 0;
             for (int scenario = 0; scenario < timeHorizon; scenario++)
             {
@@ -64,23 +65,23 @@ namespace Speciale
                     double b_0_circ = 1; double b_01_circ = 2; double b_02_circ = 3;
                     double b_0_dagger = 1; double b_01_dagger = 0; double b_02_dagger = 0;
                     aCircle[scenario, time_i] = cashflowtool.muProbability00(intensititer, 0, time_i, "") * b_0_circ + cashflowtool.muProbability01(intensititer, 0, time_i, "") * b_01_circ + cashflowtool.muProbability02(intensititer, 0, time_i, "") * b_02_circ;
-                    ab[scenario, time_i] = cashflowtool.calculatePq(intensititer, 0, time_i) * b_0_dagger;
+                    ab[scenario, time_i] = Pq * b_0_dagger;
                     interestContainer.Add(intensititer.r); // need to hold the interest curve for later sum
 
 
                 }
             }
-            for (int scenario = 0; scenario < timeHorizon; scenario++)
+            for (int scenario = 0; scenario < timeHorizon; scenario++) 
             {
                 double scenarioResult = 0;
                 for (int time = 0; time < timeHorizon; time++)
-                { // UNDER GÆTTER JEG HVILKEN DER ER A CIRCLE OG HVILKEN DER ER B!!!!!!
-                   scenarioResult+=  Math.Exp(-MathNet.Numerics.Integration.SimpsonRule.IntegrateThreePoint(y => rFunctionInx(y, interestContainer[scenario], intensititer), 0, time + 0.5)) * (ab[0, time] + (ab[0, time + 1]) / 2);
+                { 
+                   scenarioResult +=  Math.Exp(-MathNet.Numerics.Integration.SimpsonRule.IntegrateThreePoint(y => rFunctionInx(y, interestContainer[scenario], intensititer), 0, time + 0.5)) * ((ab[0, time] + ab[0, time + 1]) / 2);
                 }
 
                 result += scenarioResult;
             }
-            Console.WriteLine("Bonus værdi", result);
+            Console.WriteLine("Bonus værdi", result/timeHorizon);
 
 
         }

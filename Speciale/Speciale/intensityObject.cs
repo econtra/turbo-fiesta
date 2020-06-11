@@ -74,7 +74,7 @@ namespace Speciale
             {
                 tau[j] = (a1 * (b1 - tau[j - 1]) * (1 / gridpoints) + sigma1 * W_1[j - 1]);
                 r[j] = (a2 * (b2 - r[j - 1]) * (1 / gridpoints) + sigma2 * W_2[j - 1]);
-                mu[j] = (0.0005 + Math.Pow(10, (5.728 + 0.038 * -10))); // Danicas kvindedødelighed
+                mu[j] = (0.0005 + Math.Pow(10, (5.728 + 0.038 *j -10))); // Danicas kvindedødelighed
 
             }
 

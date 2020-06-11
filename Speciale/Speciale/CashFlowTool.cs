@@ -65,20 +65,21 @@ namespace Speciale
         public double calculatePq(intensityObject intensititer, double start, double slut)
         {
             CashFlowTool cashflowtool = new CashFlowTool();
-            return cashflowtool.muProbability00(intensititer, start, slut, "") * MathNet.Numerics.Integration.SimpsonRule.IntegrateThreePoint(y => intensititer.rFunction(y) * (cashflowtool.tekniskReserve_circle(y, intensititer)/ cashflowtool.tekniskReserve_dagger(y, intensititer)), start, slut);
+            double P00 = cashflowtool.muProbability00(intensititer, start, slut, "");
+            return P00 * MathNet.Numerics.Integration.SimpsonRule.IntegrateThreePoint(y => intensititer.rFunction(y) * (cashflowtool.tekniskReserve_circle(y, intensititer)/ cashflowtool.tekniskReserve_dagger(y, intensititer)), start, slut);
         }
 
 
         internal double tekniskReserve_circle(double time_i, intensityObject intensititer)
         {
-            double b_0 = 1; double b_01 = 2; double b_02 = 3;
+            double b_0 = 1; double b_01 = 0; double b_02 = 0;
             // MANGLER AT FORRENTES
-            return MathNet.Numerics.Integration.SimpsonRule.IntegrateThreePoint(y => muProbability00(intensititer, time_i, y, "") * b_0 * (time_i>67 ? 1 : 0) + muProbability01(intensititer, time_i, y, "") * b_01 * intensititer.tauFunction(y) + muProbability02(intensititer, time_i, y, "") * b_02 * intensititer.muFunction(y), time_i, intensititer.horizon);
+            return MathNet.Numerics.Integration.SimpsonRule.IntegrateThreePoint(y => muProbability00(intensititer, time_i, y, "") * b_0 * (y>10 ? 1 : 0) + muProbability00(intensititer, time_i, y, "") * b_01 * intensititer.tauFunction(y) + muProbability00(intensititer, time_i, y, "") * b_02 * intensititer.muFunction(y), time_i, intensititer.horizon);
         }
         internal double tekniskReserve_dagger(double time_i, intensityObject intensititer)
         {
             double b_0 = 1; 
-            return MathNet.Numerics.Integration.SimpsonRule.IntegrateThreePoint(y => muProbability00(intensititer, time_i, y, "") * b_0 *(time_i > 67 ? 1 : 0), time_i, intensititer.horizon);
+            return MathNet.Numerics.Integration.SimpsonRule.IntegrateThreePoint(y => muProbability00(intensititer, time_i, y, "") * b_0 *(y > 10 ? 1 : 0), time_i, intensititer.horizon);
         }
 
 
