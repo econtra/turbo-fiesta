@@ -55,7 +55,7 @@ namespace Speciale
         }
 
         public double a1 = 0.1; public double b1 = 0.1;public double sigma1 = 0.01; public double a2 = 0.2;public double b2 = 0.2; public double sigma2 = 0.01; 
-        public void simulateMu()
+        public void simulate()
         {
             xVal[0] = 0;
             List<double> W_1 = new List<double>(); W_1.Add(W_1_start);
@@ -93,25 +93,21 @@ namespace Speciale
         // Lineær interpolation af mu hvis det vil bruges
         public double muFunction(double x)
         {
-            return Interpolate1D(x, xVal, mu, 0D, 40D);
+            return Interpolate1D(x, xVal, mu, 0D, horizon);
         }
         public double rFunction(double x)
         {
-            return Interpolate1D(x, xVal, r, 0D, 40D);
+            return Interpolate1D(x, xVal, r, 0D, horizon);
         }
-        public double mu0 { get; }
-        public double tau0 { get; }
-        public double r0 { get; }
-        public int horizon { get; }
-        public int gridpoints { get; }
-        public double[] r { get; }
-        public double[] mu { get; }
-        public double[] tau { get; }
-        public double[] xVal { get; }
-        public double W_1_start { get; }
-        public double W_2_start { get; }
-
-        public static double Interpolate1D(double value, double[] x, double[] y, double lower, double upper)
+        public double tauFunction(double x)
+        {
+            return Interpolate1D(x, xVal, tau, 0D, horizon);
+        }
+        public double tekniskr(double x)
+        {
+            return 0D;
+        }
+        public double Interpolate1D(double value, double[] x, double[] y, double lower, double upper)
         {
             for (int i = 0; i < x.Length; i++)
             {
@@ -130,6 +126,18 @@ namespace Speciale
 
             return upper;
         }
+        public double mu0 { get; }
+        public double tau0 { get; }
+        public double r0 { get; }
+        public int horizon { get; }
+        public int gridpoints { get; }
+        public double[] r { get; }
+        public double[] mu { get; }
+        public double[] tau { get; }
+        public double[] xVal { get; }
+        public double W_1_start { get; }
+        public double W_2_start { get; }
+
 
     }
 
