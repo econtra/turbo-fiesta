@@ -69,14 +69,18 @@ namespace Speciale
             return P00 * MathNet.Numerics.Integration.SimpsonRule.IntegrateThreePoint(y => intensititer.rFunction(y) * (cashflowtool.tekniskReserve_circle(y, intensititer)/ cashflowtool.tekniskReserve_dagger(y, intensititer)), start, slut);
         }
 
+        public double calculateQ(int time_i, intensityObject intensititer)
+        {
+            return euler(0, 0, time_i, intensititer);
+        }
 
-        internal double tekniskReserve_circle(double time_i, intensityObject intensititer)
+        public double tekniskReserve_circle(double time_i, intensityObject intensititer)
         {
             double b_0 = 1; double b_01 = 0; double b_02 = 0;
             // MANGLER AT FORRENTES
             return MathNet.Numerics.Integration.SimpsonRule.IntegrateThreePoint(y => muProbability00(intensititer, time_i, y, "") * b_0 * (y>10 ? 1 : 0) + muProbability00(intensititer, time_i, y, "") * b_01 * intensititer.tauFunction(y) + muProbability00(intensititer, time_i, y, "") * b_02 * intensititer.muFunction(y), time_i, intensititer.horizon);
         }
-        internal double tekniskReserve_dagger(double time_i, intensityObject intensititer)
+        public double tekniskReserve_dagger(double time_i, intensityObject intensititer)
         {
             double b_0 = 1; 
             return MathNet.Numerics.Integration.SimpsonRule.IntegrateThreePoint(y => muProbability00(intensititer, time_i, y, "") * b_0 *(y > 10 ? 1 : 0), time_i, intensititer.horizon);
@@ -118,6 +122,26 @@ namespace Speciale
             double B = (1-Math.Exp(-a * (slut - start))) / a;
             double A = ((B - slut + start) * (a * b - 0.5 * Math.Pow(sigma, 2))) / Math.Pow(a, 2) - (Math.Pow(sigma, 2) * Math.Pow(B, 2)) / (4 * a); 
             return Math.Exp(A  + B*r[start]); // return the zero cupon bond price (e^int(f))
+        }
+        static double funcQ(double x, double y, intensityObject intensiteter)
+        {
+            CashFlowTool tool = new CashFlowTool();
+            return intensiteter.rFunction(x) * (tool.tekniskReserve_circle(x, intensiteter) + y * tool.tekniskReserve_dagger(x, intensiteter))  / tool.tekniskReserve_dagger(x, intensiteter);
+        }
+
+        static double euler(double x0, double y, float x, intensityObject intensiteter)
+        {
+            double h = 0.1;
+            // Iterating till the point at which we 
+            // need approximation 
+            while (x0 < x)
+            {
+                y = y + h * funcQ(x0, y, intensiteter);
+                x0 = x0 + h;
+            }
+
+            // Printing approximation 
+            return y;
         }
     }
 

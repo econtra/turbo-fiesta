@@ -58,14 +58,15 @@ namespace Speciale
                     double delta_1 = 0;
                      // double delta_0 = cashflowtool.tekniskReserve_circle(time_i, intensititer) * (intensititer.r[time_i-1] - intensititer.tekniskr(time_i));
                     // Calculating PQ
-                    double Pq = cashflowtool.calculatePq(intensititer, 0, time_i);
+                    // double Pq = cashflowtool.calculatePq(intensititer, 0, time_i);
 
 
                     // Payments
                     double b_0_circ = 1; double b_01_circ = 2; double b_02_circ = 3;
                     double b_0_dagger = 1; double b_01_dagger = 0; double b_02_dagger = 0;
                     aCircle[scenario, time_i] = cashflowtool.muProbability00(intensititer, 0, time_i, "") * b_0_circ + cashflowtool.muProbability01(intensititer, 0, time_i, "") * b_01_circ + cashflowtool.muProbability02(intensititer, 0, time_i, "") * b_02_circ;
-                    ab[scenario, time_i] = Pq * b_0_dagger;
+                    double Q = cashflowtool.calculateQ(time_i, intensititer);
+                    ab[scenario, time_i] = Q * b_0_dagger;
                     interestContainer.Add(intensititer.r); // need to hold the interest curve for later sum
 
 
@@ -81,6 +82,7 @@ namespace Speciale
 
                 result += scenarioResult;
             }
+
             Console.WriteLine("Bonus værdi", result/timeHorizon);
 
 
