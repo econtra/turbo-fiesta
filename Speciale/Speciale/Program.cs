@@ -38,8 +38,8 @@ namespace Speciale
 
             // The E[a^circle|r and mu up till time t] cashflow
 
-            var aCircle = new double[timeHorizon, timeHorizon];
-            var ab = new double[timeHorizon, timeHorizon];
+            var aCircle = new double[timeHorizon+1, timeHorizon+1];
+            var ab = new double[timeHorizon+1, timeHorizon+1];
             var interestContainer = new List<double[]>(timeHorizon);
             ab[0, 0] = 0;
             double result = 0;

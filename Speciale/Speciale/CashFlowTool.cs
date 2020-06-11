@@ -72,18 +72,19 @@ namespace Speciale
         internal double tekniskReserve_circle(double time_i, intensityObject intensititer)
         {
             double b_0 = 1; double b_01 = 2; double b_02 = 3;
-            return MathNet.Numerics.Integration.SimpsonRule.IntegrateThreePoint(y => muProbability00(intensititer, time_i, y, "") * b_0 + muProbability01(intensititer, time_i, y, "") * b_01 * intensititer.tauFunction(y) + muProbability02(intensititer, time_i, y, "") * b_02 * intensititer.muFunction(y), time_i, intensititer.horizon);
+            // MANGLER AT FORRENTES
+            return MathNet.Numerics.Integration.SimpsonRule.IntegrateThreePoint(y => muProbability00(intensititer, time_i, y, "") * b_0 * (time_i>67 ? 1 : 0) + muProbability01(intensititer, time_i, y, "") * b_01 * intensititer.tauFunction(y) + muProbability02(intensititer, time_i, y, "") * b_02 * intensititer.muFunction(y), time_i, intensititer.horizon);
         }
         internal double tekniskReserve_dagger(double time_i, intensityObject intensititer)
         {
             double b_0 = 1; 
-            return MathNet.Numerics.Integration.SimpsonRule.IntegrateThreePoint(y => muProbability00(intensititer, time_i, y, "") * b_0 , time_i, intensititer.horizon);
+            return MathNet.Numerics.Integration.SimpsonRule.IntegrateThreePoint(y => muProbability00(intensititer, time_i, y, "") * b_0 *(time_i > 67 ? 1 : 0), time_i, intensititer.horizon);
         }
 
 
 
         public double muProbability00(intensityObject intensityobject, double start, double slut, String method){
-            return Math.Exp(MathNet.Numerics.Integration.SimpsonRule.IntegrateThreePoint(x => intensityobject.muFunction(x) + intensityobject.tauFunction(x), start, slut));
+            return Math.Exp(- MathNet.Numerics.Integration.SimpsonRule.IntegrateThreePoint(x => intensityobject.muFunction(x) + intensityobject.tauFunction(x), start, slut));
         }
         public double muProbability01(intensityObject intensityobject, double start, double slut, String method)
         {
