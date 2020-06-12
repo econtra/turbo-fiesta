@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using MathNet.Numerics;
 namespace Speciale
 {
@@ -54,13 +57,28 @@ namespace Speciale
             }
             else if (method == "simulation")
             {
-                intensityObject intCopy = intensityobject;
-                intCopy.simulate("cor");
-                p[start] = Math.Exp(-intensityobject.tau[start] - intensityobject.mu[start]);
-                for (int i = start + 1; i <= slut; i++)
+                var paths = new List<double[]>();
+                for (int n = 0; n < 10; n++)
                 {
-                    p[i] = Math.Exp(-MathNet.Numerics.Integration.SimpsonRule.IntegrateThreePoint(x => intCopy.tauFunction (x)+intCopy.muFunction(x), start, i));
-                } 
+                    intensityObject intCopy = intensityobject;
+                    intCopy.simulate("cor");
+                    var path = new double[intensityobject.mu.Length + 1];
+                    path[start] = Math.Exp(-intensityobject.tau[start] - intensityobject.mu[start]);
+                    for (int i = start + 1; i <= slut; i++)
+                    {
+                        path[i] = Math.Exp(-MathNet.Numerics.Integration.SimpsonRule.IntegrateThreePoint(x => intCopy.tauFunction(x) + intCopy.muFunction(x), start, i));
+                    }
+                    paths.Add(path);
+                }
+                for (int i = 0; i <= intensityobject.mu.Length; i++)
+                {
+                    var total = 0.0;
+                    for (int n = 0; n < 10; n++)
+                    {
+                        total = paths[n][i];
+                    }
+                    p[i] = total/10;
+                }
                 return p;
             }
             else
