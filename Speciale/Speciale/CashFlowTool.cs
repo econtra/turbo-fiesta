@@ -51,14 +51,14 @@ namespace Speciale
                 p[start] = Math.Exp(- intensityobject.tau[start] - intensityobject.mu[start]);
                 for (int i = start + 1; i <= slut; i++)
                 {
-                    p[i] = zeroCuponPrice(intensityobject.a1, intensityobject.b1, intensityobject.tau, intensityobject.sigma1, 0, i) * Math.Exp(- MathNet.Numerics.Integration.SimpsonRule.IntegrateThreePoint(x => intensityobject.muFunction(x), start, i));
+                    p[i] = zeroCuponPrice(intensityobject.a1, intensityobject.b1, intensityobject.tau, intensityobject.sigma1, start, i) * Math.Exp(- MathNet.Numerics.Integration.SimpsonRule.IntegrateThreePoint(x => intensityobject.muFunction(x), start, i));
                 }
                 return p;
             }
             else if (method == "simulation")
             {
                 var paths = new List<double[]>();
-                for (int n = 0; n < 10; n++)
+                for (int n = 0; n < 100; n++)
                 {
                     intensityObject intCopy = intensityobject;
                     intCopy.simulate("cor");
@@ -73,11 +73,11 @@ namespace Speciale
                 for (int i = 0; i <= intensityobject.mu.Length; i++)
                 {
                     var total = 0.0;
-                    for (int n = 0; n < 10; n++)
+                    for (int n = 0; n < 100; n++)
                     {
-                        total = paths[n][i];
+                        total += paths[n][i];
                     }
-                    p[i] = total/10;
+                    p[i] = total/100;
                 }
                 return p;
             }
@@ -175,7 +175,7 @@ namespace Speciale
             }
             double B = (1-Math.Exp(-a * (slut - start))) / a;
             double A = ((B - slut + start) * (a * b - 0.5 * Math.Pow(sigma, 2))) / Math.Pow(a, 2) - (Math.Pow(sigma, 2) * Math.Pow(B, 2)) / (4 * a); 
-            return Math.Exp( (A  + B*r[start])); // return the zero cupon bond price (e^int(f))
+            return Math.Exp( (A  - B*r[start])); // return the zero cupon bond price (e^int(f))
         }
         static double funcQ(double x, double y, intensityObject intensiteter)
         {

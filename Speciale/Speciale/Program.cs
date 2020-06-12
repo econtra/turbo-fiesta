@@ -25,9 +25,9 @@ namespace Speciale
             ////simpletest.WriteData("C:/Users/Steffen/Dropbox (Keylane)/Speciale/Data/simpletest.csv");
             //test.WriteData("C:/Users/Steffen/Dropbox (Keylane)/Speciale/Data/test.csv");
             var cashflowtool = new CashFlowTool();
-            var intensititer = new intensityObject(0.1, 0.05, 0.9, timeHorizon, gridPoints, 0, 0, null, null, null, null);
-           // intensititer.simulate("");
-           // intensititer.exportTxt();
+            var intensititer = new intensityObject(0.1, 0.01, 0.01, timeHorizon, gridPoints, 0, 0, null, null, null, null);
+            intensititer.simulate("");
+            intensititer.exportTxt();
 
             // PW-means //
 
