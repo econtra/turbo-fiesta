@@ -60,7 +60,7 @@ namespace Speciale
                 for (int i = start + 1; i <= slut; i++)
                 {
                     p[i] = Math.Exp(-MathNet.Numerics.Integration.SimpsonRule.IntegrateThreePoint(x => intCopy.tauFunction (x)+intCopy.muFunction(x), start, i));
-                } //her skal jeg lige gennemsnitte mere end en sti :P
+                } 
                 return p;
             }
             else
@@ -109,7 +109,7 @@ namespace Speciale
 
         public double tekniskReserve_circle(double time_i, intensityObject intensititer)
         {
-            double b_0 = 1; double b_01 = 0; double b_02 = 0;
+            double b_0 = 1; double b_01 = 0.02; double b_02 = 0.02;
             return MathNet.Numerics.Integration.SimpsonRule.IntegrateThreePoint(y => muProbability00(intensititer, time_i, y, "") * b_0 * (y>40 ? 1 : 0) + muProbability00(intensititer, time_i, y, "") * b_01 * intensititer.tauFunction(y) + muProbability00(intensititer, time_i, y, "") * b_02 * intensititer.muFunction(y), time_i, intensititer.horizon);
         }
         public double tekniskReserve_dagger(double time_i, intensityObject intensititer)
@@ -157,12 +157,24 @@ namespace Speciale
             }
             double B = (1-Math.Exp(-a * (slut - start))) / a;
             double A = ((B - slut + start) * (a * b - 0.5 * Math.Pow(sigma, 2))) / Math.Pow(a, 2) - (Math.Pow(sigma, 2) * Math.Pow(B, 2)) / (4 * a); 
-            return Math.Exp(A  + B*r[start]); // return the zero cupon bond price (e^int(f))
+            return Math.Exp( (A  + B*r[start])); // return the zero cupon bond price (e^int(f))
         }
         static double funcQ(double x, double y, intensityObject intensiteter)
         {
-              CashFlowTool tool = new CashFlowTool();
-              return intensiteter.rFunction(x) * (tool.tekniskReserve_circle(x, intensiteter) + y * tool.tekniskReserve_dagger(x, intensiteter))  / tool.tekniskReserve_dagger(x, intensiteter);
+            CashFlowTool tool = new CashFlowTool();
+            return intensiteter.rFunction(x) * (( (tool.Vbarcircstjern(intensiteter, x) /tool.Vbardaggerstjern(intensiteter, x)  ) +y) );
+        }
+
+        private double Vbardaggerstjern(intensityObject intensiteter, double x)
+        {
+            CashFlowTool tool = new CashFlowTool();
+            return tool.muProbability00(intensiteter, 0, x, "") * tool.tekniskReserve_dagger(x, intensiteter);
+        }
+
+        private double Vbarcircstjern(intensityObject intensiteter, double x)
+        {
+            CashFlowTool tool = new CashFlowTool();
+            return tool.muProbability00(intensiteter, 0, x, "") * tool.tekniskReserve_circle(x, intensiteter);
         }
 
         static double[] euler(int x0, double y, intensityObject intensiteter)

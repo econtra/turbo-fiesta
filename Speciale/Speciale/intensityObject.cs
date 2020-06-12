@@ -54,7 +54,7 @@ namespace Speciale
             Console.WriteLine("Ny fil er nu på i advanced mappen");
         }
 
-        public double a2 = 0.5; public double b2 = 2;public double sigma2 = 0.0001; public double a1 = 0.5; public double b1 = 0.049; public double sigma1 = 0.00001; 
+        public double a2 = 0.5/100; public double b2 = 2;public double sigma2 = 0.01; public double a1 = 1; public double b1 = 0.049; public double sigma1 = 0.01; 
         public void simulate(string method)
         {
             xVal[0] = 0;
@@ -74,7 +74,7 @@ namespace Speciale
             {
                 if (method == "cor")
                 {
-                    tau[j] = (a1 * (b1 - tau[j - 1]) * (1 / gridpoints) + sigma1* 0.9 * W_1[j - 1] + sigma1 *0.1 * W_2[j - 1] ) ;
+                    tau[j] = (a1 * (b1 - tau[j - 1]) * (1 / gridpoints) + sigma1* 0.8 * W_1[j - 1] + sigma1 *0.2 * W_2[j - 1] ) ;
                 }
                 else
                 {

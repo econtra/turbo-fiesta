@@ -43,6 +43,13 @@ namespace Speciale
             double r = result / timeHorizon;
             Console.WriteLine(r.ToString());
 
+            result = findResult(timeHorizon, cashflowtool, intensititer, "ikke cor", "simulation");
+
+            Console.WriteLine("Bonus værdi helt standard, men fundet med sim");
+            double p = result / timeHorizon;
+            Console.WriteLine(p.ToString());
+
+
             result = findResult(timeHorizon, cashflowtool, intensititer, "cor", "marginal");
 
 
@@ -100,7 +107,7 @@ namespace Speciale
             for (int scenario = 0; scenario < timeHorizon; scenario++)
             {
                 double scenarioResult = 0;
-                for (int time = 0; time < timeHorizon; time++)
+                for (int time = 0; time < timeHorizon-1; time++)
                 {
                     scenarioResult += Math.Exp(-MathNet.Numerics.Integration.SimpsonRule.IntegrateThreePoint(y => rFunctionInx(y, interestContainer[scenario], intensititer), 0, time + 0.5)) * ((ab[0, time] + ab[0, time + 1]) / 2);
                 }
