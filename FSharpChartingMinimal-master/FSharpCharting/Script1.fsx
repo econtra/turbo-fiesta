@@ -10,7 +10,7 @@ type Results = {Y0 : double[]; Y1 : double[]; a : double[] ; p00 : double[,] ; p
 
 //Kontraktparametre
 let t_0 = 25.0
-let n = 90.0
+let n = 100.0
 let R = 65.0
 let piSensi = 80000.0
 let b_death = 1000000.0
@@ -22,6 +22,7 @@ let timePoints = 1001
 let delta = (n-t_0)/((double timePoints)-1.0)
 let time : double array = Array.init timePoints (fun i -> t_0 + (double i) * delta)
 let Rindex = Array.findIndex (fun t -> t > 65.0) time
+let Lateindex = Array.findIndex (fun t -> t > 95.0) time
 
 
 
@@ -65,6 +66,9 @@ let rMV = Array.create timePoints 0.03
 let inline m_01MV (t: double) =
     (0.0004 + 10.0**(4.54+0.06*t-10.0)) * Ind t R
 
+let inline M_01STRESSED (t: double) =
+    5.0 * (0.0004 + 10.0**(4.54+0.06*t-10.0)) * Ind t R
+
 let inline m_10MV (t: double) =
     (2.0058 * System.Math.Exp (-0.117*t)) * Ind t R
 
@@ -90,7 +94,7 @@ let inline m_12MV (t: double) =
 
 // Fremskriv Y_tilder
 
-let Make pi (r: double[]) (m_01: double -> double) (m_10) (m_02) (m_12) (r_bar: double[]) (mu_bar) =
+let Make pi (r: double[]) (m_01) (m_10) (m_02) (m_12) (r_bar: double[]) (mu_bar) =
     let p_00 : double[,] = Array2D.create timePoints timePoints 1.0
     let p_01 : double[,] = Array2D.create timePoints timePoints 0.0
     let p_02 : double[,] = Array2D.create timePoints timePoints 0.0
@@ -135,12 +139,14 @@ let Make pi (r: double[]) (m_01: double -> double) (m_10) (m_02) (m_12) (r_bar: 
 
 
 
-let rMV_bar = Array.create timePoints 0.06
+let rMV_low = Array.create timePoints 0.02
+let rMV_high = Array.create timePoints 0.04
 
-let YMV = Make piSensi rMV m_01MV m_10MV m_02MV m_12MV rMV_bar m_01MV
-let YDisStress = Make piSensi rMV (fun t -> (m_01MV t) * 1.2) m_10MV m_02MV m_12MV rMV_bar m_01MV
-let YLongStress = Make piSensi rMV m_01MV m_10MV (fun t -> (m_02MV t) * 0.8) m_12MV rMV_bar m_01MV
-let YInterestStress = Make piSensi (Array.init timePoints (fun i -> (Ind time.[i] R) * 0.03)) m_01MV m_10MV m_02MV m_12MV rMV_bar m_01MV
+
+let YMV = Make piSensi rMV m_01MV m_10MV m_02MV m_12MV rMV m_02MV
+let YDisStress = Make piSensi rMV M_01STRESSED m_10MV m_02MV m_02MV rMV m_02MV // BEMÆRK SAMME DØDELIGHED
+let YLongStress = Make piSensi rMV m_01MV m_10MV (fun t -> (m_02MV t) * 0.8) (fun t -> (m_12MV t) * 0.8) rMV m_02MV
+let YInterestStress = Make piSensi (Array.init timePoints (fun i -> (Ind time.[i] R) * 0.03)) m_01MV m_10MV m_02MV m_12MV rMV m_02MV
 
 
     // Sensi
@@ -153,8 +159,14 @@ let p_11 : double[,] = Array2D.create timePoints timePoints 1.0
 let p_12 : double[,] = Array2D.create timePoints timePoints 0.0
 
 let W : double[] = Array.create timePoints 0.0
+let W_high : double[] = Array.create timePoints 0.0
+let W_low : double[] = Array.create timePoints 0.0
 let a : double[] = Array.create timePoints 0.0
+let a_high : double[] = Array.create timePoints 0.0
+let a_low : double[] = Array.create timePoints 0.0
 let faktor: double[] = Array.create timePoints 0.0
+let faktor_high: double[] = Array.create timePoints 0.0
+let faktor_low: double[] = Array.create timePoints 0.0
 
 for i = 0 to (timePoints-1) do
     for j = (i+1) to (timePoints-1) do
@@ -170,34 +182,96 @@ for i = 0 to (timePoints-1) do
     if i = 0 then W.[i] <- 0.0
     else W.[i] <- W.[i-1] + (W.[i-1] * rMV.[i-1] + piSensi) * delta
 
+    if i = 0 then W_high.[i] <- 0.0
+    else W_high.[i] <- W_high.[i-1] + (W_high.[i-1] * rMV_high.[i-1] + piSensi) * delta
+
+    if i = 0 then W.[i] <- 0.0
+    else W_low.[i] <- W_low.[i-1] + (W_low.[i-1] * rMV_low.[i-1] + piSensi) * delta
+
     // a
 for i = (timePoints-1) downto 0 do
     if i = (timePoints-1) then a.[i] <- 0.0
     else a.[i] <- a.[i+1] + (1.0 - a.[i+1] * rMV.[i+1]) * delta
 
-    // faktor
+for i = (timePoints-1) downto 0 do
+    if i = (timePoints-1) then a_high.[i] <- 0.0
+    else a_high.[i] <- a_high.[i+1] + (1.0 - a_high.[i+1] * rMV_high.[i+1]) * delta
+
+for i = (timePoints-1) downto 0 do
+    if i = (timePoints-1) then a_low.[i] <- 0.0
+    else a_low.[i] <- a_low.[i+1] + (1.0 - a_low.[i+1] * rMV_low.[i+1]) * delta
+
+    // faktors
 for i = 0 to (timePoints-1) do
     if time.[i] < R then faktor.[i] <- 1.0
     else faktor.[i] <- faktor.[i-1] + (faktor.[i-1] * (rMV.[i-1] - 1.0/a.[i-1])) * delta
+
+for i = 0 to (timePoints-1) do
+    if time.[i] < R then faktor_high.[i] <- 1.0
+    else faktor_high.[i] <- faktor_high.[i-1] + (faktor_high.[i-1] * (rMV_high.[i-1] - 1.0/a.[i-1])) * delta
+
+for i = 0 to (timePoints-1) do
+    if time.[i] < R then faktor_low.[i] <- 1.0
+    else faktor_low.[i] <- faktor_low.[i-1] + (faktor_low.[i-1] * (rMV_low.[i-1] - 1.0/a.[i-1])) * delta
     
 
 
 
 
 
-//let ChartY = Chart.Combine([
-//                Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], YInterestStress.Y0.[i])],Name="Stress")
-//                Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], YMV.Y0.[i])],Name="MV")
+let ReservesMV = Chart.Combine([
+                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], (YMV.Y0.[i] + YMV.Y1.[i])/(YMV.p00.[0,i] + YMV.p01.[0,i])/1000.0)],Name="MV")
+                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], (YMV.Y0.[i])/(YMV.p00.[0,i])/1000.0)],Name="MV_Clas")
+                        ])                  
+                |> Chart.WithLegend(Docking=ChartTypes.Docking.Right)
+                |> Chart.WithXAxis(Title="Age", TitleFontSize=16.0, Min = t_0)
+                |> Chart.WithYAxis(Title="Reserves in t.DKK", TitleFontSize=16.0, Min = 0.0, Max = 7000.0)
+
+//let ReservesMV2 = Chart.Combine([
+//                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], (YInterestStress.Y0.[i] + YInterestStress.Y1.[i])/(p_00.[0,i] + p_01.[0,i])/1000.0)],Name="InterestStress")
+//                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], (YInterestStress.Y0.[i])/(p_00.[0,i])/1000.0)],Name="InterestStress_Clas")
+//                        ])                  
+//                |> Chart.WithLegend(Docking=ChartTypes.Docking.Right)
+//                |> Chart.WithXAxis(Title="Age", TitleFontSize=16.0, Min = t_0)
+//                |> Chart.WithYAxis(Title="Reserves in t.DKK", TitleFontSize=16.0, Min = 0.0, Max = 7000.0)
+
+let ReservesMV3 = Chart.Combine([
+                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], (YDisStress.Y0.[i] + YDisStress.Y1.[i])/(YDisStress.p00.[0,i] + YDisStress.p01.[0,i])/1000.0)],Name="MV")
+                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], (YDisStress.Y0.[i])/(YDisStress.p00.[0,i])/1000.0)],Name="MV_Clas")
+                        ])                  
+                |> Chart.WithLegend(Docking=ChartTypes.Docking.Right)
+                |> Chart.WithXAxis(Title="Age", TitleFontSize=16.0, Min = t_0)
+                |> Chart.WithYAxis(Title="Reserves in t.DKK", TitleFontSize=16.0, Min = 0.0, Max = 7000.0)
+
+//let ReservesMV4 = Chart.Combine([
+//                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], (YLongStress.Y0.[i] + YLongStress.Y1.[i])/(p_00.[0,i] + p_01.[0,i])/1000.0)],Name="LongStress")
+//                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], (YLongStress.Y0.[i])/(p_00.[0,i])/1000.0)],Name="LongStress_Clas")
+//                        ])                  
+//                |> Chart.WithLegend(Docking=ChartTypes.Docking.Right)
+//                |> Chart.WithXAxis(Title="Age", TitleFontSize=16.0, Min = t_0)
+//                |> Chart.WithYAxis(Title="Reserves in t.DKK", TitleFontSize=16.0, Min = 0.0, Max = 7000.0)
+
+//let ReservesCombo1 = Chart.Rows (seq {ReservesMV; ReservesMV2})
+//let ReservesCombo2 = Chart.Rows (seq {ReservesMV3; ReservesMV4})
+//let ReservesCombo3 = Chart.Columns (seq {ReservesCombo1; ReservesCombo2})
+
+
+//let Benefits = Chart.Combine([
+//                Chart.Line ([for i in Rindex .. (timePoints-50) -> (time.[i], (YMV.Y0.[i] + YMV.Y1.[i])/(YMV.p00.[0,i] + YMV.p01.[0,i])/(YMV.a.[i]))],Name="MV")
+//                Chart.Line ([for i in Rindex .. (timePoints-50) -> (time.[i], (YInterestStress.Y0.[i] + YInterestStress.Y1.[i])/(YInterestStress.p00.[0,i] + YInterestStress.p01.[0,i])/(YInterestStress.a.[i]))],Name="InterestStress")
 //                ])                  
 //              |> Chart.WithLegend(Title="Legend")
-//              |> Chart.WithXAxis(Min = 0.0)
 
+//let RSensi = Chart.Combine([
+//                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], faktor_low.[i]*(piSensi + W_low.[Rindex]/a.[Rindex])/a.[i]/1000.0)],Name="r < r_bar")
+//                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], faktor.[i]*(piSensi + W.[Rindex]/a.[Rindex])/a.[i]/1000.0)],Name="r = r_bar")
+//                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], faktor_high.[i]*(piSensi + W_high.[Rindex]/a.[Rindex])/a.[i]/1000.0)],Name="r > r_bar")
+//                    ])                  
+//                |> Chart.WithLegend(Docking=ChartTypes.Docking.Left)
+//                |> Chart.WithXAxis(Title="Age", TitleFontSize=16.0, Min = R)
+//                |> Chart.WithYAxis(Title="Retirement sensitivity for annual benefits in t.DKK", TitleFontSize=16.0)
+//                |> Chart.Save "H:\Speciale\Rsensi.png"
 
-let Benefits = Chart.Combine([
-                Chart.Line ([for i in Rindex .. (timePoints-50) -> (time.[i], (YMV.Y0.[i] + YMV.Y1.[i])/(YMV.p00.[0,i] + YMV.p01.[0,i])/(YMV.a.[i]))],Name="MV")
-                Chart.Line ([for i in Rindex .. (timePoints-50) -> (time.[i], (YInterestStress.Y0.[i] + YInterestStress.Y1.[i])/(YInterestStress.p00.[0,i] + YInterestStress.p01.[0,i])/(YInterestStress.a.[i]))],Name="InterestStress")
-                ])                  
-              |> Chart.WithLegend(Title="Legend")
 
 
 //Chart.Combine([
