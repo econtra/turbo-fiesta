@@ -18,14 +18,14 @@
 \contentsline {chapter}{\numberline {7}Sensitivities}{53}
 \contentsline {section}{\numberline {7.1}Reserve-dependent benefits}{54}
 \contentsline {subsection}{\numberline {7.1.1}Retirement sensitivity}{54}
-\contentsline {subsection}{\numberline {7.1.2}Premium sensitivity}{57}
-\contentsline {subsection}{\numberline {7.1.3}A contour map of benefits}{58}
-\contentsline {subsection}{\numberline {7.1.4}Exchange ratios}{58}
+\contentsline {subsection}{\numberline {7.1.2}Premium sensitivity}{58}
+\contentsline {subsection}{\numberline {7.1.3}A contour map of benefits}{59}
+\contentsline {subsection}{\numberline {7.1.4}Exchange ratios}{59}
 \contentsline {section}{\numberline {7.2}Re-introducing insurance risk}{59}
-\contentsline {subsection}{\numberline {7.2.1}Exchange ratios}{62}
-\contentsline {chapter}{\numberline {8}Suggestions for further research}{63}
-\contentsline {chapter}{\numberline {9}Appendix}{65}
-\contentsline {section}{\numberline {9.1}Proof of Lemma \ref {Split}}{65}
-\contentsline {section}{\numberline {9.2}Bevis for blah blah}{66}
-\contentsline {section}{\numberline {9.3}Proof for blah blahdsa}{66}
-\contentsline {section}{\numberline {9.4}Proof of Proposition \ref {MainResult}}{66}
+\contentsline {subsection}{\numberline {7.2.1}Exchange ratios}{63}
+\contentsline {chapter}{\numberline {8}Suggestions for further research}{65}
+\contentsline {chapter}{\numberline {9}Appendix}{67}
+\contentsline {section}{\numberline {9.1}Proof of Lemma \ref {Split}}{67}
+\contentsline {section}{\numberline {9.2}Bevis for blah blah}{68}
+\contentsline {section}{\numberline {9.3}Proof for blah blahdsa}{68}
+\contentsline {section}{\numberline {9.4}Proof of Proposition \ref {MainResult}}{68}
