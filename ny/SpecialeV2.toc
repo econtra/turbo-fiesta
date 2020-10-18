@@ -1,0 +1,28 @@
+\select@language {english}
+\contentsline {chapter}{\numberline {1}Introduction}{5}
+\contentsline {chapter}{\numberline {2}General Setup}{7}
+\contentsline {section}{\numberline {2.1}The Classic Markov Chain Life Insurance Setup}{7}
+\contentsline {section}{\numberline {2.2}The Financial Market}{8}
+\contentsline {section}{\numberline {2.3}Payment Streams}{8}
+\contentsline {section}{\numberline {2.4}Valuation of Payment Streams}{9}
+\contentsline {chapter}{\numberline {3}Prognoses}{11}
+\contentsline {section}{\numberline {3.1}Conditioning for prognoses}{12}
+\contentsline {chapter}{\numberline {4}Guaranteed benefits}{19}
+\contentsline {chapter}{\numberline {5}Prognoses with reserve-dependent benefits}{25}
+\contentsline {section}{\numberline {5.1}With Profit}{32}
+\contentsline {section}{\numberline {5.2}Numerical examples}{36}
+\contentsline {chapter}{\numberline {6}Accumulated prognoses}{41}
+\contentsline {chapter}{\numberline {7}Sensitivities}{43}
+\contentsline {section}{\numberline {7.1}Reserve-dependent benefits}{44}
+\contentsline {subsection}{\numberline {7.1.1}Retirement sensitivity}{44}
+\contentsline {subsection}{\numberline {7.1.2}Premium sensitivity}{47}
+\contentsline {subsection}{\numberline {7.1.3}A contour map of benefits}{48}
+\contentsline {subsection}{\numberline {7.1.4}Exchange ratios}{49}
+\contentsline {section}{\numberline {7.2}Re-introducing insurance risk}{50}
+\contentsline {subsection}{\numberline {7.2.1}Exchange ratios}{53}
+\contentsline {chapter}{\numberline {8}Suggestions for further research}{55}
+\contentsline {chapter}{\numberline {9}Appendix}{57}
+\contentsline {section}{\numberline {9.1}Proof of Lemma \ref {Split}}{57}
+\contentsline {section}{\numberline {9.2}Bevis for blah blah}{58}
+\contentsline {section}{\numberline {9.3}Proof for blah blahdsa}{58}
+\contentsline {section}{\numberline {9.4}Proof of Proposition \ref {MainResult}}{58}
