@@ -277,7 +277,7 @@ let Benefits = Chart.Combine([
                 ])          
               |> Chart.WithLegend(Docking=ChartTypes.Docking.Left) |> Chart.WithLegend(Docking=ChartTypes.Docking.Bottom)
               |> Chart.WithXAxis(Title="Age", TitleFontSize=16.0, Min = R)
-              |> Chart.WithYAxis(Title="Retirement sensitivity for annual benefits in t.DKK", TitleFontSize=16.0, Min = 400.0)
+              |> Chart.WithYAxis(Title="Prognosticated annual benefits in t.DKK", TitleFontSize=16.0, Min = 400.0)
               |> Chart.WithLegend(Title="")
               |> Chart.Save "H:\SpecialyNY\Benefits.png"
 

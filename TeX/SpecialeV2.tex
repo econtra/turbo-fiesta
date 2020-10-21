@@ -165,7 +165,7 @@ Finally, let $\textbf{N} = \{ N_{k} \}_{k \in \mathcal{J}}$ be the vector counti
     N_{k}(t) = \# \{ s \in (0,t] \, : \, Z(s-) \neq k, Z(s)=k \},
 \end{align*}
 
-counting the number of transitions into state $k$ up until and including time $t$. It is known from e.g. (Jesper Lund Livstok) that
+counting the number of transitions into state $k$ up until and including time $t$. It is known from e.g. \cite{LivStok} that
 
 \begin{align*}
     M_{k}(t) = N_{k}(t) - \int_0^t 1_{( Z(s-) \neq k)} \mu_{Z(s-)k}(s)ds
@@ -175,15 +175,23 @@ is an $F^Z$-martingale. Recall that $F^Z= \{ F^Z(t) \}_{t \geq 0}$ is the filtra
 
 \section{The Financial Market}
 
-The financial market enters into the insurance setting via the return on investment of the payments made by the policy holder to the company. Denote by $S = \{ S(t) \}_{t \geq 0}$ the state process of the financial market. For $t_0 \geq 0$, let the continuous function $[t_0,\infty) \ni u \mapsto r_{t_0}(u)$ be the rate investment returns calibrated at time $t_0$. The rate is decided by the company at time $t_0$ for the purpose of prognosticating and so is $\mathcal{F}^{S}(t_0)$-measurable. The choice of this rate is crucial for the prognoses and may vary according to the purpose. Interesting choices include:
+The financial market enters into the insurance setting via the return on investment of the payments made by the policy holder to the company. Denote by $S = \{ S(t) \}_{t \geq 0}$ the state process of the financial market. The rate of return is then the FV-process $r = \{ r(t) \}_{t \geq 0}$. This rate of return is \textit{not} a market rate, but rather the rate ascribed to the individual policy holder by the company. It may comprise returns on bonds, stocks and other investments depending on the portfolio profile which in turn may depend on the contract type and risk appetite of the policy holder. Also, it may depend on the age and the \textit{current} state of the policy. Formally,
+
+\begin{align*}
+	r(t) = r_{Z(t)}(t),
+\end{align*}
+
+for $S$-adapted FV-processes $r_j(t)$, $j \in \mathcal{J}$ with continuous sample paths.
+
+We make no assumptions about the market process $S$, but instead take it as exogenously given in economic scenarios. These scenarios also include the transition intensities $\mu$ governing the state process $Z$. Interesting scenarios include:
 
 \begin{itemize}
-	\item Worst case scenarios, e.g. market crashes or drawn out recessions.
 	\item Best estimate scenarios, e.g. the Common Return Expectations (Samfundsforudsætninger) published by the Council for Return Expectations (Rådet for Afkastforventninger) -- see \cite{ReturnExpectations2020} for the return expectations calibrated in 2020.
-	\item Simulated scenarios. Having decided on some stochastic model for $r$, one can simulate a large number of scenarios, calculate the prognoses in each of them and then apply a suitable average or quantile.
+	\item Stress scenarios, e.g. market crashes, drawn out recessions or adverse mortality developments.
+	\item Simulated scenarios. Having decided on some stochastic model for $(S,\mu)$, one can simulate a large number of scenarios, calculate the prognoses in each of them and then apply a suitable average or quantile.
 \end{itemize}
 
-In the rest of the thesis, we will suppress the 
+Since all computations takes place within a given scenario -- meaning that $S$ and $\mu$ is known -- we will suppress this in the notation.
 
 \begin{remark}
 	Remark omkring at diskretisering gør dt okay. kontra G(s)/G(t)
@@ -197,7 +205,7 @@ Valg om ingen diffusions-modellering.
 
 \section{Payment Streams}
 
-Throughout the thesis we will need a number of different payment processes. We make the small departure from the classical construction that the time of retirement $R$ is stressed as the only time point where payment rates are discontinuous and lump sums are paid out. We follow the convention that positive payments are benefits, while negative payments are premiums. FINITEVARIATION.
+Throughout the thesis we will need a number of different payment processes. We make the small departure from the classical construction that the time of retirement $R$ is stressed as the only time point where payment rates are discontinuous and lump sums are paid out. We follow the convention that positive payments are benefits, while negative payments are premiums.
 
 A payment process consists of three types of payments:
 
@@ -208,7 +216,7 @@ A payment process consists of three types of payments:
         b_j(t) =& 1_{\left( t<R \right)} b_j^{\Uparrow}(t) + 1_{\left( R \leq t \right)} b_j^{\Downarrow}(t),
     \end{align*}
     
-    where the $b_j^{\Uparrow}, b_j^{\Downarrow}: [0,n] \to \mathbbm{R}$ are continuous functions. $b_j^{\Uparrow}$ denotes the rates paid continuously before the time of retirement $R$ (up-arrow for "opsparingsfase" in Danish), while $b_j^{\Downarrow}$ are the rates paid after retirement ("nedsparingsfase").
+    where the $b_j^{\Uparrow}, b_j^{\Downarrow}: [0,n] \to \mathbbm{R}$ are FV-continuous functions. $b_j^{\Uparrow}$ denotes the rates paid continuously before the time of retirement $R$ (up-arrow for "opsparingsfase" in Danish), while $b_j^{\Downarrow}$ are the rates paid after retirement ("nedsparingsfase").
     
     
     
@@ -218,7 +226,7 @@ A payment process consists of three types of payments:
         b_{jk}(t) =& 1_{\left( t<R \right)} b_{jk}^{\Uparrow}(t) + 1_{\left( R \leq t \right)} b_{jk}^{\Downarrow}(t),
     \end{align*}
     
-    where the $b_{jk}^{\Uparrow}, b_{jk}^{\Downarrow}: [0,n] \to \mathbbm{R}$ are continuous functions.
+    where the $b_{jk}^{\Uparrow}, b_{jk}^{\Downarrow}: [0,n] \to \mathbbm{R}$ are continuous FV-functions.
     
     
     
@@ -259,7 +267,7 @@ The contract is settled on the technical basis (sometimes called the first order
 	where $\mathbbm{E}^*$ is integration with respect to the measure $\mathbbm{P}^*$, under which $Z$ is Markov with intensities $\mu^*$.
 \end{definition}
 
-Note that the time $t$ technical reserve only depend on the state process $Z$ through $Z(t)$. It is know from \cite{Livstok}[16.2] that the reserve has dynamics
+Note that the time $t$ technical reserve only depend on the state process $Z$ through $Z(t)$. It is know from equation (16.2) in \cite{LivStok} that the reserve has dynamics
 
 \begin{align*}
 	dV_{Z(t)}^*(t) =& r^*(t) V_{Z(t)}^* dt - b_{Z(t-)}(t) dt - \sum_{k \in \mathcal{J} \atop k \neq Z(t-)} R_{Z(t-)k}^*(t) \mu_{Z(t-)k}^*(t) dt \\
@@ -305,7 +313,7 @@ The preceding chapter . In the next chapter, the concept of prognoses will be di
 
 A prognosis should be a useful summary of the level of benefits that the policy holder can expect to receive in the future. In other words, a prognosis is a functional of the payment stream $B: [t_0,n] \times \Omega \to \mathbbm{R}$. A good prognosis should be useful and understandable by the policy holder. But it should also be feasibly computable - it must be possible to churn out an actual number in the end. The challenge is finding a functional that is both these things.
 
-In the literature, many different functionals have been proposed. \cite{Norberg2001} suggests expected total benefits paid out -- discounted or undiscounted. He also suggests simply expected benefits rates at certain times. \cite{NinaReitzel} extends this last idea to an entire (expected) benefit stream.
+In the literature, many different functionals have been proposed. \cite{Norberg2001} suggests expected total benefits paid out -- discounted or undiscounted. He also suggests simply expected benefits rates at certain times. \cite{NinnaReitzel} extends this last idea to an entire (expected) benefit stream.
 
 The thesis takes the view that it is benefit rates (e.g. monthly benefits) and single lump sum benefits (e.g. pension endowment or term insurance payout) that is of greatest interest to the policy holder -- not accumulated benefits. Questions such as "What benefit rate can I expect in my first month of retirement?" or "What can I expect to be paid out to my family if I die in 10 years?" are more likely to interest the policy holder than "How many benefits can I expect to receive across my entire lifetime?" (although this is also an interesting question, see Section XXX).
 
@@ -557,7 +565,7 @@ Consider the active-disabled-dead model:
 	\end{center}
 \end{figure}
 
-In this model, most classical prognoses -- e.g. \cite{NinaReitzel} -- condition on the policy holder staying active all the way up to the time of payout $t$, e.g. the event $\left( Z(s) 0 : 0 \leq s < t \right)$. Instead we only assume that the policy holder does not die -- she might become disabled. So we let $\hat{\mathcal{J}} = \{ 0, 1 \}$, such that the time $t$ sojourn benefit prognosis becomes
+In this model, most classical prognoses -- e.g. \cite{NinnaReitzel} -- condition on the policy holder staying active all the way up to the time of payout $t$, e.g. the event $\left( Z(s) 0 : 0 \leq s < t \right)$. Instead we only assume that the policy holder does not die -- she might become disabled. So we let $\hat{\mathcal{J}} = \{ 0, 1 \}$, such that the time $t$ sojourn benefit prognosis becomes
 
 \begin{align*}
     \econd[b_{Z(t-)}(t)]{Z(t-) \in \hat{\mathcal{J}}}.
@@ -1000,8 +1008,8 @@ The defining feature of the case without bonus was that all payments were comple
 where the $B^i$ are profile payment streams on the form (\ref{PaymentProcessDef}), scaled linearly by the entries of an $\mathcal{F}$-adapted $n$-dimensional process $\textbf{W}$. It is the object of this chapter to develop a theory for computing prognoses for payment streams on the form (\ref{TotalPaymentStream}).
 
 \begin{itemize}
-	\item We start out by formulating the theory in general terms and then show that the guaranteed benefits from the last chapter can be treated as a special case.
-	\item Then, we show that a broad class of With Profit contracts -- as presented in \cite{Liv2Bog} -- also fits into the general theory, with $(X,Y)$ ($X$ being the technical reserve of guaranteed payments and $Y$ being the surplus) playing the role of $\textbf{W}$.
+	\item We start out by formulating the theory in general terms and then show that the guaranteed benefits from the last chapter can be treated as a special case. 
+	\item Then, we show that a broad class of With Profit contracts -- as presented in Chapter VI in \cite{Liv2Bog} -- also fits into the general theory, with $(X,Y)$ ($X$ being the technical reserve of guaranteed payments and $Y$ being the surplus) playing the role of $\textbf{W}$.
 	\item Finally, the differences between the classical prognoses (without event risk) and the proposed are discussed in the context of a numerical example.
 \end{itemize}
 
@@ -1012,8 +1020,6 @@ Given a payment stream on the form (\ref{TotalPaymentStream}), the three prognos
 \triangle  \hat{B}(R) =& \econd[\textbf{W}(R-) \triangle \textbf{B}_{Z(R-)}]{\{Z(s) \}_{0 \leq s < R} \in \bar{\mathcal{J}}} \\
 \hat{b}_{\cdot k}(t) =& \econd[\textbf{W}(t-) \textbf{b}_{Z(t-)k}]{\{Z(s) \}_{0 \leq s < t} \in \bar{\mathcal{J}}, Z(t) = k}
 \end{align}
-
-
 
 Rewriting, we obtain for the sojourn prognosis
 
@@ -1240,7 +1246,7 @@ The reader is encouraged to consult equations (\ref{QDynamics2}) and (\ref{Delta
 	=& 0
 	\end{align*}
 
-	In \cite{Lollike}, the authors show that 
+	In \cite{Lollike}, the authors show that XXX
 
 	To obtain the prognoses of the last chapter, define the payment stream
 	
@@ -1298,8 +1304,7 @@ Remark on defining new payment functions.
 Having formulated the necessary theory for a general process $W$, we are now ready to treat a broad class of contract types known as With Profit (as presented in \cite{Liv2Bog}).
 
 \section{With Profit}
-
-In this section, we shall see how the With Profit class of contracts -- as described in e.g. \cite{Liv2Bogen} -- fits into general theory of the preceding section. Specifically, we will let $W=(X,Y)$, $X$ being the technical value of future guaranteed payments and $Y$ being the surplus, and let payments depend linearly on these two processes in the sense of \ref{TotalPaymentStream}. We shall see how the specification of the dividend process $D$ allows us to model many classical With Profit pension and life insurance contracts, including participating life insurance and unit-link.
+In this section, we shall see how the With Profit class of contracts -- as described in e.g. \cite{Liv2Bog} -- fits into general theory of the preceding section. Specifically, we will let $W=(X,Y)$, $X$ being the technical value of future guaranteed payments and $Y$ being the surplus, and let payments depend linearly on these two processes in the sense of \ref{TotalPaymentStream}. We shall see how the specification of the dividend process $D$ allows us to model many classical With Profit pension and life insurance contracts, including participating life insurance and unit-link.
 
 The first ingredient in a With Profit contract is the guaranteed payment stream $B^\circ$. The payment stream comprises both benefits and premiums, balanced such that the equivalence principle is satisfied on the technical basis, i.e.
 
@@ -1355,7 +1360,7 @@ X(0) =& V_{0}^{\circ*}(0) + Q(0) V_{0}^{\dagger*}(0) \\
 =& 0.
 \end{align*}
 
-By integration by parts for FV-functions (\cite{Livstok}[Thm. 4.1]) and equation (\ref{ReserveDynamics}), the dynamics of $X$ are
+By integration by parts for FV-functions (Theorem 4.1 in \cite{LivStok}) and equation (\ref{ReserveDynamics}), the dynamics of $X$ are
 
 \begin{align} \label{XDynamics}
 \begin{split}
@@ -1494,10 +1499,11 @@ Together, the payments satisfy the equivalence principle under the technical bas
 In addition to the disability and death covers, the policy holder saves for her pension via the cash-dividend payment stream $D_1$ in the following manner
 
 \begin{align*}
-	dD_1(t) = - \1{t<R} \1{Z(t)=0} \pi(t) + \1{t \geq R} \left( \1{Z(t)=0} + \1{Z(t)=1} \right) \frac{Y(t)}{a(t)}
+	dD_1(t) =& - \1{t<R} \1{Z(t)=0} \left( \pi(t) - b_0^\circ(t) \right) \\
+	&+ \1{t \geq R} \left( \1{Z(t)=0} + \1{Z(t)=1} \right) \frac{Y(t)}{a(t)}
 \end{align*}
 
-In words, the policy holder pays the additional premium $\pi(t)$ directly into the surplus $Y$ (such that the total premiums paid is $b_0^\circ(t)+ \pi(t)$). As retired, a pension benefit is then paid out as a fraction of the surplus $Y$. Since the surplus is forfeited upon death, we let $Y$ accrue not only with the rate of return $r$, but also with the mortality rate $\mu_{02}$ respectively $\mu_{12}$. This means that the surpluses of the deceased are inherited by the survivors.
+In words, the policy holder pays the total premiums $\pi(t)$. After paying for the disability and death covers, $\pi(t) - b_0^\circ(t)$ remains, which is paid directly into the surplus $Y$. As retired, a pension benefit is then paid out as a fraction of the surplus $Y$. Since the surplus is forfeited upon death, we let $Y$ accrue not only with the rate of return $r$, but also with the mortality rate $\mu_{02}$ respectively $\mu_{12}$. This means that the surpluses of the deceased are inherited by the survivors.
 
 Note that in this setup no additional units of any payment stream $B^\dagger$ are purchased, so $D_2=Q=0$.
 
@@ -1511,12 +1517,15 @@ which just states that the only contribution to the surplus from the guaranteed 
 
 The surplus then has dynamics
 
-\begin{align*}
-	dY(t) =& \left( r(t) + \mu_{Z(t)2}(t) \right) Y(t) dt \\
-	&+ \1{t<R} \1{Z(t)=0} \pi(t) dt - \1{t \geq R} \left( \1{Z(t)=0} + \1{Z(t)=1} \right) \frac{Y(t)}{a(t)} dt \\
+\begin{align} \label{YExampleDyn}
+\begin{split}
+		dY(t) =& \left( r(t) + \mu_{Z(t)2}(t) \right) Y(t) dt \\
+	&+ \1{t<R} \1{Z(t)=0} \left(\pi(t) - b_0^\circ(t) \right) dt \\
+	&- \1{t \geq R} \left( \1{Z(t)=0} + \1{Z(t)=1} \right) \frac{Y(t)}{a(t)} dt \\
 	&+ \left( r(t) - r^*(t) \right) V_{Z(t)}^{\circ*}(t) dt \\
 	&- Y(t-) dN_2(t).
-\end{align*}
+\end{split}
+\end{align}
 
 The quantity $a$ is the $S$-adapted annuity
 
@@ -1543,21 +1552,36 @@ Say we want to prognosticate the pension rate at some time $t \geq R$, i.e.
 
 By XXX, $\tilde{Y}_j(t) = \expec[\1{Z(t)=j} Y(t)]$ is described by the system of differential equations
 
-\begin{align*}
+\begin{align} \label{Jaja}
+\begin{split}
 	\frac{\partial}{\partial t} \tilde{Y}_0(t) =& \left( r(t) + \mu_{02}(t) - \1{t \geq R} \frac{1}{a(t)}\right) \tilde{Y}_0(t) \\
-	&+ p_{00}(0,t) \left( \1{t<R} \pi(t) + \left( r(t) - r^*(t) \right) V_{0}^{\circ*}(t) \right) \\
+	&+ p_{00}(0,t) \left( \1{t<R} \left(\pi(t) - b_0^*(t)\right) + \left( r(t) - r^*(t) \right) V_{0}^{\circ*}(t) \right) \\
 	&+ \mu_{10}(t) \tilde{Y}_1(t) - \mu_{01}(t) \tilde{Y}_0(t) - \mu_{02}(t) \tilde{Y}_0(t), \\
 	\frac{\partial}{\partial t} \tilde{Y}_1(t) =& \left( r(t) + \mu_{12}(t) - \1{t \geq R} \frac{1}{a(t)}\right) \tilde{Y}_1(t) \\
 	&+ p_{01}(0,t) \left( r(t) - r^*(t) \right) V_{1}^{\circ*}(t) \\
 	&+ \mu_{01}(t) \tilde{Y}_0(t) - \mu_{10}(t) \tilde{Y}_1(t) - \mu_{12}(t) \tilde{Y}_1(t).
-\end{align*}
+\end{split}
+\end{align}
 
 Obviously, $\tilde{Y}_0(0)=\tilde{Y}_1(0)=0$ and $\tilde{Y}_2(t)=0$.
 
-We can now solve this scheme numerically for four different scenarios:
+We now solve this scheme numerically for four different scenarios. For each, scenario, we also compute the "classical" prognosis, i.e. the prognosis obtained by assuming that the insured remains active and premium paying until retirement. This prognosis is simply
+
+\begin{align*}
+	\hat{b}_{Classical}(t) =& \frac{\bar{Y}(t)}{a(t)}
+\end{align*}
+
+where $\bar{Y}(t)$ satisfies the differential equation
+
+\begin{align*}
+	\frac{\partial}{\partial t} \bar{Y}(t) =& \left( r(t) + \mu_{02}(t) - \1{t \geq R} \frac{1}{a(t)}\right) \bar{Y}(t) \\
+	&+ \1{t<R} \pi(t) + \left( r(t) - r^*(t) \right) V_{0}^{\circ*}(t)
+\end{align*}
+
+with $\bar{Y}(0) = 0$. The scenarios are:
 
 \begin{itemize}
-	\item \textbf{Baseline}: A best estimate scenario with premiums set at 80 t.DKK annually until retirement at $R=65$, a real return rate of 3\% per annum and transition intensities given as in (\cite{BuchartMoller}, Section 5):
+	\item \textbf{Baseline}: A best estimate scenario with premiums set at $\pi = 80$ t.DKK annually until retirement at $R=65$, HUSK DØD og invalidydelser!!!! a real return rate of 3\% per annum and transition intensities given as in (Section 5 of \cite{BuchardtMoller}):
 	
 	\begin{align*}
 		\mu_{01}^{BE}(t) =& \left(0.0004 + 10^{4.54 + 0.06t - 10}\right) \1{t<R} \\
@@ -1565,6 +1589,8 @@ We can now solve this scheme numerically for four different scenarios:
 		\mu_{02}^{BE}(t) =& 0.0005 + 10^{5.88 + 0.038t - 10} \\
 		\mu_{12}^{BE}(t) =& \mu_{02}^{BE}(t) \left( 1 + \1{t<R} \right)
 	\end{align*}
+
+	Hvad med tekniske???
 	
 	\item \textbf{Disability Stress}: The baseline scenario, \textit{but} with a higher disability intensity.
 	\item \textbf{Longevity Stress}: The baseline scenario, \textit{but} with a lower mortality.
@@ -1579,7 +1605,7 @@ Formally, the scenarios are:
 		Scenario & $\mu_{01}$ & $\mu_{10}$ & $\mu_{02}$ & $\mu_{12}$ & $r$ & $\bar{r}$ & $\bar{\mu}$ \\
 		\hline
 		Baseline & $\mu_{01}^{BE}(t)$ & $\mu_{10}^{BE}(t)$ & $\mu_{02}^{BE}(t)$ &$\mu_{12}^{BE}(t)$ & 0.03 & 0.03 & $\mu_{01}^{BE}(t)$ \\
-		Disability Stress & $2 \cdot \mu_{01}^{BE}(t)$ & $\mu_{10}^{BE}(t)$ & $\mu_{02}^{BE}(t)$ & $\mu_{12}^{BE}(t)$ & 0.03 & 0.03 & $\mu_{01}^{BE}(t)$ \\
+		Disability Stress & $1.5 \cdot \mu_{01}^{BE}(t)$ & $\mu_{10}^{BE}(t)$ & $\mu_{02}^{BE}(t)$ & $\mu_{12}^{BE}(t)$ & 0.03 & 0.03 & $\mu_{01}^{BE}(t)$ \\
 		Longevity Stress & $\mu_{01}^{BE}(t)$ & $\mu_{10}^{BE}(t)$ & $0.8 \cdot \mu_{02}^{BE}(t)$ & $0.8 \cdot \mu_{12}^{BE}(t)$ & 0.03 & 0.03 & $\mu_{01}^{BE}(t)$ \\
 		Interest Stress & $\mu_{01}^{BE}(t)$ & $\mu_{10}^{BE}(t)$ & $\mu_{02}^{BE}(t)$ & $\mu_{12}^{BE}(t)$ & $\1{t < R} 0.03 + \1{t \geq R} 0.02$ & 0.03 & $\mu_{01}^{BE}(t)$ \\
 		\hline
@@ -1588,16 +1614,24 @@ Formally, the scenarios are:
 
 \begin{figure}[H]
 	\centering
-	\caption{Classical and proposed pension benefit rates $\hat{b}(t)$ for the four scenarios.}
+	\caption{Annual benefit prognoses (classical and proposed) for the four scenarios.}
 	\includegraphics[width=\textwidth]{Benefits}
 \end{figure}
 
+A few things are worth noting in figure XXX:
 
+\begin{itemize}
+	\item For each scenario, the classical prognosis is higher than the proposed prognosis $\hat{b}(t)$. This is what was expected and one of the principal reason for building the theory in the first place. The difference is, however, quite small -- and the inter-scenario difference is much larger.
+	\item The difference between the BE- and the Disability Stress-scenario shows the promise of the proposed prognoses. When the disability rate is high, the insured is more likely to exit the premium paying state, which translates to a lower surplus at retirement. As noted earlier, an "unemployed"-state can be added to the state space, with an intensity that is probably much higher than the disability intensity.
+	\item The Interest Stress scenario shows that if the payout interest rate $\bar{r}$ is set high than the realized rate, benefits decrease over time because the surplus is paid out "too quickly" in the early phase of retirement.
+	\item The Longevity Stress scenario tells the same story, but with $\bar{\mu}$. Also, the start rate (at age 65) is lower in this scenario, because fewer people have died before retirement (their death would benefit the surpluses of the survivors). BEMÆRK KONKAVITET.
+	\item Finally, note that BE\_Clas and DisStress\_Clas are exactly equal (and thus only one is visible on the graph) because only the technical disability rate $\mu_{01}^*$ is involved in the classical prognoses and this rate is not stressed.
+\end{itemize}
 
 \begin{figure}[H]
 	\centering
 	\caption{The development of the classical and proposed reserves for the four scenarios.}
-	\includegraphics[width=\textwidth]{Reserves}
+	%\includegraphics[width=\textwidth]{Reserves}
 \end{figure}
 
 \begin{itemize}
@@ -1614,501 +1648,68 @@ Formally, the scenarios are:
 
 \textbf{Remark om at man nok skal have en unemployed state for at forskelle er store nok}
 
-This means that all dividends are used to purchase units of the profile benefit stream $B^\dagger$. To keep the example in one dimension, we keep the surplus $Y$ empty, by instantaneously converting any contribution to the surplus into $Q$. Using equation (\ref{YDynamics}), this is done by letting
+\section{Premium waiver}
+
+In the last section, we saw how periods of disability can negatively impact the pension benefits paid out. It is in the interest of most policy holders to get rid of this risk. One way of achieving this is with a premium waiver ("indbetalingssikring"/"præmiefritagelse"). The idea is that the company assumes the premium payments in case of disability, ensuring that savings increase at the same pace as in the active state.
+
+Continuing the contract from the last section, we formalize the idea of a premium waiver as follows: The policy holder is still paying the total premium $\pi(t)$ as active. From this is deducted the payment $\bar{b}_0^\circ(t)$, which now not only covers the death and disability benefits, but also the premium waiver. The premium waiver is an additional liability to the company, i.e. a payment stream $\pi(t) - \bar{b}_0^\circ(t)$ paid in the disabled state. The payment $\bar{b}_0^\circ(t)$ can be determined by the equivalence principle as a solution to (MANGLER rente)
 
 \begin{align*}
-	dD_2(t) = c(t)dt - dD_1(t) - \sum_{k \in \mathcal{J} \atop k \neq Z(t-)} \left( R_{Z(t-)k}^{\circ*}(t) + Q(t-) R_{Z(t-)k}^{\dagger*}(t) \right) \left( dN_k(t) - \mu_{Z(t-)k}(t) dt \right),
+	0 =& V_0^*(0) \\
+	=& \int_0^R p_{00}(0,s) \left( - b_0^\circ(s)  + \mu_{02}(s) b_{02}^\circ \right) \\
+	&+ p_{01}^*(0,s) \left( \left( \pi(s) - b_0^\circ(s) \right) + b_1^\circ(t) + \mu_{12}^*(s) b_{12}^\circ \right) ds
 \end{align*}
 
-Note that with this specification,
+With the simplifying assumption that all payment functions are constant, we can isolate $b_0^\circ$
+
+\begin{align*}
+	\bar{b}_0^\circ = \frac{\int_0^R p_{00}^*(0,s) \mu_{02}^*(s) b_{02}^\circ + p_{01}^*(0,s) \left( \pi + b_1^\circ + \mu_{12}^*(s) b_{12}^\circ \right) ds}{\int_0^R p_{00}^*(0,s) + p_{01}^*(0,s)ds}.
+\end{align*}
+
+The rate paid into the surplus $Y$ -- as active as well as disabled -- is then $\pi(t) - \bar{b}_0^\circ(t)$. Consulting equation (\ref{YExampleDyn}), we see that $Y$ then has dynamics
+
+\begin{align*}
+\begin{split}
+	dY(t) =& \left( r(t) + \mu_{Z(t)2}(t) \right) Y(t) dt \\
+	&+ \1{t<R} \left( \1{Z(t)=0} + \1{Z(t)=1} \right) \left(\pi(t) - \bar{b}_0^\circ(t) \right) dt \\
+	&- \1{t \geq R} \left( \1{Z(t)=0} + \1{Z(t)=1} \right) \frac{Y(t)}{a(t)} dt \\
+	&+ \left( r(t) - r^*(t) \right) V_{Z(t)}^{\circ*}(t) dt \\
+	&- Y(t-) dN_2(t).
+\end{split}
+\end{align*}
+
+With the added assumptions that
 
 \begin{itemize}
-	\item The policy holder participates in the diversifiable risk caused by her own state process (represented by the martingale term above).
-	\item Also, we make no assumptions about the sign of $dD_2$, meaning that the benefits contained in $Q$ are not guaranteed and may rise and fall as the financial market develops.
-	\item The process $D_1$ plays a crucial role in this example. It represents the funds that the policy holder injects into her pension savings in addition to the payments $B^{*-}$ for the guaranteed benefits $B^{*+}$. We shall see that if the premium payments in $D_1$ falls away during periods of disability, the conditioning approach proposed in this thesis (permitting periods of disability in contrast to classical prognoses) leads to more conservative benefit prognoses. Recall that with $Y=0$, $D_1$ has dynamics
-	
-	\begin{align*}
-		dD_1(t) = dB^{D,0}(t) + X(t-) \cdot dB^{D,1}(t).
-	\end{align*}
-
-	This dependence on $X$ allows us to specify payment strategies, where the policy holder pays more premiums when she is far from e.g. some benchmark pension rate
-	
-	
-	\begin{align*}
-		\beta = b_{Z(t-)}^\circ(t) + Q(t-) b_{Z(t-)}^\dagger(t),
-	\end{align*}
-	
-	and conversely pay fewer premiums when she's on track.
+	\item $\mu_{02}(t) = \mu_{12}(t)$, meaning that the accrual from the surpluses of deceased happens at the same rate as active and as disabled.
+	\item $r(t) = r^*(t)$, meaning that is no contribution from the guaranteed payments to the surplus.
 \end{itemize}
 
-\begin{example}[A simple savings contract]
+Then there is no distinction between the policy holder being in the active or the disabled state. The premium waiver effectively erases the risk from the transitions $0 \to 1$ (disability) and $1 \to 0$ (reactivation) from the point of view of the policy holder. No matter her state path inside $\hat{\mathcal{J}} = \{ 0,1 \}$, her surplus will develop at the same rate.
 
-To illustrate the ideas at play, we first consider a very simple contract specified as follows:
-
-\begin{itemize}
-	\item There are no guaranteed benefits. The guaranteed payments consists only of premiums paid while active, i.e.
-	
-	\begin{align*}
-		dB^\circ(t) = - \1{Z(t-)=0} \1{t < R} \pi dt.
-	\end{align*}
-	
-	\item The profile payment stream is a constant pension annuity $b$, i.e.
-	
-	\begin{align*}
-		dB^\dagger(t) = \left( \1{Z(t)=0} + \1{Z(t)=1} \right) \1{t \geq R} b dt.
-	\end{align*}
-
-	\item After retirement $R$, the mortalities $\mu_{02}$ and $\mu_{12}$ are equal. With this assumption, $V_{0}^{\dagger*}(t)=V_{1}^{\dagger*}(t)$ for $t \geq R$. This is a non-essential assumptions that serves to simplify the dynamics of $X$ after retirement.
-\end{itemize}
-
-It follows that
-	
-\begin{align*}
-	dX(t) =& r^*(t) X(t-) dt + dB^\circ(t) - Q(t-) dB^\dagger(t) \\
-	&+ \sum_{k \in \mathcal{J} \atop k \neq Z(t-)} \left( R_{Z(t-)k}^{\circ*}(t) + Q(t-) R_{Z(t-)k}^{\dagger*}(t) \right) \left( dN_k(t) - \mu_{Z(t-)k}(t) dt \right) \\
-	&+ D_2(t) \\
-	=& r(t) X(t-) dt + dB^\circ(t) - \frac{X(t-) - V_{Z(t-)}^{\circ*}(t-)}{V_{Z(t-)}^{\dagger*}(t-)} dB^\dagger(t) \\
-	&+ \sum_{k \in \mathcal{J} \atop k \neq Z(t-)} \left( R_{Z(t-)k}^{\circ*}(t) + \frac{X(t-) - V_{Z(t-)}^{\circ*}(t-)}{V_{Z(t-)}^{\dagger*}(t-)} R_{Z(t-)k}^{\dagger*}(t) \right) \left( dN_k(t) - \mu_{Z(t-)k}(t) dt \right) \\
-\end{align*}
-
-In particular, for $t \geq R$, we have $dB^\circ(t) =  V_{Z(t-)}^{\circ*}(t)= 0$, so the dynamics become
+The computation of the prognosis can also be simplified by noting that
 
 \begin{align*}
-	dX(t) =& \left( r(t) + \mu_{Z(t-)2} \right) X(t-) dt - \frac{X(t-)}{V_{Z(t-)}^{\dagger*}(t-)} dB^\dagger(t) - X(t-) dN_2(t) \\
-	&+ \sum_{k \in \mathcal{J} \atop k \neq Z(t-)} \left( R_{Z(t-)k}^{\circ*}(t) + \frac{X(t-) - V_{Z(t-)}^{\circ*}(t-)}{V_{Z(t-)}^{\dagger*}(t-)} R_{Z(t-)k}^{\dagger*}(t) \right) \left( dN_k(t) - \mu_{Z(t-)k}(t) dt \right) \\
+	\frac{\partial}{\partial t} \left(\tilde{Y}_0(t) + \tilde{Y}_1(t)\right) =& \left( r(t) + \mu_{02}(t) - \1{t \geq R} \frac{1}{a(t)}\right) \left(\tilde{Y}_0(t) + \tilde{Y}_1(t)\right) \\
+	&+ \left(p_{00}(t) + p_{01}(t)\right)\1{t<R}\left(\pi(t) - \bar{b}_0^\circ(t)\right) \\
+	&- \mu_{02}(t) \left(\tilde{Y}_0(t) + \tilde{Y}_1(t)\right) \\
+	=& \left( r(t) - \1{t \geq R} \frac{1}{a(t)}\right) \left(\tilde{Y}_0(t) + \tilde{Y}_1(t)\right) \\
+	&+ \left(p_{00}(t) + p_{01}(t)\right)\1{t<R}\left(\pi(t) - \bar{b}_0^\circ(t)\right),
 \end{align*}
 
-NOTER HVORFOR BRØKEN ER 1. which has the interpretation that the savings account accumulate with the realized rate of return $r$ and the savings accounts of other policy holders through $\mu_{Z(t-)2}$. Premiums $\pi$ are paid in while active before retirement and benefits are paid out while alive and retired. By the last line, the account is forfeited upon death.
-
-The only benefit to prognosticate is $X(t-)dB^\dagger(t)$. By Proposition XXX, the prognosis is
-
-...
-
-And by Proposition XX, 
-
-\end{example}
-
-
-
-
-\begin{example}
-	
-For the numerical example, assume the following:
-
-\begin{itemize}
-	\item The guaranteed payments $B^*$ consists of a disability sojourn benefit $b_1^*$, granted while disabled until retirement $R$, and a death sum $b_{02}^*=b_{12}^*$, paid out upon death before $R$. The premium $-b_0^*$ for these guarantees is paid while active. It is determined residually such that $V_0^*(0)=0$.
-	\item The profile benefit stream $B^\dagger$ consists of another death sum $b_{02}^\dagger=b_{12}^\dagger$
-\end{itemize}
-	
-\end{example}
-
-\begin{example}[Unit Link]
-Consider a policy modeled as in Example XX, i.e. the classical alive-disabled-dead model with reactivation:
-
-FIGURE
-
-We consider a classical Unit Link contract, which can be obtained by letting $D_2=0$, such that $Q=0$, meaning no additional benefits are purchased. It follows that $X(t) = V_{Z(t)}^{\circ*}(t)$. The total payment stream experienced by the policy holder is then
+which is obtained by adapting (\ref{Jaja}) to the current setup. Solving this, the prognosis can be readily calculated as
 
 \begin{align*}
-	dB(t) =& dB^\circ(t) + dD_1(t) \\
-	=& dB^\circ(t) + dB^D(t) + X(t-) \cdot dB^D(t) + Y(t-) \cdot dB^D(t)
+	\hat{b}(t) =& \econd[\frac{Y(t-)}{a(t)}]{Z(t-) \in \bar{\mathcal{J}}} \\
+	=&\frac{\sum_{j \in \hat{\mathcal{J}}} \tilde{Y}_j(t)}{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,t)} \frac{1}{a(t)} \\
+	=&\frac{\tilde{Y}_0(t) + \tilde{Y}_1(t)}{p_{00}(t) + p_{01}(t)} \frac{1}{a(t)}.
 \end{align*}
 
-and if we further assume that the cash dividends $D_1$ depend only on the surplus $Y$, the total payment stream is
-
-\begin{align*}
-	dB(t) =& dB^\circ(t) + dB^{D,0}(t) + Y(t-) \cdot dB^{D,Y}(t).
-\end{align*}
-
-Assume that the guaranteed benefits $dB^{\circ+}$ consists of a disability rate and a 
-
-\end{example}
-
-FORTOLKNING OG PERSPEKTIVERING E.G. TIL LIV2
-
+The simplification is that we no longer have to solve a system of differential equations -- only the single one for $\tilde{Y}_0(t) + \tilde{Y}_1(t)$.
 
 \begin{remark}
-It is worth noting that the system of differential equations characterizing $\tilde{U}_j$ is a generalization of the classical Thiele differential equations characterizing the state wise prospective reserves (which again is a generalization of the Kolmogorov differential equations for transition probabilities). Too see this, let blah blah. And let
-
-\begin{align*}
-    W_j(t) = \econd[U(t)]{Z(t)=j}.
-\end{align*}
-
-Then by Proposition XXX and the Kolmogorov forward equations,
-
-\begin{align*}
-    a =& \frac{\partial}{\partial t} \tilde{U}_j(t) \\
-    =& \frac{\partial}{\partial t} \left( W_j(t) p_{0j}(0,t) \right) \\
-    =& \frac{\partial}{\partial t} \left( W_j(t) \right) p_{0j}(0,t) + W_j(t) \sum_{k \in \mathcal{J} \atop k \neq j} \left(p_{0k}(0,t) \mu_{kj}(t) - p_{0j}(0,t) \mu_{jk}(t) \right).
-\end{align*}
-
-Rearranging, we find that
-
-\begin{align*}
-    \frac{\partial}{\partial t} W_j(t) = r(t)W_j(t) - b_j(t) - \sum_{k \in \mathcal{J} \atop k \neq j} \mu_{jk}(t) \left( W_k(t) + b_{jk}(t) - W_j(t) \right),
-\end{align*}
-
-which we recognize as the classical Thiele differential equations.
-
-For the Kolmogorov forward equations, simply let $R<t$, $h_{k}(t) = \1{k=i}$ for all $k \in \mathcal{J}$ and define
-
-\begin{align*}
-    q_{ij}(R,t) =& \econd[U(t)]{Z(t)=j} \\
-    =& \econd[\1{Z(R)=i}]{Z(t)=j} \\
-    =& p_{ij}(R,t) \frac{p_{0i}(0,R)}{p_{0j}(0,t)}
-\end{align*}
-
-and so by Proposition XXX,
-
-\begin{align*}
-    a =& \frac{\partial}{\partial t} \tilde{U}_j(t) \\
-    =& \frac{\partial}{\partial t} \left( q_{ij}(R,t) p_{0j}(0,t) \right) \\
-    =& \frac{\partial}{\partial t} p_{ij}(R,t) p_{0i}(0,R)
-\end{align*}
-
-and rearranging we find that
-
-\begin{align*}
-    \frac{\partial}{\partial t} p_{ij}(R,t) = \sum_{k \in \mathcal{J} \atop k \neq j} \left(p_{ik}(0,t) \mu_{kj}(t) - p_{ij}(0,t) \mu_{jk}(t) \right),
-\end{align*}
-
-which is the Kolmogorov forward equations. The point $R$ can of course be placed anywhere in $[0,t)$
+	It can be shown that $p_{00}(t) + p_{01}(t) = e^{-\int_0^t \mu_{02}(s)ds}$
 \end{remark}
-
-\newpage
-
-
- 
-
-In order to use Proposition \ref{MainResult}, we require that $Q(t)$ has dynamics affine in itself. Inspecting equation (\ref{QDynamics}), we see that $\delta$ must depend affinely on $Q$, e.g. have the form
-
-\begin{align} \label{DividendAffineInQ}
-    \delta(t) = \delta_1(t) + \delta_2(t) Q(t),
-\end{align}
-
-which means that
-
-\begin{align} \label{QDynamics2}
-    dQ(t) = \frac{\delta_1(t) + \delta_2(t) Q(t)}{V_{Z(t)}^{*\dagger}(t)} dt, Q(0)=0,
-\end{align}
-
-where for $i=1,2$,
-
-\begin{align} \label{DeltaDef}
-    \delta_i(t) = \delta_i(t, Z(t), \{ r(s) \}_{0 \leq s \leq t}),
-\end{align}
-
-i.e. the dividends may depend on time, the current state and the past realization of the financial market in a non-affine way.
-
-Recall from propositions XXX,XXX, that in order to compute prognoses for a payment stream on the form (\ref{WithProfitTotalBenefits}) we are required to compute the quantity $\tilde{Q}_j(t) = \expec[\1{Z(t)=j} Q(t)]$. Employing Proposition \ref{MainResult} on equation (\ref{QDynamics2}) gives us the following system of differential equations:
-
-\begin{align*}
-    \frac{\partial}{\partial t} \tilde{Q}_j(t) =& \frac{\delta_2(t)}{V_{Z(t)}^{*\dagger}(t)} \tilde{Q}_j(t) + p_{0j}(0,t) \frac{\delta_1(t)}{V_{Z(t)}^{*\dagger}(t)} \\
-    &+ \sum_{k \in \mathcal{J} \atop k \neq j} \left( \mu_{kj}(t) \tilde{Q}_k(t) - \mu_{jk}(t) \tilde{Q}_j(t) \right), \tilde{Q}_j(0)=0
-\end{align*}
-
-for $t \in (0,R)\cup(R,n)$ and $j \in \mathcal{J}$.
-
-In the next section, we will see a numerical example of the With Profit prognoses.
-
-\begin{remark}
-In \cite{Lollike}, the authors use the identity
-
-\begin{align*}
-    X(t) = V_{Z(t)}^{\circ*}(t) + Q(t) V_{Z(t)}^{\dagger*}(t),
-\end{align*}
-
-where $X$ is the technical value of future guaranteed payments, and
-
-\begin{align*}
-    Y(t) = - \int_0^t e^{\int_s^t R(u)du} dB(s) - X(t),
-\end{align*}
-
-where $Y$ is the surplus and $R$ is the instantaneous rate of return on an investment portfolio, to obtain the criterion
-
-\begin{align*}
-    \delta(t) = \delta_1(t) + \delta_2(t) X(t) + \delta_3(t) Y(t),
-\end{align*}
-
-for ensuring that the vector $(X,Y)$ has dynamics affine in itself. With this, the authors derive differential equations for calculating the quantity
-
-\begin{align*}
-    \expec[\begin{pmatrix}\1{Z(t)=j} X(t)\\\1{Z(t)=j} Y(t)\end{pmatrix}],
-\end{align*}
-
-which is then used e.g. to valuate future discretionary benefits. For the purpose of this thesis, however, $\expec[\1{Z(t)=j} Q(t)]$ contains all the information required for benefit prognoses. So if one can accept the constraint on the dividend process given in equation (\ref{DividendAffineInQ}), there is no need to involve the processes $X$ and $Y$.
-\end{remark}
-
-\begin{remark}
-	Recall that the sojourn prognosis in the case without bonus takes the form
-	
-	
-	
-	\begin{align}
-	\econd[ b_{Z(t)}^\circ(t)]{Z(t) \in \hat{\mathcal{J}}}
-	\end{align}
-	
-	We can recreate this result using Proposition XXX. The sojourn prognosis in the case with bonus is
-	
-	\begin{align}
-	\econd[ U(t) b_{Z(t)}^\dagger(t)]{Z(t) \in \hat{\mathcal{J}}}
-	\end{align}
-	
-	Let
-	
-	\begin{align*}
-	U(t) =&  \sum_{j \in \mathcal{J}} \1{Z(t)=j} V_j(t) \\
-	b_j^\dagger =& \frac{b_j^\circ(t)}{V_j(t)}.
-	\end{align*}
-	
-	Then clearly
-	
-	\begin{align}
-	\econd[ U(t) b_{Z(t)}^\dagger(t)]{Z(t) \in \hat{\mathcal{J}}} = \econd[ b_{Z(t)}^\circ(t)]{Z(t) \in \hat{\mathcal{J}}},
-	\end{align}
-	
-	and since it is known from e.g. \cite{Liv2} that
-	
-	\begin{align*}
-	dU(t) =& \left( r(t)U(t-) - b_{Z(t)}^\circ(t) - \sum_{k \in \mathcal{J} \atop k \neq Z(t-)} \mu_{Z(t-)k}(t) \left( b_{Z(t-)k}^\circ(t) + V_k(t) - U(t-) \right) \right) dt \\
-	+& \sum_{k \in \mathcal{J} \atop k \neq Z(t-)} \left(V_k(t) - U(t-) \right) dN_k(t),
-	\end{align*}
-	
-	which is on the form XXX, we can employ Proposition XXX that
-	
-	\begin{align*}
-	\tilde{V}_j(t) =& \expec[ V(t) 1_{\{Z(t)=j\}} ]
-	\end{align*}
-	
-	is described by the system of differential equations
-	
-	\begin{align*}
-	\frac{\partial}{\partial t} \tilde{V}_j(t) =& \sum_{k \in \mathcal{J} \atop k \neq j} \left( \mu_{kj}(t) \tilde{V}_k(t) - \mu_{jk}(t) \tilde{V}_j(t) \right) \\
-	&+ \left( r(t) + \sum_{k \in \mathcal{J} \atop k \neq j} \mu_{jk}(t) \right) \tilde{V}_j(t) \\
-	&+ p_{0j}(0,t) \left( - b_j^\circ(t) - \sum_{k \in \mathcal{J} \atop k \neq j} \mu_{jk}(t) \left( b_{jk}(t) + V_k(t) \right) \right) \\
-	&+ \sum_{k \in \mathcal{J} \atop k \neq j} \mu_{kj}(t) \left(
-	-\tilde{V}_k(t) + p_{0k}(0,t) V_j(t) \right) \\
-	=& r(t) \tilde{V}_j(t) - p_{0j}(0,t) \left( b_j^\circ(t) + \sum_{k \in \mathcal{J} \atop k \neq j} \mu_{jk}(t) \left( b_{jk}(t) + V_k(t) \right) \right) + V_j(t)
-	\end{align*}
-	
-	with initial values $\tilde{V}_j(0)=0$. Solving, this yields XXXnoget om hvorfor man bruger Thiele normalt, ikke state wiseXXX
-	
-	\begin{align*}
-	\tilde{V}_j(t) =& \expec[ V(t) 1_{\{Z(t)=j\}} ]
-	\end{align*}
-	
-	
-	
-	We could have calculated the results in Section XX with. This shows that the case with bonus is a true generalization of the case without.
-\end{remark}
-
-\subsection{Unit Link}
-
-That the With Profit and the Unit Link contracts are actually two sides of the same coin comes as no surprise -- see e.g. \cite{Liv2 cph VI}. In this section we shall see how to . After this theoretical footwork, we will use Proposition \ref{MainResult} to derive a system of differential equations which can be used to calculate prognoses for a typical Unit Link contract.
-
-In Unit Linked insurance, the policy holder has an asset account with her name on it with the company. Premiums are paid into this account and are used to buy assets\footnote{The policy holder may be in full control of these purchases or she may delegate the responsibility to the company.}. At the time of retirement (or at some other insurance event), the asset account is paid out according to some scheme.
-
-In addition to the benefits that depend on the asset account, we will allow for a stream of fixed, guaranteed benefits. These fixed benefits will typically include a term insurance and a disability cover. The fixed benefits are \textit{not} paid out from the asset account, but from the company's own coffers. Therefore, the policy holder will have to pay a separate premium for these fixed benefits -- a premium which will be deducted from her asset account.\footnote{UDDATERET In Denmark, the state pension "Folkepension" serves this purpose (and the purpose of aiding people who have no pension plan at all). This thesis, however, treats prognoses for contracts issued by insurance companies. An interesting and worthwhile project would be to combine state-, labour market- and private pensions for more holistic "standard of living"-prognoses}.
-
-\subsubsection{The contract}
-
-The Unit Link contract that will be considered can be thought of as a bundle of two contracts. The first comprises the benefits scaled by the asset account, i.e. the payment stream
-
-\begin{align*}
-	W(t-)dB^{\dagger}(t),
-\end{align*}
-
-where $W$ is the asset account and $dB^{\dagger}$ has the form (\ref{PaymentProcessDef}), but consists only of benefits, i.e. $dB^{\dagger-}=0$. Premiums are paid into the asset account according to some premium payment process $dC$ also on the form (\ref{PaymentProcessDef}), but consisting only of premiums, i.e. $dC^{+}=0$. So far, the asset account $W$ has dynamics
-
-\begin{align*}
-	dW(t) =& W(t-) R(t) dt \\
-	&- dC(t) - W(t-) dB^\dagger(t) \\
-	&- W(t-) \sum_{k \in \mathcal{J} \atop k \neq Z(t-)} \left( 1 - \chi_{Z(t-)k}(t) \right) dN_{Z(t-)k}(t)
-\end{align*}.
-
-i.e. the account accumulates with some instantaneous rate of return $R$, premiums are paid in ($C$ consists of only negative payments, i.e. premiums) and benefits are paid out. $\chi_{jk}(t) \in [0,1]$ is the proportion of the asset account that the policy holder keeps after the transition $j \to k$ at time $t$.
-
-In order for the contract to be fair, we need to compensate the policy holder for this risk of losing (a part of) her asset account. To this end, define
-
-\begin{align*}
-	ds_j^\dagger(t) =& W(t-) \econd[\sum_{k \in \mathcal{J}: k \neq j} \left( 1 - \chi_{jk}(t) \right) dN_{jk}(t)]{Z(t-)=j} \\
-	=& W(t-) \sum_{k \in \mathcal{J}: k \neq j} \mu_{jk}(t) \left( 1 - \chi_{jk}(t) \right) dt.
-\end{align*}
-
-As an example, take $k$ to be the death state and assume that $\chi_{jk}(t)=0$, meaning that the policy holder forfeits her assets upon death. She is then compensated for this potential loss by having the rate $W(t-)\mu_{jk}(t)dt$ continuously ascribed to her account during sojourns in state $j$. With this inclusion, $W$ has dynamics
-
-\begin{align*}
-dW(t) =& W(t-) R(t) dt \\
-&- dC(t) - W(t-) dB^\dagger(t) \\
-&- W(t-) \sum_{k \in \mathcal{J} \atop k \neq Z(t-)} \left( 1 - \chi_{Z(t-)k}(t) \right) dN_{Z(t-)k}(t) \\
-&+ ds_j^\dagger(t)
-\end{align*}.
-
-\begin{remark}
-	We can avoid the possibility of a negative asset account by putting some restrictions on $dB^{\dagger}$ and $\chi_{jk}$. First, we obviously need $\triangle b_j^{\dagger}(R) \leq 1$ meaning that the lump sum paid out at retirement cannot exceed the asset account value. Second, we need $b_{jk}^{\dagger}(t) \leq \chi_{jk}(t)$ for all possible transitions $j \to k$, which means that the proportion of the account paid out upon transition can at most be the amount kept.
-	
-	Finally, in order to ensure fairness, we require that $b_{jh}^{\dagger}(t) = \chi_{jh}(t)$ for all transitions into the death state $h$. This ensures that the account is emptied at death. And because we have assumed that $Z(n)=h$, we have $W(n)=0$. DETTE ER FAIRNESS PÅ PORTEFØLJENIVEAU, FORDI ALLE INDBETALTE MIDLER BLIVER HOS DE FORSIKREDE. INGEN OMFORDELING MELLEM SELSKAB OG KUNDER, KUN KUNDER IMELLEM.
-\end{remark}
-
-In addition to the benefits $W(t-)dB^{\dagger}(t)$ paid out from the account, we will also allow for a fixed payment stream $dB^{\circ}(t)$, also on the form (\ref{PaymentProcessDef}). This benefits of this payment stream is paid out of the company's pocket.
-
-\subsubsection{Risk premiums}
-
-The fixed benefits in $dB^\circ$ need to paid for by the policy holder. This is done by risk premiums deducted continuously from her asset account as long as she is in state 0 (active). The risk premium pertaining to the fixed benefits is denoted $s_0^\circ$ and is given by XXXSKIFT TIL dNk(t)-NOTATIONXXXXX
-
-\begin{align*}
-    ds_0^\circ(t) =& \econd[\sum_{k \in \mathcal{J} \atop k \neq 0} \left( b_{0k}^\circ(t) + V_k^\circ(t) \right) dN_{0k}(t)]{Z(t-)=0} \\ =&\sum_{k \in \mathcal{J} \atop k \neq 0} \mu_{0k}(t) \left( b_{0k}^\circ(t) + V_k^\circ(t) \right) dt
-\end{align*}
-
-where $V_j^\circ(t)$ is the time $t$ prospective state $j$ reserve for the fixed payments given by
-
-\begin{align*}
-    V_j^\circ(t) =& \econd[\int_t^n e^{-\int_t^s r(u) du} dB^\circ(s)]{Z(t)=j,\mathcal{F}^S(t)} \\
-    =& \int_t^n e^{-\int_t^s f(t,u) du} \sum_{k \in \mathcal{J}} p_{jk}(t,s) \left( b_k^\circ(s)ds + \triangle b_k^\circ(s) d\varepsilon_R(s) + \sum_{\ell \in \mathcal{J} \atop \ell \neq k} \mu_{k \ell}(s) b_{k \ell}^\circ(s) ds \right).
-\end{align*}
-
-Note that $V_0^\circ$ is excluded from $ds_0^\circ$ because it is identically zero. This follows from Thiele's DE since $V_0^\circ(n)=0$ and $ds_0^\circ$ is defined exactly such that $V_0^\circ(t)=0$ for all $t$.
-
-All told, the dynamics of the asset account $W$ is given by XXS HAR JO dW-DYNAMIKXXX
-
-\begin{align}
-    dW(t) =& W(t-) R(t) dt \\
-    &- dC(t) - W(t-) dB^\dagger(t) \\
-    &- W(t-) \sum_{k \in \mathcal{J} \atop k \neq Z(t-)} \left( 1 - \chi_{Z(t-)k}(t) \right) dN_{Z(t-)k}(t) \\
-    &- \1{Z(t)=0} ds_0^\circ(t) + ds_{Z(t)}^\dagger(t)
-\end{align}
-
-These dynamics are interpreted as follows:
-
-\begin{itemize}
-    \item The first line is the financial returns on the assets.
-    \item The second line is the premiums paid in and the variable benefits paid out.
-    \item The third is the potential loss of the account on transition.
-    \item The fourth line is payment for fixed benefits and compensation for losing the account upon transition
-\end{itemize}
-
-Finally, we note that the dynamics are of the form XXX and so we can employ the results of section XXX.
-
-\begin{align*}
-    \tilde{W}_j(t) = \expec[W(t) \1{Z(t)=j}].
-\end{align*}
-
-are characterized by the system of differential equations
-
-\begin{align*}
-    \frac{\partial}{\partial t} \tilde{W}_j(t) =& \tilde{W}_j(t) \left( R(t) + b_j^\dagger(t) - s_j^b(t) \right) \\
-    &+ p_{0j}(0,t) \left( b_j^\circ(t) - \1{j=0} s_0(t) \right) \\
-    &+ \sum_{k \in \mathcal{J} \atop k \neq j} \mu_{kj}(t) \left( \tilde{W}_k(t) b_{kj}^\dagger(t) + p_{0k}(0,t) b_{kj}^\circ(t) \right) \\
-    &+ \left( \sum_{k \in \mathcal{J} \atop k \neq j} \mu_{kj}(t) \tilde{W}_k(t) - \mu_{jk}(t) \tilde{W}_j(t) \right),
-\end{align*}
-
-Fortolkning...
-
-\begin{example} \label{ULExample}
-Assume the same 3-state model as in Example XXX. Premiums are paid into the asset account continuously as active until retirement, i.e.
-
-\begin{align*}
-	dC(t) = \1{t<R} \1{Z(t)=0} c(t) dt.
-\end{align*}
-
-At retirement, the account is paid as continuous pension benefits out according to the scheme
-
-\begin{align*}
-W(t-) dB^{\dagger}(t) = \1{t \geq R} \frac{W(t-)}{a(t)} dt.
-\end{align*}
-
-where $a(t)$ is the unit life annuity 
-
-\begin{align*}
-a(t) = \int_t^n e^{-\int_t^s \mu_{02}(u) + \bar{r}(u,t) du}ds,
-\end{align*}
-
-where $\bar{r}$ is some interest rate decided by the company e.g. each year. If this rate is set lower than the financial returns on the account, it will result in an increasing pension payout profile.
-
-The policy holder keeps her account as long as she remains alive, but loses it upon death, i.e. $\chi_{01}=\chi_{10}=1$ and $\chi_{02}=\chi_{12}=0$. This ensures that $W(t)=0$ when $Z(t)=2$, so there are no pension benefits in the dead state. The compensation rate ascribed to her account for losing her asset account upon dead is given by
-
-\begin{align*}
-ds_j^\circ(t) =& W(t-) \mu_{j2}(t) dt,
-\end{align*}
-
-for $j=0,1$.
-
-The fixed benefits comprise a term insurance $b_{02}^\circ(t)=b_{12}^\circ(t)$ paid out upon death before retirement and a continuous disability rate $b_1^\circ(t)$ paid out prior to retirement if disabled. All told, we have
-
-\begin{align*}
-    dB^\circ(t) =& \1{t<R} b_{02}^\circ(t) dN_{02}(t) \\
-    &+ \1{t<R} b_{12}^\circ(t) dN_{12}(t) \\
-    &+ \1{Z(t)=1} \1{t<R} b_1^\circ(t)dt,
-\end{align*}
-
-The risk premium associated with the fixed benefits are then for $t<R$
-
-\begin{align*}
-    s_0^\circ(t) =& \mu_{01}(t) V_1^\circ(t) + \mu_{02}(t) b_{02}^\circ(t) \\
-    V_1^\circ(t) =& \int_t^R e^{-\int_t^s f(t,u)du} \left( p_{10}(t,s) \mu_{02}(s) b_{02}^\circ(s) + p_{11}(t,s) \left( b_1^\circ(t) + \mu_{12}(s) b_{12}^\circ(s) \right) \right) ds.
-\end{align*}
-
-The asset account is then governed by dynamics
-
-\begin{align*}
-    dW(t) =& W(t-) R(t) dt \\
-    &- \1{Z(t)=0} \1{t<R} \left( \mu_{01}(t) V_1^\circ(t) + \mu_{02}(t) b_{\cdot 2}^\circ(t) \right) dt \\
-    &+ W(t-) \left( \1{Z(t)=0} \mu_{02}(t) + \1{Z(t)=1} \mu_{12}(t) \right)dt \\
-    &+ \1{Z(t)=0} \1{t<R} c(t)dt \\
-    &- \1{t \geq R} \frac{W(t-)}{a(t)} dt
-\end{align*}
-
-with initial value $W(0)=0$. By Proposition \ref{MainResult}, the state-wise reserves $\tilde{W}_j(t)=\expec[W(t) \1{Z(t)=j}]$ are described by the system of differential equations
-
-\begin{align*}
-    \frac{\partial}{\partial t} \tilde{W}_0(t) =& \tilde{W}_0(t) \left( R(t) - \1{t \geq R} b^\dagger(t) + \mu_{02}(t) \right) \\
-    &+ p_{00}(0,t) \1{t<R} \left(\pi(t) - \mu_{01}(t) V_1^\circ(t) - \mu_{02}(t) b_{02}^\circ(t) \right) \\
-    &+ \mu_{10}(t) \tilde{W}_1(t) - \mu_{01}(t) \tilde{W}_0(t) - \mu_{02}(t) \tilde{W}_0(t), \, \, \tilde{W}_0(0) = 0, \\
-    \frac{\partial}{\partial t} \tilde{W}_1(t) =& \tilde{W}_1(t) \left( R(t) - \1{t \geq R} b^\dagger(t) + \mu_{12}(t) \right) \\
-    &+ \mu_{01}(t) \tilde{W}_0(t) - \mu_{10}(t) \tilde{W}_1(t) - \mu_{12}(t) \tilde{W}_1(t), \, \, \tilde{W}_1(0) = 0,
-\end{align*}
-
-for $t \in (t,R) \cup (R,n)$. As they is no retirement lump sum, the gluing conditions are $\tilde{W}_j(R-) = \tilde{W}_j(R)$. Finally $\tilde{W}_2=0$ by construction.
-
-Using the following parameters
-
-...
-
-Proposed:
-
-\begin{align*}
-\econd[W(R)]{Z(R) \in \{0,1\}} =& \frac{\sum_{j =0}^1 \expec[W(R) 1_{\{Z(R)=j\}}]}{\probability[Z(R) \in \{0,1\}]} \\
-=& \frac{\sum_{j =0}^1 \tilde{W}_j(R)}{\sum_{j =0}^1 p_{0j}(0,R)}
-\end{align*}
-
-Classically:
-
-\begin{align*}
-\econd[W(R)]{Z(R) = 0} =& \frac{\expec[W(R) 1_{\{Z(R)=0\}}]}{\probability[Z(R) = 0]} \\
-=& \frac{\tilde{W}_0(R)}{p_{00}(0,R)}
-\end{align*} 
-
-\begin{figure}[H]
-	%\includegraphics[width=\textwidth]{accountsOLD}
-	\caption{5 farver, 1 for hvert scenarie. Viser depoter under den klassiske prognose $\econd[W(t)]{Z(t) = 0}$ og under den foreslåede $\econd[W(t)]{Z(t) \in \{0,1\}}$. For hvert scenarie er de klassiske depoter højere for alle tidspunkter. Hvis man gør invalidedødeligheden tilstrækkelig høj er de foreslåede depoter dog højest, fordi det ligefrem er en fordel at være i invalidetilstanden idet man arver mange flere depoter fordi invalide dør meget.}
-\end{figure}
-
-We can then calculate the prognosis for the pension benefit rate for $ t\geq R$.
-
-\begin{align*}
-\econd[W(t) b_{Z(t)}^\dagger(t)]{Z(t) \in \{0,1\}} =& \frac{\sum_{j =0}^1 \expec[W(t) 1_{\{Z(t)=j\}}] b_j^{\dagger}(t)}{\probability[Z(t) \in \{0,1\}]} \\
-=& \frac{\sum_{j =0}^1 \tilde{W}_j(t)}{\probability[Z(t) \in \{0,1\}]} \frac{1}{a_{Z(t)}(t)}
-\end{align*}
-
-\begin{figure}[H] \label{RSensiGraph}
-	\centering
-	\caption{Retirement sensitivity for the simple savings contract.}
-	%\includegraphics[width=\textwidth]{Rsensi}		
-\end{figure}
-
-Table XXX shows the difference between the classical prognoses and the proposed ones. The classical prognoses approach result in higher asset accounts at time $R$ and consequently higher pension benefit rates. Dette er en tabel med fraktiler mv. for 10.000 scenarier.
-
-\end{example}
 
 \chapter{Accumulated prognoses}
 
@@ -2290,7 +1891,7 @@ The sensitivity of the pension benefit rate paid out at time $t$ is then
 Note that this is consistent with the 
 
 \begin{example}
-Premiums are set to 80 t.DKK (real) per annum starting at age 25. We consider three scenarios with varying real return rates; Low (1\%), Mean (3\%) and High (5\%). The table below then shows the value of the reserve at retirement at age 65, i.e. $W(R-,R)|_{R=65}$ along with the start benefit $\hat{b}(R)|_{R=65}$.
+Premiums are set to 80 t.DKK (real) per annum starting at age 25. We consider three scenarios with varying real return rates; Low (1\%), Mean (3\%) and High (5\%). The table below then shows the value of the reserve at retirement at age 65, i.e. $W(R-,R)|_{R=65}$ along with the start benefit $\hat{b}(R)|_{R=65}$. Tallene er små idet der ikke er arv fra døde, mu er 0.
 
 \begin{center}
 	\begin{tabular}{ |c|c|c|c|c| }
@@ -2383,7 +1984,7 @@ which, again, is constant in $\alpha$.
 
 \subsection{A contour map of benefits}
 
-Having calculated the sensitivities (i.e. derivatives) of the prognosis benefit $\hat{b}(t,R,\alpha)$ in $R$ and $\alpha$, we obviously have access to the gradient
+Having calculated the sensitivities (i.e. derivatives) of the prognosis benefit $\hat{b}(t,R,\alpha)$ in $R$ and $\alpha$, we have access to the gradient
 
 \begin{align*}
 	\nabla \hat{b}(t,R,\alpha) =
@@ -2393,9 +1994,15 @@ Having calculated the sensitivities (i.e. derivatives) of the prognosis benefit 
 	\end{bmatrix}
 \end{align*}
 
-for each $t \geq R$. With this, we can obtain a contour map of benefits, illustrating the trade-off between premium level $\alpha$ and time of retirement $R$.
+for each $t \geq R$. With this, we can obtain a contour map of benefits, illustrating the trade-off between premium level $\alpha$ and time of retirement $R$. Samme tal som sidste eksempel.
 
-CONTOUR MAP
+\begin{figure}[H] \label{ContourGraph}
+	\centering
+	\caption{A contour map of start benefits rates (i.e. the rate at retirement) as a function of premium level $\alpha$ and time of retirement $R$.}
+	\includegraphics[width=\textwidth]{Contour}		
+\end{figure}
+
+Figure XXX shows the different avenues available (given that the pension scheme legislation is flexible enough) for obtaining a certain benefit level. This information is useful to the policy holder planning his retirement.
 
 \subsection{Exchange ratios}
 
@@ -2603,7 +2210,12 @@ that is the rate by which the policy holder must increase her premium level in o
 
 \chapter{Suggestions for further research}
 
-\chapter{Appendix}
+\bibliographystyle{apalike}
+\bibliography{Speciale}
+
+\newpage
+
+\appendix
 
 \section{Proof of Lemma \ref{Split}}
 
