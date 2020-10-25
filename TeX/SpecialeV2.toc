@@ -1,28 +1,45 @@
 \select@language {english}
-\contentsline {chapter}{\numberline {1}Introduction}{5}
-\contentsline {chapter}{\numberline {2}General Setup}{7}
-\contentsline {section}{\numberline {2.1}The Classic Markov Chain Life Insurance Setup}{7}
-\contentsline {section}{\numberline {2.2}The Financial Market}{8}
-\contentsline {section}{\numberline {2.3}Payment Streams}{8}
-\contentsline {section}{\numberline {2.4}Valuation of Payment Streams}{9}
-\contentsline {chapter}{\numberline {3}Prognoses}{11}
-\contentsline {section}{\numberline {3.1}Conditioning for prognoses}{12}
-\contentsline {chapter}{\numberline {4}Guaranteed benefits}{19}
-\contentsline {chapter}{\numberline {5}Prognoses with reserve-dependent benefits}{25}
-\contentsline {section}{\numberline {5.1}With Profit}{32}
-\contentsline {section}{\numberline {5.2}Numerical examples}{36}
-\contentsline {section}{\numberline {5.3}Premium waiver}{41}
-\contentsline {chapter}{\numberline {6}Accumulated prognoses}{43}
-\contentsline {chapter}{\numberline {7}Sensitivities}{45}
-\contentsline {section}{\numberline {7.1}Reserve-dependent benefits}{46}
-\contentsline {subsection}{\numberline {7.1.1}Retirement sensitivity}{46}
-\contentsline {subsection}{\numberline {7.1.2}Premium sensitivity}{50}
-\contentsline {subsection}{\numberline {7.1.3}A contour map of benefits}{51}
-\contentsline {subsection}{\numberline {7.1.4}Exchange ratios}{51}
-\contentsline {section}{\numberline {7.2}Re-introducing insurance risk}{52}
-\contentsline {subsection}{\numberline {7.2.1}Exchange ratios}{55}
-\contentsline {chapter}{\numberline {8}Suggestions for further research}{57}
-\contentsline {section}{\numberline {.1}Proof of Lemma \ref {Split}}{60}
-\contentsline {section}{\numberline {.2}Bevis for blah blah}{60}
-\contentsline {section}{\numberline {.3}Proof for blah blahdsa}{61}
-\contentsline {section}{\numberline {.4}Proof of Proposition \ref {MainResult}}{61}
+\contentsline {chapter}{\numberline {1}Introduction}{7}
+\contentsline {chapter}{\numberline {2}General Setup}{9}
+\contentsline {section}{\numberline {2.1}The Classical Markov Chain Life Insurance Setup}{9}
+\contentsline {section}{\numberline {2.2}The Financial Market}{10}
+\contentsline {section}{\numberline {2.3}Payment Streams}{10}
+\contentsline {section}{\numberline {2.4}Some Classical Results}{11}
+\contentsline {chapter}{\numberline {3}Prognoses - General Considerations}{13}
+\contentsline {section}{\numberline {3.1}Choosing A Functional}{13}
+\contentsline {subsection}{\numberline {3.1.1}The $t$-dimension}{13}
+\contentsline {subsection}{\numberline {3.1.2}The $\omega $-dimension}{14}
+\contentsline {section}{\numberline {3.2}Conditioning For Prognoses}{14}
+\contentsline {subsection}{\numberline {3.2.1}Fixed Path}{15}
+\contentsline {subsection}{\numberline {3.2.2}Restricted Path}{15}
+\contentsline {subsubsection}{A Modified Conditioning For Transition Prognoses}{16}
+\contentsline {section}{\numberline {3.3}Examples}{17}
+\contentsline {subsection}{\numberline {3.3.1}The Alive-Dead Model}{17}
+\contentsline {subsection}{\numberline {3.3.2}The Disability Model}{18}
+\contentsline {subsection}{\numberline {3.3.3}Multi-State Model With Policy Holder Options}{19}
+\contentsline {chapter}{\numberline {4}Prognoses -- Nominal benefits}{23}
+\contentsline {section}{\numberline {4.1}Fixed Path}{23}
+\contentsline {section}{\numberline {4.2}Restricted Path}{23}
+\contentsline {section}{\numberline {4.3}Examples}{26}
+\contentsline {subsection}{\numberline {4.3.1}A Retirement Lump Sum Contract}{27}
+\contentsline {subsection}{\numberline {4.3.2}A Term Insurance Contract}{28}
+\contentsline {subsection}{\numberline {4.3.3}Slet}{30}
+\contentsline {chapter}{\numberline {5}Prognoses -- Reserve-Dependent Benefits}{33}
+\contentsline {section}{\numberline {5.1}Fixed Path}{34}
+\contentsline {section}{\numberline {5.2}Restricted Path}{35}
+\contentsline {section}{\numberline {5.3}Nominal Benefits Revisited}{40}
+\contentsline {section}{\numberline {5.4}Example -- With Profit Insurance}{41}
+\contentsline {subsection}{\numberline {5.4.1}Numerical example}{45}
+\contentsline {subsection}{\numberline {5.4.2}Premium waiver}{49}
+\contentsline {chapter}{\numberline {6}Sensitivities}{53}
+\contentsline {section}{\numberline {6.1}Fixed Path}{54}
+\contentsline {subsection}{\numberline {6.1.1}Retirement sensitivity}{54}
+\contentsline {subsection}{\numberline {6.1.2}Premium sensitivity}{58}
+\contentsline {subsection}{\numberline {6.1.3}A contour map of benefits}{59}
+\contentsline {subsection}{\numberline {6.1.4}Exchange ratios}{59}
+\contentsline {section}{\numberline {6.2}Restricted Path}{60}
+\contentsline {subsection}{\numberline {6.2.1}Exchange ratios}{63}
+\contentsline {chapter}{\numberline {7}Suggestions for further research}{65}
+\contentsline {chapter}{\numberline {8}Appendix}{67}
+\contentsline {section}{\numberline {8.1}Proof of Lemma \ref {Split}}{67}
+\contentsline {section}{\numberline {8.2}Proof of Proposition \ref {MainResult}}{68}
