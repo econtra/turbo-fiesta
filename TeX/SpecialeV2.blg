@@ -1,6 +1,8 @@
 This is BibTeX, Version 0.99dThe top-level auxiliary file: SpecialeV2.aux
-The style file: apalike.bst
+The style file: plain.bst
 Database file #1: Speciale.bib
 Warning--I didn't find a database entry for "ReturnExpectations2020"
 Warning--there's a number but no volume in Lollike
-(There were 2 warnings)
+Warning--empty journal in Munk
+Warning--empty journal in Henstilling
+(There were 4 warnings)

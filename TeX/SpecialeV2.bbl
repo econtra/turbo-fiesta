@@ -1,39 +1,50 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{1}
 
-\bibitem[Asmussen and Steffensen, 2020]{Liv2Bog}
-Asmussen, S. and Steffensen, M. (2020).
+\bibitem{Liv2Bog}
+Søren Asmussen and Mogens Steffensen.
 \newblock {\em Risk and Insurance: A Graduate Text}.
-\newblock Springer, Cham.
+\newblock Springer, Cham, 2020.
 
-\bibitem[Bruhn and Lollike, 2020]{Lollike}
-Bruhn, K. and Lollike, A.~S. (2020).
+\bibitem{Lollike}
+Kenneth Bruhn and Alexander~Sevel Lollike.
 \newblock Retrospective reserves and bonus.
-\newblock {\em Scandinavian Actuarial Journal}, (August 4, 2020).
+\newblock {\em Scandinavian Actuarial Journal}, (August 4, 2020), 2020.
 
-\bibitem[Buchardt and Møller, 2015]{BuchardtMoller}
-Buchardt, K. and Møller, T. (2015).
+\bibitem{BuchardtMoller}
+Kristian Buchardt and Thomas Møller.
 \newblock Life insurance cash flows with policyholder behavior.
-\newblock {\em Risks (Basel)}, 3(3).
+\newblock {\em Risks (Basel)}, 3(3), 2015.
 
-\bibitem[Jensen, 2016]{NinnaReitzel}
-Jensen, N.~R. (2016).
+\bibitem{NinnaReitzel}
+Ninna~Reitzel Jensen.
 \newblock Scenario-based life insurance prognoses in a multi-state markov
   model.
-\newblock {\em European Actuarial Journal}, 6(2).
+\newblock {\em European Actuarial Journal}, 6(2), 2016.
 
-\bibitem[Norberg, 1991]{Norberg1991}
-Norberg, R. (1991).
+\bibitem{Munk}
+Claus Munk and Jesper Rangvid.
+\newblock Risikoen i pensionsopsparinger efter ændring af
+  samfundsforudsætningerne.
+\newblock 2017.
+
+\bibitem{Norberg1991}
+Ragnar Norberg.
 \newblock Reserves in life and pension insurance.
-\newblock {\em Scandinavian Actuarial Journal}, 3(24).
+\newblock {\em Scandinavian Actuarial Journal}, 3(24), 1991.
 
-\bibitem[Norberg, 2001]{Norberg2001}
-Norberg, R. (2001).
+\bibitem{Norberg2001}
+Ragnar Norberg.
 \newblock On bonus and bonus prognoses in life insurance.
-\newblock {\em Scandinavian Actuarial Journal}, 2.
+\newblock {\em Scandinavian Actuarial Journal}, 2, 2001.
 
-\bibitem[Pedersen, 2017]{LivStok}
-Pedersen, J.~L. (2017).
+\bibitem{LivStok}
+Jesper~Lund Pedersen.
 \newblock {\em Stochastic Processes in Life Insurance: The Dynamic Approach}.
-\newblock University of Copenhagen.
+\newblock University of Copenhagen, 2017.
+
+\bibitem{Henstilling}
+Forsikring~\& Pension.
+\newblock Medlemshenstilling om pensionsprognoser.
+\newblock 2018.
 
 \end{thebibliography}
