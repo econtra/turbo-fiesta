@@ -257,8 +257,11 @@ A payment process consists of three types of payments:
 
 All accounted for, the payment processes take the form
 
-\begin{align}
-    dB(t) = b_{Z(t-)}(t)dt + \triangle B_{Z(t-)}(t) d \varepsilon_{R}(t) + \sum_{k \neq Z(t-)}b_{{Z(t-)}k}(t)dN_{k}(t), \, \, \, B(0) = 0, \label{PaymentProcessDef}
+\begin{align} \label{PaymentProcessDef}
+\begin{split}
+	    dB(t) =& b_{Z(t-)}(t)dt + \triangle B_{Z(t-)}(t) d \varepsilon_{R}(t) + \sum_{k \neq Z(t-)}b_{{Z(t-)}k}(t)dN_{k}(t) \\
+    =& \sum_{j \in \mathcal{J}} \1{Z(t-)=j} \left( b_j(t)dt + \triangle B_j(t) d \varepsilon_{R}(t) + \sum_{k \neq j}b_{jk}(t)dN_{k}(t) \right), \, \, B(0) = 0,
+\end{split}
 \end{align}
 
 \begin{remark}
@@ -330,7 +333,6 @@ This rate is the contribution from the policy holder to the surplus.
 Having presented the theoretical The preceding chapter . In the next chapter, the concept of prognoses will be discussed in depth -- , after which formal definitions will be proposed
 
 \newpage
-
 \section{Prognoses - General Considerations}
 
 A prognosis should be a useful summary of the level of benefits that the policy holder can expect to receive in the future. But at the same time, it has to be  feasibly computable. The challenge is finding an approach that is both these things.
@@ -825,6 +827,7 @@ In the two following chapters, the focus is on the computation of these prognose
 
 In Chapter \ref{ChapReserveDepBen}, we deal with the case of reserve-dependent benefits, which encompasses many popular contract types, including Unit Link and Participating Life Insurance. In this case, 
 
+\newpage
 \section{Prognoses -- Nominal benefits} \label{ChapGuaranteedBen}
 
 In this chapter, we calculate the prognoses presented in Chapter 3 for a life insurance contract with nominal payments only. By \textit{nominal}, we mean that all payments are settled at the signing of the contract in accordance with the equivalence principle. Thus the payments at time $T$ do not depend on the the past state path of the policy holder $\{ Z(s) \}_{0 < s < T}$ or on any financial performance, but only on the state at payment time,  i.e. $Z(T-)$. As we shall see, this feature gives the prognoses a particularly simple form compared to the case of reserve-dependent benefits.
@@ -1191,19 +1194,24 @@ In the preceding chapter, we saw how to calculate .
 However, many modern insurance contracts include benefits that are not guaranteed, but instead depend on the performance of a number of individual or collective reserves and accounts. 
 
 \newpage
-
 \section{Prognoses -- Reserve-Dependent Benefits} \label{ChapReserveDepBen}
 
 In the preceding chapter, we saw how to calculate prognoses for nominal benefits, i.e. benefits that are completely determined at the signing of the contract and only depend on the state at the time of payment. This is overly restrictive, as many modern life and pension contracts include payments that are tied to the level of some reserves, accounts or other indices. We will here treat payment streams on the linear form
 
 \begin{align} \label{TotalPaymentStream}
 \begin{split}
-	dB(t,\textbf{W}(t-)) =& \textbf{W}(t-) d\textbf{B}(t) \\
-=& \sum_{i=1}^{n} W^i(t-) dB^i(t),
+	dB(t,W(t-)) =& W(t-) dB(t) \\
+=& \sum_{i=1}^{m} W^i(t-) dB^i(t),
 \end{split}
 \end{align}
 
-where the $B^i$ are profile payment streams on the form (\ref{PaymentProcessDef}), scaled linearly by the entries of an $\mathcal{F}$-adapted $n$-dimensional process $\textbf{W}$. We will allow the process $\textbf{W}$ to have dynamics on the general form
+In other words, the $m$-dimensional vector $B$ consists of profile payment streams $B^i$ on the form (\ref{PaymentProcessDef}), which are then scaled linearly by the entries of the $\mathcal{F}$-adapted $m$-dimensional vector process $W$.
+
+\begin{remark}
+	Throughout the thesis, the product of two vectors of equal length shall always be understood in the sense (\ref{TotalPaymentStream}), i.e. as if the first vector is a row vector and the second a column vector.
+\end{remark}
+
+We will allow the process $W$ to have dynamics on the general form
 
 \begin{align} \label{WDynamicsStart}
 	\begin{split}
@@ -1221,7 +1229,7 @@ for $n$-dimensional deterministic functions $f$, $g$ and $h$ of finite variation
 	h_j(t,w) =& h_j^0(t) + h_j^1(t) \cdot w,
 \end{align*}
 
-for $n \times n$-matrices $f_j^1$, $g_{jk}^1$ and $ h_j^1$ and vectors $f_j^0$, $g_{jk}^0$ and $ h_j^0$ of length $n$.
+for $m \times m$-matrices $f_j^1$, $g_{jk}^1$ and $ h_j^1$ and vectors $f_j^0$, $g_{jk}^0$ and $ h_j^0$ of length $m$.
 
 As we shall see, this affine dynamics structure is mathematically tractable enough that we can obtain the differential equations necessary to calculate prognoses \textit{and} general enough to encompass a large class of life insurance contracts.
 
@@ -1237,145 +1245,128 @@ The chapter is structured as follows:
 
 \subsection{Fixed Path}
 
-The fixed path prognosis for reserve-dependent benefits -- with the path fixed in the active state -- is arguably the most common type of prognosis in the literature (e.g. \cite{NinnaReitzel}) and in the industry. It is the type pursued in \cite{Munk}, which forms the basis of the prognosis recommendation that the Danish pension and insurance industry association Forsikring \& Pension in 2018 communicated to its members (see \cite{Henstilling}). Consequently, it is the type of prognosis that most Danish life and pension companies offer their policy holders today.
+The fixed path prognosis for reserve-dependent benefits -- with the path fixed in the active state -- is arguably the most common type of prognosis in the literature (e.g. \cite{NinnaReitzel}) and in the industry. It is the type pursued in \cite{Munk}, which forms the basis of the prognosis recommendation that the Danish pension and insurance industry association Forsikring \& Pension communicated to its members in 2018 (see \cite{Henstilling}). Consequently, it is the type of prognosis that most Danish life and pension companies offer their policy holders today.
 
-In the language of this thesis, the fixed path prognoses for reserve-dependent benefits are given by
+The fixed path prognoses are straightforward to calculate. On the event
 
 \begin{align*}
-	\hat{b}^{F}(t) =& \econd[\textbf{W}(t-)\textbf{b}_{Z(t)}(t)]{Z(s) = z(s) : 0 \leq s \leq n}, \\
-	\triangle \hat{B}^{F}(t) =& \econd[\textbf{W}(R-)\triangle \textbf{B}_{Z(R)}(R)]{Z(s) = z(s) : 0 \leq s \leq n}, \\
-	\hat{b}_{\cdot k}^{F}(t) =& \econd[\textbf{W}(t-)\textbf{b}_{Z(t-)k}(t)]{ Z(s) = z(s) : 0 \leq s \leq n},
+	\left( Z(s) = z(s) : 0 \leq s \leq n \right),
 \end{align*}
 
-for some $k \in \mathcal{J}$ and some deterministic function $z: [0,n] \to \mathcal{J}$. As mentioned, $z \equiv 0$ is by far the most common choice.
+for some deterministic function $z: [0,n] \to \mathcal{J}$, there is no event risk because $Z$ is completely determined. Then if the financial risk is handled scenario-wise (as in this thesis), there is no stochasticity left at all. So the dynamics in (\ref{WDynamicsStart}) can be recast as
 
-Since we condition on the entire state path, the mathematics are particularly tractable. The following proposition demonstrate this:
+\begin{align*}
+	\begin{split}
+		dW_z(t) =& f_{z(t-)}(t,W_z(t-)) dt \\
+		&+ \sum_{k \in \mathcal{J} \atop k \neq z(t-)} g_{z(t-)k}(t,W_z(t-)) dn_{k}(t) \\
+		&+ h_{z(t-)}(t,W_z(t-)) d \varepsilon_R(t),
+	\end{split}
+\end{align*}
+
+where
+
+\begin{align*}
+	n_{k}(t) = \# \{ s \in (0,t] \, : \, z(s-) \neq k, z(s)=k \},
+\end{align*}
+
+is just the deterministic variant of $N_k(t)$. With $n_k(t)$ being deterministic, the transition payments happen at deterministic time points -- just the same as the retirement lump sum payment. Denote by $A(z) = \{ t \in (0,n] : z(t) \neq z(t-) \}$ the transition time points. Then $W_z$ is described by the differential equation
+
+\begin{align} \label{Et}
+	\frac{\partial}{\partial t} W_z(t) = f_{z(t-)}(t,W_z(t-))
+\end{align}
+
+for $t \in [0,n] \setminus \left( \{ R \} \cup A(z) \right)$. The initial value is $w_0$ and the gluing conditions are
+
+\begin{align} \label{To}
+\begin{split}
+	W_z(R) =& W_z(R-) + h_{z(R-)}(R,W_z(R-)), \\
+	W_z(u) =& W_z(u-) + g_{z(u-)z(u)}(u,W_z(u-)), \, \, \forall u \in A(z).
+\end{split}
+\end{align}
+
+Having obtained the reserve $W_z$, the prognoses follow from equation (\ref{TotalPaymentStream}): Simply multiply $W_z$ with the respective payment functions $b_{z(t)}(t)$, $\triangle B_{z(R)}(R)$ and $b_{z(t-)k}(t)$. These considerations lead to the following proposition:
 
 \begin{proposition}
 	Given a deterministic path $z: [0,n] \to \mathcal{J}$, the fixed path prognoses are given by
 	
 	\begin{align*}
-		\hat{b}^{F}(t) =& W_z(t-) b_{z(t-)}(t), \\
-		\triangle \hat{B}^{F}(t) =& W_z(R-) \triangle B_{z(R-)}(R), \\
-		\hat{b}_{\cdot k}^{F}(t) =& \1{z(t-) \neq k} \1{z(t) = k} W_z(t-) b_{z(t-) k}(t),
+		\hat{b}^{z}(t) =& W_z(t-)b_{z(t-)}(t) , \\
+		\triangle \hat{B}^{z}(R) =& W_z(R-)\triangle B_{z(R-)}(R) , \\
+		\hat{b}_{\cdot k}^{z}(t) =& \1{z(t-) \neq k} \1{z(t) = k} W_z(t-) b_{z(t-) k}(t) ,
 	\end{align*}
 
-where $W_z$ is a deterministic function described by the differential equation
-
-\begin{align*}
-	\frac{\partial}{\partial t} W_z(t) = f_{z(t-)}(t,W_z(t-))
-\end{align*}
-
-for $t \in [0,n] \setminus \left( \{ R \} \cup \left( s : z(s) \neq z(s-) \right) \right)$. The initial value is $w_0$ and gluing conditions are
-
-\begin{align*}
-	W_z(R) =& W_z(R-) + h_{z(R-)}(R,W_z(R-)), \\
-	W_z(u) =& W_z(u-) + g_{z(u-)z(u)}(u,W_z(u-)), \, \, u \in \{ s : z(s) \neq z(s-) \}.
-\end{align*}
+where $W_z$ is a deterministic function described by equations (\ref{Et}) and (\ref{To}).
 \end{proposition}
-\begin{proof}
-On the event
+
+\begin{remark}
+	A very common application of these fixed path prognoses is the simple Unit Link savings contract presented in \cite{Munk}. To replicate it in the current framework, simply let $m=1$, $z = 0$, $g=h=0$ and
 
 \begin{align*}
-	\left( Z(s) = z(s) : 0 \leq s \leq n \right)
+	f_z(t-)(t,W_z(t-)) =
+	\left\{
+	\begin{array}{ll}
+		\left( r(t) + \mu(t) \right) W_z(t) + \pi(t) & \mbox{if } t \in (0,R) \\
+		\left( r(t) + \mu(t) - a^{-1}(t)) \right) W_z(t) & \mbox{if } t \in [R,n]
+	\end{array}
+	\right.
 \end{align*}
 
-we can write
-
-\begin{align}
-	W(t) =& w_0 + \int_{(0,t)} dW(s) \nonumber \\
-	=& w_0 + \int_{(0,t)} f_{z(s-)}(s,W(s-)) ds \nonumber \\
-	&+ \int_{(0,t)} \sum_{k \in \mathcal{J} \atop k \neq Z(s-)} g_{z(s-)k}(s,W(s-)) dN_{k}(s) \nonumber \\
-	&+ \int_{(0,t)} h_{z(s-)}(s,W(s-)) d \varepsilon_R(s) \nonumber \\
-	=& w_0 + \int_{(0,t)} f_{z(s-)}(s,W(s-)) ds \nonumber \\
-	&+ \sum_{s \in (0,t) \atop z(s) \neq z(s-)} g_{z(s-) z(s)}(s,W(s-)) \label{FirstKEK} \\
-	&+ \1{t\geq R} h_{z(R-)}(R,W(R-)) \label{SecondKEK}
-\end{align}
-
-Since $f$ is continuous everywhere except $R$, it follows that $W(t)$ is differentiable on
+where $\pi$ is premiums paid, $\mu$ is the mortality as active and $a$ is some payout annuity decided by the company. Having solved for $W_z$, the prognosis for the pension benefit is then simply
 
 \begin{align*}
-	[0,n] \setminus \left( \{ R \} \cup \left( s : z(s) \neq z(s-) \right) \right),
+	\hat{b}^{z}(t) =& \frac{W_z(t-)}{a(t)}
 \end{align*}
 
-i.e. everywhere except at the time of retirement $R$ and the times where a jump occurs in the path $z$. The derivative is simply
+for $t \geq R$. This type of savings contract will be treated in greater detail in the example in Section \ref{Numerics}.
+\end{remark}
 
-\begin{align*}
-	\frac{\partial}{\partial t} W(t) = f_{z(t-)}(t,W(t-))
-\end{align*}
-
-with initial value $w_0$. The gluing conditions can be deduced partly from the jumps of $z$ (equation (\ref{FirstKEK})) and partly from the lump sum payment at retirement $R$ (equation (\ref{SecondKEK})).
-
-Denote the function described by the above scheme $W_z$. Then
-
-\begin{align*}
-	\hat{b}^{F}(t) =& \econd[\textbf{W}(t-)\textbf{b}_{Z(t)}(t)]{Z(s) = z(s) : 0 \leq s \leq n} \\
-	=& W_z(t) b_{z(t)}(t),
-\end{align*}
-
-as desired. Similar calculations yield the expressions for $\triangle \hat{B}^{F}(t)$ and $\hat{b}_{\cdot k}^{F}(t)$.
-\end{proof}
-
-Now, we can solve this scheme to obtain $W$ on the event $\left( Z(s) = z(s) : 0 \leq s \leq n \right)$. Denote it $W_z$. The prognosis is then simply obtained by
-
-\begin{align*}
-	z
-\end{align*}
-
-Differentiating XXX, we obtain
-
-$\frac{d}{dt}...$
-
-with gluing conditions XXX, which can sometimes be solved explicitly.
-
+\newpage
 \subsection{Restricted Path}
 
-The restricted path prognoses for reserve-dependent benefits are the mathematically most challenging prognoses to obtain. The difficulty stems from the fact that -- unlike in the fixed path case -- we do not know the state of the policy holder except at the time of prognostication. We only know that she remains in the subset $\hat{\mathcal{J}}$.
+The restricted path prognoses for reserve-dependent benefits are much more challenging prognoses to obtain than their fixed path counterparts. The difficulty stems from the fact that we no longer condition on the entire state path policy holder. We only assume that she remains in the subset $\hat{\mathcal{J}} \in \mathcal{J}$.
 
 The restricted path prognoses for reserve-dependent benefits are given by
 
-\begin{align}
-\hat{b}(t) =& \econd[W(t-) b_{Z(t-)}]{\{Z(s) \}_{0 \leq s < t} \in \hat{\mathcal{J}}} \\
-\triangle  B(R) =& \econd[W(R-) \triangle B_{Z(R-)}]{\{Z(s) \}_{0 \leq s < R} \in \hat{\mathcal{J}}} \\
-\hat{b}_{\cdot k}(t) =& \econd[W(t-) b_{Z(t-)k}]{\{Z(s) \}_{0 \leq s < t} \in \hat{\mathcal{J}}, Z(t) = k}
+\begin{align*}
+\hat{b}^{\hat{\mathcal{J}}}(T) =& \econd[W(t-) b_{Z(t-)}]{\{Z(s) \}_{0 \leq s < t} \in \hat{\mathcal{J}}} \\
+\triangle \hat{B}^{\hat{\mathcal{J}}}(R) =& \econd[W(R-) \triangle B_{Z(R-)}]{\{Z(s) \}_{0 \leq s < R} \in \hat{\mathcal{J}}} \\
+\hat{b}^{\hat{\mathcal{J}}}_{\cdot k}(t) =& \econd[W(t-) b_{Z(t-)k}]{\{Z(s) \}_{0 \leq s < t} \in \hat{\mathcal{J}}, Z(t) = k}
+\end{align*}
+
+Rewriting, we obtain for the sojourn benefit prognosis
+
+\begin{align} \label{One}
+	 \hat{b}^{\hat{\mathcal{J}}}(t) =& \econd[W(t-)b_{Z(t-)}]{\{Z(s) \}_{0 \leq s < t} \in \hat{\mathcal{J}}} \nonumber \\
+	 =& \econd[W(t-)b_{Z(t-)}]{Z(t-) \in \hat{\mathcal{J}}} \nonumber \\
+	 =&\frac{\sum_{j \in \hat{\mathcal{J}}} \expec[\1{Z(t-)=j} W(t-)] b_j(t)}{\probability[Z(t-) \in \hat{\mathcal{J}}]} \nonumber \\
+	 =&\frac{\sum_{j \in \hat{\mathcal{J}}} \expec[\1{Z(t-)=j} W(t-)] b_j(t)}{\sum_{j \in \hat{\mathcal{J}}} p_{Z(t_0)j}(t_0,t)},
 \end{align}
 
-Rewriting, we obtain for the sojourn prognosis
+where we used Assumption (\ref{FirstAssump}). By the same arguments, the retirement lump sum prognosis is
+
+\begin{align} \label{Two}
+\triangle \hat{B}^{\hat{\mathcal{J}}}(R) =& \frac{\sum_{j \in \hat{\mathcal{J}}} \expec[\1{Z(R-)=j} W(R-)] \triangle B_j(R)}{\sum_{j \in \hat{\mathcal{J}}} p_{Z(t_0)j}(t_0,R)},
+\end{align}
+
+Finally, the state $k$ transition prognosis can be recast as
+
+\begin{align} \label{Three}
+\hat{b}_{\cdot k}^{\hat{\mathcal{J}}}(t) =& \econd[W(t-)b_{Z(t-)k}]{\{Z(s) \}_{0 \leq s < t} \in \hat{\mathcal{J}}, Z(t)=k} \nonumber \\
+=& \econd[W(t-)b_{Z(t-)k}]{Z(t-) \in \hat{\mathcal{J}}, Z(t)=k} \nonumber \\
+=& \sum_{j \in \hat{\mathcal{J}}} \econd[\1{Z(t-)=j} W(t-)]{Z(t-) \in \hat{\mathcal{J}}, Z(t) = k} b_{jk}(t) \nonumber \\
+=& \frac{\sum_{j \in \hat{\mathcal{J}}} \expec[\1{Z(t-)=j} W(t-)] \mu_{jk}(t) b_{jk}(t)}{\sum_{j \in \hat{\mathcal{J}}} p_{Z(t_0)j}(t_0,t) \mu_{jk}(t)}
+\end{align}
+
+where we used Lemma \ref{Split} in the last equality. It is clear from equations (\ref{One}), (\ref{Two}) and (\ref{Three}) that if we can calculate the vectors
 
 \begin{align*}
-	 \hat{b}(t) =& \econd[\sum_{i=1}^n W_i(t-)b_{Z(t)}^i]{\{Z(s) \}_{0 \leq s < t} \in \bar{\mathcal{J}}} \\
-	 =& \econd[\sum_{i=1}^n W_i(t-)b_{Z(t)}^i]{Z(t-) \in \bar{\mathcal{J}}} \\
-	 =&\frac{\sum_{i=1}^n \sum_{j \in \hat{\mathcal{J}}} \expec[\1{Z(t-)=j} W_i(t-)] b_j^i(t)}{\sum_{j \in \hat{\mathcal{J}}} p_{Z(t_0)j}(t_0,t)},
-\end{align*}
-
-and for the retirement lump sum prognosis
-
-\begin{align*}
-\triangle \hat{B}(t) =& \econd[\sum_{i=1}^n W_i(t-) \triangle B_{Z(t-)}^i]{\{Z(s) \}_{0 \leq s < t} \in \bar{\mathcal{J}}} \\
-=& \econd[\sum_{i=1}^n W_i(t-) \triangle B_{Z(t-)}^i]{Z(t-) \in \bar{\mathcal{J}}} \\
-=&\frac{\sum_{i=1}^n \sum_{j \in \hat{\mathcal{J}}} \expec[\1{Z(t-)=j} W_i(t-)] \triangle B_j^i(t)}{\sum_{j \in \hat{\mathcal{J}}} p_{Z(t_0)j}(t_0,t)},
-\end{align*}
-
-and -- using Lemma \ref{Split} -- for the state $k$ transition prognosis
-
-\begin{align*}
-\hat{b}_{\cdot k}(t) =& \econd[\sum_{i=1}^n W^i(t-)b_{Z(t-)k}^i]{\{Z(s) \}_{0 \leq s < t} \in \bar{\mathcal{J}}, Z(t)=k} \\
-=& \econd[\sum_{i=1}^n W^i(t-)b_{Z(t-)k}^i]{Z(t-) \in \bar{\mathcal{J}}, Z(t)=k} \\
-=& \sum_{i=1}^n \sum_{j \in \hat{\mathcal{J}}} \econd[\1{Z(t-)=j} W^i(t-)]{Z(t-) \in \hat{\mathcal{J}}, Z(t) = k} b_{jk}^i(t) \\
-=& \frac{\sum_{i=1}^n \sum_{j \in \hat{\mathcal{J}}} \expec[\1{Z(t-)=j} W^i(t-)] \mu_{jk}(t) b_{jk}^i(t)}{\sum_{j \in \hat{\mathcal{J}}} p_{Z(t_0)j}(t_0,t) \mu_{jk}(t)}
-\end{align*}
-
-It is clear from the above that if we can calculate the vectors
-
-\begin{align*}
-\tilde{\textbf{W}}_j(t-) = \expec[\1{Z(t-)=j} \textbf{W}(t-)], \, \, \, j \in \hat{\mathcal{J}}
+\tilde{W}_j(t-) = \expec[\1{Z(t-)=j} W(t-)], \, \, j \in \hat{\mathcal{J}}, \, \, t \in (0,n],
 \end{align*}
 
 
-we can use the entries to calculate the prognoses $\hat{b}_{Z(t)}(t)$, $\triangle  \hat{B}_{Z(R)}(R)$ and $\hat{b}_{Z(t-)k}(t)$. The $\tilde{\textbf{W}}_j$'s are sometimes referred to as \textit{state-wise retrospective reserves}. In \cite{Lollike}, the authors derive a system of differential equations characterizing the $\tilde{\textbf{W}}_j$'s and use them in an asset liability management context to project expected liabilities and other balance sheet items into the future. In this thesis however, their use is in determining expected future payments for the purpose of prognoses. Also, the results from \cite{Lollike} are here extended to allow for a lump sum payment at retirement.
+then we can calculate the prognoses $\hat{b}^{\hat{\mathcal{J}}}(t)$, $\triangle \hat{B}^{\hat{\mathcal{J}}}(R)$ and $\hat{b}_{\cdot k}^{\hat{\mathcal{J}}}(t)$. The $\tilde{W}_j$'s are sometimes referred to as \textit{state-wise retrospective reserves}. In \cite{Lollike}, the authors derive a system of differential equations characterizing the $\tilde{W}_j$'s and use them in an asset liability management context to project expected liabilities and other balance sheet items into the future. In this thesis, however, their use is in determining restricted path prognoses. Also, the results from \cite{Lollike} are here extended to allow for a lump sum payment at retirement.
 
-To illustrate the method for obtaining the differential equations, assume that $p_{0i}(0,t)>0$ for all $i \in \mathcal{J}$ and $t>0$ and that $W$ is a 1-dimensional process with dynamics
-
+To illustrate the method for obtaining differential equations for $\tilde{W}_j(t)$, assume that $p_{0i}(0,t)>0$ for all $i \in \mathcal{J}$ and that $W$ is a 1-dimensional process with dynamics
 
 \begin{align*}
 	dW(t) =& W(t-) f_{Z(t-)}(t) dt \\
@@ -1462,16 +1453,18 @@ which holds for $t \in (0,R)\cup(R,n)$ and $j \in \mathcal{J}$. The initial valu
 and the gluing condition can be derived from equation (\ref{Brug}) as
 
 \begin{align*}
-	\tilde{W}_j(R) - \tilde{W}_j(R-) =& \sum_{i \in \mathcal{J}} h_{i}(R) p_{ij}(R,R-) \tilde{W}_i(R-) \\
+	\tilde{W}_j(R) - \tilde{W}_j(R-) =& \left(p_{0j}(0,R) - p_{0j}(0,R-)\right) w_0 \\
+	&+ \int_{\left[ 0,R \right]} \sum_{i \in \mathcal{J}} f_{i}(s) p_{ij}(s,R) \tilde{W}_i(s) ds - \int_{\left[ 0,R- \right]} \sum_{i \in \mathcal{J}} f_{i}(s) p_{ij}(s,R-) \tilde{W}_i(s) ds \\
+	&+ \sum_{i \in \mathcal{J}} h_{i}(R) p_{ij}(R,R-) \tilde{W}_i(R-) \\
 	=& h_{j}(R) \tilde{W}_j(R-)
 \end{align*}
 
-We have now arrived at a system of differential equations for a one-dimensional reserve $W$ with relative simple dynamics. For a multidimensional reserve with more general dynamics -- including event risk via $N_k$ -- the system of differential equations is stated in the following proposition.
+where we used continuity of the transition probabilities and the Lebesgue integral and that $p_{ij}(R,R-) = \1{i=j}$.
+
+We have now arrived at a system of differential equations for a one-dimensional reserve $W$ with relative simple dynamics. For a multidimensional process with more general dynamics -- including changes upon transitions of $Z$ -- the system of differential equations is stated in the following proposition:
 
 \begin{proposition} \label{MainResult}
-	Let W be an $\mathcal{F}^{Z}$-adapted $n$-dimensional process with initial value $W(0)=w_0$ and dynamics as in equation (\ref{WDynamicsStart}).
-	
-	Then
+	Let W be an $\mathcal{F}^{Z}$-adapted $n$-dimensional process with initial value $W(0)=w_0$ and dynamics as in equation (\ref{WDynamicsStart}). Then
 	
 	\begin{align*}
 	\tilde{W}_j(t) = \expec[\1{Z(t)=j} W(t)]
@@ -1502,12 +1495,21 @@ We have now arrived at a system of differential equations for a one-dimensional 
 	The proof closely mimics the one in \cite{Lollike}, but extends it to allow for the deterministic jumps in $W$ at time $R$ via the $h$-function. The proof can be found in Appendix \ref{MainProof}.
 \end{proof}
 
-In the preceding two sections, we have seen how to calculate fixed- and restricted path prognoses for a general process $W$ with affine dynamics in the sense (\ref{WDynamicsStart}). In the next, we shall see how a broad class of contract types often denoted \textit{With Profit} (as presented in \cite{Liv2Bog}) fit into this framework.
+To sum up, the scheme for calculating restricted path prognoses is as follows:
+
+\begin{itemize}
+	\item Solve the system of differential equations given in Proposition \ref{MainResult} to obtain the state-wise reserves $\tilde{W}_j(T-)$.
+	\item The prognoses are then obtained by plugging $\tilde{W}_j(T-)$ into equations (\ref{One}), (\ref{Two}) and (\ref{Three}).
+\end{itemize}
+
+
+
+In the preceding two sections, we have seen how to calculate fixed- and restricted path prognoses for payment streams on the form (\ref{TotalPaymentStream}) and processes $W$ with affine dynamics in the sense (\ref{WDynamicsStart}). In the next section, we shall see how a broad class of contract types fit into this framework. After this, the differences between fixed- and restricted path prognoses are investigated in a numerical example.
 
 \newpage
+\subsection{A Special Case -- With Profit Insurance} \label{WithProfit}
 
-\subsection{Example -- With Profit Insurance}
-In this section, we shall see how the With Profit class of contracts -- as described in e.g. \cite{Liv2Bog} -- fits into general theory of the preceding section. Specifically, we will let $W=(X,Y)$, $X$ being the technical value of future guaranteed payments and $Y$ being the surplus, and let payments depend linearly on these two processes in the sense of (\ref{TotalPaymentStream}). We shall see how the specification of the dividend process $D$ allows us to model many classical With Profit pension and life insurance contracts, including participating life insurance and unit-link.
+In this section, we shall see how the With Profit class of contracts -- as described in \cite{Liv2Bog} -- can be made to fit the affine pattern of the equations (\ref{TotalPaymentStream}) and (\ref{WDynamicsStart}). Specifically, we will let $W=(X,Y)$, where $X$ is the technical value of future guaranteed payments and $Y$ is the surplus, and let payments depend linearly on these two processes in the sense of (\ref{TotalPaymentStream}). We shall see how the specification of the dividend process $D$ allows us to model a diversity of pension and life insurance contracts, including participating life insurance and unit-link.
 
 The first ingredient in a With Profit contract is the guaranteed payment stream $B^\circ$. The payment stream comprises both benefits and premiums, balanced such that the equivalence principle is satisfied on the technical basis, i.e.
 
@@ -1526,10 +1528,10 @@ D = D_1 + D_2,
 where $D_1$ is paid out directly to the policy holder and $D_2$ is used to instantaneously purchase units of a profile payment stream $B^\dagger$, also on the form \ref{PaymentProcessDef}, but consisting only of benefits, i.e. $B^{\dagger -}=0$. Assume that $D_2$ is absolutely continuous, i.e.
 
 \begin{align*}
-D_2(t) = \delta_2(t) dt
+dD_2(t) = \delta_2(t) dt
 \end{align*}
 
-for some process $\delta_2 = \{ \delta_2(t,Z(t)) \}_{0 \leq t \leq n}$. Denote by $Q(t)$ the amount of units of $B^\dagger$ purchased at time $t$. Since the units are priced on the technical basis, we have the budget equation
+for some $\mathcal{F}$-adapted process $\delta_2 = \{ \delta_2(t,Z(t)) \}_{0 \leq t \leq n}$. Denote by $Q(t)$ the amount of units of $B^\dagger$ purchased at time $t$. Since the units are priced on the technical basis, we have the budget equation
 
 \begin{align*}
 \delta_2(t) dt = V_{Z(t)}^{\dagger*}(t) dQ(t),
@@ -1541,7 +1543,9 @@ stating that the funds available in a small interval around $t$, i.e. $\delta_2(
 dQ(t) = \frac{\delta_2(t)}{V_{Z(t)}^{\dagger*}(t)}  dt, \, \, \, Q(0)=0.
 \end{align}
 
-Often, $\delta_2$ is assumed to be non-negative such that $Q$ is non-decreasing, meaning that the additional benefits, once granted, are guaranteed. But this is not a requirement.
+\begin{remark}
+	Often, $\delta_2$ is assumed to be non-negative such that $Q$ is non-decreasing, meaning that the additional benefits, once granted, are guaranteed. But this is not a requirement.
+\end{remark}
 
 The total payment stream experienced by the policy holder is then
 
@@ -1569,13 +1573,15 @@ By integration by parts for FV-functions (Theorem 4.1 in \cite{LivStok}) and equ
 \begin{split}
 dX(t) =& dV_{Z(t)}^{\circ*}(t) + Q(t-) dV_{Z(t)}^{\dagger*}(t) + V_{Z(t)}^{\dagger*}(t) dQ(t) \\
 =& r^*(t) X(t) dt + \delta_2(t)dt \\
-&- \left( b_{Z(t-)}^\circ(t) + Q(t-) b_{Z(t-)}^\dagger(t) \right) dt - \sum_{k \in \mathcal{J} \atop k \neq Z(t-)} \left( b_{Z(t-)k}^\circ(t) + Q(t-) b_{Z(t-)k}^\dagger(t)\right) dN_k(t) \\
+&- \left( \triangle B_{Z(t-)}^\circ(t) + Q(t-) \triangle B_{Z(t-)}^\dagger(t) \right) d \varepsilon_{R}(t) \\
+&- \left( b_{Z(t-)}^\circ(t) + Q(t-) b_{Z(t-)}^\dagger(t) \right) dt \\
+&- \sum_{k \in \mathcal{J} \atop k \neq Z(t-)} \left( b_{Z(t-)k}^\circ(t) + Q(t-) b_{Z(t-)k}^\dagger(t)\right) dN_k(t) \\
 &- \sum_{k \in \mathcal{J} \atop k \neq Z(t-)} \left( \rho_{Z(t-)k}^\circ(t) + Q(t-) \rho_{Z(t-)k}^\dagger(t) \right) dt \\
-&+ \sum_{k \in \mathcal{J} \atop k \neq Z(t-)} \left( R_{Z(t-)k}^{\circ*}(t) + Q(t-) R_{Z(t-)k}^{\dagger*}(t) \right) \left( dN_k(t) - \mu_{Z(t-)k}(t) dt \right),
+&+ \sum_{k \in \mathcal{J} \atop k \neq Z(t-)} \left( R_{Z(t-)k}^{\circ*}(t) + Q(t-) R_{Z(t-)k}^{\dagger*}(t) \right) \left( dN_k(t) - \mu_{Z(t-)k}(t) dt \right).
 \end{split}
 \end{align}
 
-We can now define the surplus
+We can then define the surplus
 
 \begin{align*}
 Y(t) = - \int_0^t e^{\int_s^t r(u)du} dB(s) - X(t),
@@ -1598,51 +1604,70 @@ which is the value of past payments accumulated with financial returns less the 
 	dC(t) = \left( r(t) - r^*(t) \right) X(t) dt + \sum_{k \in \mathcal{J} \atop k \neq Z(t-)} \left( \rho_{Z(t-)k}^\circ(t) + Q(t-) \rho_{Z(t-)k}^\dagger(t) \right) dt,
 \end{align*}
 
-representing the systematic contributions from $X$ to $Y$. We discard the martingale term in the last line of (\ref{YDynamics}). It is left for the company to cover, as the policy holder is not supposed to participate in the performance of diversifiable risk; only the systematic. Finally, note that
+representing the systematic contributions from $X$ to $Y$. The martingale term in the last line of (\ref{YDynamics}) is discarded. It is left for the company to cover, as the policy holder is not supposed to participate in the performance of diversifiable risk; only the systematic. Finally, note that
 
 \begin{align*}
 	Y(0) =& - 0 - X(0) \\
 	=& 0.
 \end{align*}
 
-Recall that the total payments experienced by the policy holder is given by
+Recall that the total payments experienced by the policy holder are given by
 
 \begin{align*}
 dB(t) =& dB^\circ(t) + Q(t-) dB^\dagger(t) + dD_1(t)\\
-=& dB^\circ(t) + \frac{X(t-) - V_{Z(t-)}^{\circ*}(t-)}{V_{Z(t-)}^{\dagger*}(t-)} dB^\dagger(t) + dD_1(t)
+=& dB^\circ(t) + \frac{X(t-) - V_{Z(t-)}^{\circ*}(t-)}{V_{Z(t-)}^{\dagger*}(t-)} dB^\dagger(t) + dD_1(t).
 \end{align*}
 
-This is the payment stream that we want to prognosticate. If we make the assumption that the cash dividends $D_1$ are linear in $X$ and $Y$, i.e.
+This is the payment stream that we want to prognosticate. Assume that the cash dividends $D_1$ are affine in $X$ and $Y$, i.e.
 
 \begin{align} \label{LinearCashDiv}
-dD_1(t) = dB^{D,0}(t) + X(t-) \cdot dB^{D,1}(t) + Y(t-) \cdot dB^{D,2}(t),
+dD_1(t) = dB^{D_1}(t) + X(t-) dB_X^{D_1}(t) + Y(t-)dB_Y^{D_1}(t),
 \end{align}
 
-we get the total payment stream
+for payment streams $B^{D_1}$,$B_X^{D_1}$and $B_Y^{D_1}$ on the form (\ref{PaymentProcessDef}). The total payment stream is then
 
 \begin{align}
-dB(t) =& dB^\circ(t) + \frac{X(t-) - V_{Z(t-)}^{\circ*}(t-)}{V_{Z(t-)}^{\dagger*}(t-)} dB^\dagger(t-) + dB^{D,0}(t) + X(t-) \cdot dB^{D,1}(t) + Y(t-) \cdot dB^{D,2}(t) \nonumber \\
-=& \left( dB^\circ(t) - \frac{V_{Z(t-)}^{\circ*}(t-)}{V_{Z(t-)}^{\dagger*}(t-)} dB^\dagger(t) + dB^{D,0}(t) \right) \label{FirstLine} \\
-&+ X(t-) \left( \frac{1}{V_{Z(t-)}^{\dagger*}(t-)} dB^\dagger(t) + dB^{D,1}(t) \right) \label{SecondLine} \\
-&+ Y(t-) \cdot dB^{D,2}(t). \label{ThirdLine}
+dB(t) =& dB^\circ(t) + \frac{X(t-) - V_{Z(t-)}^{\circ*}(t-)}{V_{Z(t-)}^{\dagger*}(t-)} dB^\dagger(t-) + dB^{D_1}(t) + X(t-) dB_X^{D_1}(t) + Y(t-) dB_Y^{D_1}(t) \nonumber \\
+=& \underbrace{\left( dB^\circ(t) - \frac{V_{Z(t-)}^{\circ*}(t-)}{V_{Z(t-)}^{\dagger*}(t-)} dB^\dagger(t) + dB^{D_1}(t) \right)}_{dB^\Theta(t)} \label{FirstLine} \\
+&+ X(t-) \underbrace{\left( \frac{1}{V_{Z(t-)}^{\dagger*}(t-)} dB^\dagger(t) + dB_X^{D_1}(t) \right)}_{dB^\mathcal{X}(t)} \label{SecondLine} \\
+&+ Y(t-) \underbrace{dB_Y^{D_1}(t)}_{dB^\mathcal{Y}(t)}. \label{ThirdLine}
 \end{align}
 
-The line (\ref{FirstLine}) can be handled as guaranteed payments, whereas the lines (\ref{SecondLine}) and (\ref{ThirdLine}) are on the form (\ref{TotalPaymentStream}) for $W=(X,Y)$. So if we can calculate
+Note that the payment streams $B^\Theta(t)$ and $B^\mathcal{X}(t)$ are actually on the form (\ref{PaymentProcessDef}) since
+
+\begin{align*}
+	\frac{V_{Z(t-)}^{\circ*}(t-)}{V_{Z(t-)}^{\dagger*}(t-)} dB^\dagger(t) = \sum_{j \in \mathcal{J}} \1{Z(t-)=j} \frac{V_{j}^{\circ*}(t-)}{V_{j}^{\dagger*}(t-)} dB^\dagger(t), \\
+	\frac{1}{V_{Z(t-)}^{\dagger*}(t-)} dB^\dagger(t) = \sum_{j \in \mathcal{J}} \1{Z(t-)=j} \frac{1}{V_{j}^{\dagger*}(t-)} dB^\dagger(t),
+\end{align*}
+
+and since the class of payment streams on the form (\ref{PaymentProcessDef}) is closed under addition and scalar multiplication. The total payments $B$ is then on the form (\ref{TotalPaymentStream}) for $W=(1,X,Y)$. So if we can calculate
 	
 \begin{align*}
-	\expec[\1{Z(t)=j}\begin{pmatrix}X(t) \\ Y(t)\end{pmatrix}], \, \, \, j \in \mathcal{J},
+	\tilde{W}_j(t) = \expec[\1{Z(t)=j}\begin{pmatrix}1  \\ X(t) \\ Y(t)\end{pmatrix}], \, \, j \in \hat{\mathcal{J}},
 \end{align*}
 	
-we can calculate prognoses with Propositions XX and XX.
-
-
-But Proposition \ref{MainResult} tells us just how to do that \textit{if} the process $(X,Y)$ has affine dynamics. Inspecting equations (\ref{XDynamics}) and (\ref{YDynamics}), this is certainly the case if
+we can calculate prognoses with equations (\ref{One}), (\ref{Two}) and (\ref{Three}). Note that the first entry of $\tilde{W}_j(t)$ is simply
 
 \begin{align*}
+	\expec[\1{Z(t)=j}] = p_{0j}(0,t),
+\end{align*}
+
+which can be found with Kolmogorovs forward equations. Proposition \ref{MainResult} tells us how to find
+
+\begin{align*}
+\expec[\1{Z(t)=j}\begin{pmatrix}X(t) \\ Y(t)\end{pmatrix}],
+\end{align*}
+
+if the process $(X,Y)$ has affine dynamics in the sense (\ref{WDynamicsStart}). Inspecting equations (\ref{XDynamics}) and (\ref{YDynamics}), this is certainly the case if $\delta_2(t)$ is affine in $X$ and $Y$, i.e. if
+
+\begin{align} \label{LinearBenDiv}
 	\delta_2(t) = \delta_2^0(t) + X(t) \cdot \delta_2^1(t) + Y(t) \cdot \delta_2^2(t)
-\end{align*}
+\end{align}
 
-holds \textit{and} (\ref{LinearCashDiv}) holds. With these assumptions, the process $(X,Y)$ has affine dynamics and so we can employ Proposition \ref{MainResult} and conclude that
+holds \textit{and} (\ref{LinearCashDiv}) holds. With these assumptions, the process $(X,Y)$ has affine dynamics and so we can employ Proposition \ref{MainResult} to obtain:
+
+\begin{proposition}
+For the With Profit contract described in Section \ref{WithProfit}, with assumptions (\ref{LinearCashDiv}) and (\ref{LinearBenDiv}) satisfied, the state-wise reserve
 
 \begin{align*}
 \begin{pmatrix}\tilde{X}_j(t) \\ \tilde{Y}_j(t)\end{pmatrix} = \expec[\1{Z(t)=j}\begin{pmatrix}X(t) \\ Y(t)\end{pmatrix}]
@@ -1682,9 +1707,23 @@ for functions
 	h_j^0(R) = a
 \end{align*}
 
+The restricted path prognoses are then
+
+\begin{align*}
+	\hat{b}^{\hat{\mathcal{J}}}(t) =& \frac{\sum_{j \in \hat{\mathcal{J}}} \left( p_{0j}(0,t) b_j^\Theta(t) + \tilde{X}_j(t) b_j^\mathcal{X}(t) + \tilde{Y}_j(t) b_j^\mathcal{Y}(t)\right)}{\sum_{j \in \hat{\mathcal{J}}} p_{Z(t_0)j}(t_0,t)}, \\
+	\triangle \hat{B}^{\hat{\mathcal{J}}}(R) =& \frac{\sum_{j \in \hat{\mathcal{J}}} \left(p_{0j}(0,R) \triangle B_j^\Theta(R) + \tilde{X}_j(R-) \triangle B_j^\mathcal{X}(R) + \tilde{Y}_j(R-) \triangle B_j^\mathcal{Y}(R)\right)}{\sum_{j \in \hat{\mathcal{J}}} p_{Z(t_0)j}(t_0,R)}, \\
+	\hat{b}_{\cdot k}^{\hat{\mathcal{J}}}(t) =& \frac{\sum_{j \in \hat{\mathcal{J}}} \left(p_{0j}(0,t) b_{jk}^\Theta(t) + \tilde{X}_j(t) b_{jk}^\mathcal{X}(t) + \tilde{Y}_j(t) b_{jk}^\mathcal{Y}(t)\right) \mu_{jk}(t)}{\sum_{j \in \hat{\mathcal{J}}} p_{Z(t_0)j}(t_0,t) \mu_{jk}(t)}
+\end{align*}
+
+where the payment functions are given in equations (\ref{FirstLine}), (\ref{SecondLine}) and (\ref{ThirdLine}).
+\end{proposition}
+\begin{proof}
+	Follows directly from Proposition \ref{MainResult} and equations (\ref{One}), (\ref{Two}) and (\ref{Three}).
+\end{proof}
+
 By specifying the dividend process $D$, we can arrive at many typical contract types. In the following example, we treat the case of a unit link insurance contract. Crucially, we shall see how the inclusion of insurance event risk -- the main difference between the prognosis approach proposed in this thesis and the classical ditto -- in certain cases leads to more conservative benefit prognoses.
 
-\subsubsection{Numerical example}
+\subsubsection{Example} \label{Numerics}
 	
 The state of the policy holder is modeled as in Example XX, i.e. on the classical alive-disabled-dead model with reactivation:
 
@@ -1980,6 +2019,18 @@ which we recognize as the sojourn prognosis for the guaranteed payments from the
 	Dynamikken må gerne afhænge af hele den fortidige Z-sti
 \end{remark}
 
+
+
+XXXXX
+\begin{table}[]
+	\begin{tabular}{lll}
+	Tabel med prognoser for nominal/reservedep og fixed/restric	&  &  \\
+		&  &  \\
+		&  & 
+	\end{tabular}
+\end{table}
+
+\newpage
 \section{Sensitivities -- Reserve-Dependent Benefits}
 
 Having defined the prognoses, we will now formalize the concept of prognosis sensitivities. The point is to give the policy holder an idea of how much she can expect her benefits to increase if she postpones her time of retirement or if she increases premiums paid. And -- conversely -- how much she can expect her benefits to \textit{decrease} if she retires at an \textit{earlier} point in time or if she \textit{decreases} premiums paid.
