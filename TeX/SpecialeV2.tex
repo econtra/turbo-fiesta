@@ -68,7 +68,7 @@
 \newtheorem{lemma}[definition]{Lemma}
 \newtheorem{corollary}[definition]{Corollary}
 \newtheoremstyle{remark}
-  {\topsep}{\topsep}%
+  {12pt}{12pt}%
   {}{}%
   {\bfseries}{.}%
   {\newline}{}%
@@ -97,6 +97,10 @@
 \usepackage{lastpage}
 \usepackage{float} % Muliggør at fastlåse en grafs placering
 
+
+\usepackage{chngcntr}
+\counterwithin{figure}{section}
+\counterwithin{table}{section}
 
 \usepackage[title]{appendix}
 \linespread{1.2}
@@ -595,7 +599,7 @@ This prognosis gives the policy holder an estimate of what she will leave to her
 
 Example \ref{ExampleOne} demonstrates that in the alive-death model, the conditioning approach proposed doesn't really bring anything new to the table, as it coincides with the classical conditioning of staying active until payout time $t$. This is because "not dying" is the same event as "staying active". This is no longer the case in the active-disabled-death model, as the next example shows.
 
-\subsubsection{The Disability Model}
+\subsubsection{The Disability Model} \label{DisModel}
 
 Consider the active-disabled-dead model:
 
@@ -644,7 +648,7 @@ Consider the active-disabled-dead model:
 		--cycle;
 		
 		\end{tikzpicture}
-		\caption{Active-disabled-dead model}
+		\caption{Active-disabled-dead model.}
 		\label{fig: 3state}
 	\end{center}
 \end{figure}
@@ -1048,14 +1052,16 @@ Compare this to the restricted path prognosis with restricting subset $\hat{\mat
 
 which is just the probability of staying active until retirement (given survival until retirement) times the lump sum $\triangle B_0$ rewarded for doing so. Obviously, the restricted path prognosis in (\ref{Restricted}) is more conservative than the fixed path prognosis in (\ref{Fixed}).
 
-Defining the transition intensities
+Defining the transition intensities (taken from Section 5 of \cite{BuchardtMoller})
 
-\begin{align*}
-	\mu_{01}(t) =& \left(0.0004 + 10^{4.54 + 0.06t - 10}\right) \1{t<R}, \\
+\begin{align} \label{Intensities}
+\begin{split}
+		\mu_{01}(t) =& \left(0.0004 + 10^{4.54 + 0.06t - 10}\right) \1{t<R}, \\
 	\mu_{10}(t) =& \left(2.0058 \cdot e^{-0.117t}\right) \1{t<R}, \\
 	\mu_{02}(t) =& 0.0005 + 10^{5.88 + 0.038t - 10}, \\
 	\mu_{12}(t) =& \mu_{02}(t) \left( 1 + \1{t<R} \right),
-\end{align*}
+\end{split}
+\end{align}
 
 and setting $\triangle B_0=1$, we illustrate the two prognoses in the following figure:
 
@@ -1095,7 +1101,7 @@ In contrast, the restricted path prognosis with restricting subset $\hat{\mathca
 \end{split}
 \end{align}
 
-which is again a weighted average of the transition payments with weights given by the 'densities' $p_{0j}(0,t) \mu_{j2}(t)$. As discussed earlier in the chapter, the intensities $\mu_{j2}(t)$ appear -- intuitively -- because given death at time $T$, it is more probable that the state from where death occurs is state $j$ if $\mu_{j2}(t)$ is large. Defining the transition intensities as in the last example and setting $b_{02} = 1$, we illustrate the two prognoses in the following figure:
+which is again a weighted average of the transition payments with weights given by the 'densities' $p_{0j}(0,t) \mu_{j2}(t)$. As discussed earlier in the chapter, the intensities $\mu_{j2}(t)$ appear -- intuitively -- because given death at time $T$, it is more probable that the state from where death occurs is state $j$ if $\mu_{j2}(t)$ is large. Defining the transition intensities as (\ref{Intensities}) and setting $b_{02} = 1$, we illustrate the two prognoses in the following figure:
 
 \begin{figure}[H]
 	\centering
@@ -1286,7 +1292,7 @@ for $t \in [0,n] \setminus \left( \{ R \} \cup A(z) \right)$. The initial value 
 
 Having obtained the reserve $W_z$, the prognoses follow from equation (\ref{TotalPaymentStream}): Simply multiply $W_z$ with the respective payment functions $b_{z(t)}(t)$, $\triangle B_{z(R)}(R)$ and $b_{z(t-)k}(t)$. These considerations lead to the following proposition:
 
-\begin{proposition}
+\begin{proposition} \label{FixedPath}
 	Given a deterministic path $z: [0,n] \to \mathcal{J}$, the fixed path prognoses are given by
 	
 	\begin{align*}
@@ -1509,7 +1515,7 @@ In the preceding two sections, we have seen how to calculate fixed- and restrict
 \newpage
 \subsection{A Special Case -- With Profit Insurance} \label{WithProfit}
 
-In this section, we shall see how the With Profit class of contracts -- as described in \cite{Liv2Bog} -- can be made to fit the affine pattern of the equations (\ref{TotalPaymentStream}) and (\ref{WDynamicsStart}). Specifically, we will let $W=(X,Y)$, where $X$ is the technical value of future guaranteed payments and $Y$ is the surplus, and let payments depend linearly on these two processes in the sense of (\ref{TotalPaymentStream}). We shall see how the specification of the dividend process $D$ allows us to model a diversity of pension and life insurance contracts, including participating life insurance and unit-link.
+In this section, we shall see how the With Profit class of contracts -- as described in \cite{Liv2Bog} -- can be made to fit the affine pattern of the equations (\ref{TotalPaymentStream}) and (\ref{WDynamicsStart}). Specifically, we will let $W=(X,Y)$, where $X$ is the technical value of future guaranteed payments and $Y$ is the surplus, and let payments depend linearly on these two processes in the sense of (\ref{TotalPaymentStream}). The specification of the dividend process $D$ then allows us to model a diversity of pension and life insurance contracts, including participating life insurance and unit-link. The section builds on the results of \cite{Lollike}, but extends them to include lump sum payments at retirement (as already mentioned) \textit{and} to include cash dividend payment stream.
 
 The first ingredient in a With Profit contract is the guaranteed payment stream $B^\circ$. The payment stream comprises both benefits and premiums, balanced such that the equivalence principle is satisfied on the technical basis, i.e.
 
@@ -1525,7 +1531,7 @@ With premiums determined under this prudent technical basis, a systematic surplu
 D = D_1 + D_2,
 \end{align*}
 
-where $D_1$ is paid out directly to the policy holder and $D_2$ is used to instantaneously purchase units of a profile payment stream $B^\dagger$, also on the form \ref{PaymentProcessDef}, but consisting only of benefits, i.e. $B^{\dagger -}=0$. Assume that $D_2$ is absolutely continuous, i.e.
+where $D_1$ is paid out directly to the policy holder as cash dividends and $D_2$ is used to instantaneously purchase units of a profile payment stream $B^\dagger$, also on the form \ref{PaymentProcessDef}, but consisting only of benefits, i.e. $B^{\dagger -}=0$. Assume that $D_2$ is absolutely continuous, i.e.
 
 \begin{align*}
 dD_2(t) = \delta_2(t) dt
@@ -1666,7 +1672,7 @@ if the process $(X,Y)$ has affine dynamics in the sense (\ref{WDynamicsStart}). 
 
 holds \textit{and} (\ref{LinearCashDiv}) holds. With these assumptions, the process $(X,Y)$ has affine dynamics and so we can employ Proposition \ref{MainResult} to obtain:
 
-\begin{proposition}
+\begin{proposition} \label{WPMainResult}
 For the With Profit contract described in Section \ref{WithProfit}, with assumptions (\ref{LinearCashDiv}) and (\ref{LinearBenDiv}) satisfied, the state-wise reserve
 
 \begin{align*}
@@ -1721,61 +1727,97 @@ where the payment functions are given in equations (\ref{FirstLine}), (\ref{Seco
 	Follows directly from Proposition \ref{MainResult} and equations (\ref{One}), (\ref{Two}) and (\ref{Three}).
 \end{proof}
 
-By specifying the dividend process $D$, we can arrive at many typical contract types. In the following example, we treat the case of a unit link insurance contract. Crucially, we shall see how the inclusion of insurance event risk -- the main difference between the prognosis approach proposed in this thesis and the classical ditto -- in certain cases leads to more conservative benefit prognoses.
+By specifying the dividend process $D$, we can arrive at many typical contract types. In the following section, we treat an example of a With Profit contract -- a Unit Link savings contract. We shall see how the restricted path prognoses lead to conservative benefit prognoses.
 
-\subsubsection{Example} \label{Numerics}
+\newpage
+\subsubsection{Example -- A Unit Link Savings Contract} \label{Numerics}
+
+In this example...
 	
-The state of the policy holder is modeled as in Example XX, i.e. on the classical alive-disabled-dead model with reactivation:
+The state of the policy holder is modelled as in Section \ref{DisModel}, i.e. on the classical alive-disabled-dead model with reactivation. The subset $\hat{\mathcal{J}} = \{ 0,1 \}$ is again chosen for the restricted path prognoses.
 
-FIGURE
+\begin{figure}[H]
+	\begin{center}
+		\begin{tikzpicture}[scale = 0.5, transform shape]
+			\begin{scope}[every node/.style={ minimum width = 2cm, minimum height = 1cm}]
+				\node (0) [rectangle, draw] at (0, 0) {$\text{0: active}$};
+				\node (1) [rectangle, draw] at (7, 0) {$\text{1: disabled}$};
+				\node (2) [rectangle, draw] at (3.5, -5) {$\text{2: dead}$};
+				;
+				
+			\end{scope}
+			
+			\begin{scope}[every node/.style={minimum width = 2cm, minimum height = 4cm}]
+				\node (5) at (8, -2) {\fontsize{50}{60}\selectfont $\hat{\mathcal{J}}$};
+			\end{scope}
+			
+			\begin{scope}[every node/.style={minimum width = 2cm, minimum height = 4cm}]
+				\node (5f) at (8, -6) {\fontsize{50}{60}\selectfont $\mathcal{J}$};
+			\end{scope}
+			
+			\begin{scope}[>={stealth[black]},
+				every edge/.style = {draw = black}]
+				\path [->] 	(0) edge [bend left = 7] node {} (1)
+				(0) edge [] node {} (2)
+				(1) edge [] node {} (2)
+				(1) edge [bend left = 7] node {} (0);
+			\end{scope}
+			
+			
+			
+			
+			\draw [rounded corners = 3mm, thick, dotted, scale=1]
+			($(2) + (-5.4, 6.8)$) --
+			($(2) + (5.4, 6.8)$) --
+			($(2) + (5.4, 2)$) --
+			($(2) + (-5.4, 2)$)
+			--cycle;
+			
+			\draw [rounded corners = 3mm, thick, dotted, scale=1]
+			($(2) + (-6.1, 7.6)$) --
+			($(2) + (5.9, 7.6)$) --
+			($(2) + (5.9, -1.8)$) --
+			($(2) + (-6.1, -1.8)$)
+			--cycle;
+			
+		\end{tikzpicture}
+		\caption{Active-disabled-dead model.}
+		\label{fig: 3stateEx}
+	\end{center}
+\end{figure}
 
-Assume that the guaranteed payments $B^\circ$ consists of a premium $b_0^\circ(t)$ paid in as active, a disability sojourn benefit $b_1^\circ(t)$ paid out as disable until retirement and a death sum $b_{02}^\circ(t)=b_{12}^\circ(t)$. Formally,
+Assume that there are no guaranteed payments, i.e. $B^\circ=0$. The policy holder saves for her retirement via the cash-dividend payment stream $D_1$ in the following manner
 
 \begin{align*}
-	dB^\circ(t) =& \1{t<R} \left( - \1{Z(t)=0} b_0^\circ(t) + \1{Z(t)=1} b_1^\circ(t) \right) dt \\
-	& \1{t < R} b_{02}^\circ(t) dN_2(t) \\
-\end{align*}
-
-Together, the payments satisfy the equivalence principle under the technical basis, i.e. $V_0^{\circ*}(0)=0$.
-
-In addition to the disability and death covers, the policy holder saves for her pension via the cash-dividend payment stream $D_1$ in the following manner
-
-\begin{align*}
-	dD_1(t) =& - \1{t<R} \1{Z(t)=0} \left( \pi(t) - b_0^\circ(t) \right) \\
+	dD_1(t) =& - \1{t<R} \1{Z(t)=0} \pi(t) \\
 	&+ \1{t \geq R} \left( \1{Z(t)=0} + \1{Z(t)=1} \right) \frac{Y(t)}{a(t)}
 \end{align*}
 
-In words, the policy holder pays the total premiums $\pi(t)$. After paying for the disability and death covers, $\pi(t) - b_0^\circ(t)$ remains, which is paid directly into the surplus $Y$. As retired, a pension benefit is then paid out as a fraction of the surplus $Y$. Since the surplus is forfeited upon death, we let $Y$ accrue not only with the rate of return $r$, but also with the mortality rate $\mu_{02}$ respectively $\mu_{12}$. This means that the surpluses of the deceased are inherited by the survivors.
+In words, the policy holder pays the total premium $\pi(t)$ directly into the surplus while active. As retired, a pension benefit rate is then paid out continuously as a fraction of the surplus $Y$. Since the surplus is forfeited upon death, we let $Y$ accrue not only with the rate of return $r$, but also with the mortality rate $\mu_{02}$ respectively $\mu_{12}$. This means that the surpluses of the deceased are inherited by the survivors.
 
-Note that in this setup no additional units of any payment stream $B^\dagger$ are purchased, so $D_2=Q=0$.
+Note that in this contract, no additional units of any payment stream $B^\dagger$ are purchased, so $D_2=Q=0$. Since we also have $B^\circ=0$, this means that $X=0$. In other words, we only have to project the 1-dimensional process $\tilde{Y}_j(t)$. Much more complex contracts could of course be envisioned following the blueprint of the preceding section. But the aim of this example is to lay bare the fundamental difference between fixed- and restricted path prognoses, and it is the view of this thesis that this is best done in a simple setting where every step can be intuitively interpreted.
 
-Finally -- to simplify expressions a bit -- assume that $\mu^*=\mu$, such that $\rho^\circ = \rho^\dagger = 0$. This means that
-
-\begin{align*}
-	dC(t) = \left( r(t) - r^*(t) \right) V_{Z(t)}^{\circ*}(t) dt
-\end{align*}
-
-which just states that the only contribution to the surplus from the guaranteed payments are through the realized financial performance, which hopefully exceed the technical.
-
-The surplus then has dynamics
+The surplus has dynamics
 
 \begin{align} \label{YExampleDyn}
 \begin{split}
 		dY(t) =& \left( r(t) + \mu_{Z(t)2}(t) \right) Y(t) dt \\
-	&+ \1{t<R} \1{Z(t)=0} \left(\pi(t) - b_0^\circ(t) \right) dt \\
+	&+ \1{t<R} \1{Z(t)=0} \pi(t) dt \\
 	&- \1{t \geq R} \left( \1{Z(t)=0} + \1{Z(t)=1} \right) \frac{Y(t)}{a(t)} dt \\
-	&+ \left( r(t) - r^*(t) \right) V_{Z(t)}^{\circ*}(t) dt \\
 	&- Y(t-) dN_2(t).
 \end{split}
 \end{align}
 
-The quantity $a$ is the $S$-adapted annuity
+The quantity $a$ is the annuity
 
 \begin{align*}
 	a(t) = \int_t^n e^{-\int_t^s \bar{r}_t(u) + \bar{\mu}_t(u) du} ds
 \end{align*}
 
-where $\bar{r}_t(u)$ is the $S(t)$-measurable payout interest rate curve and $\bar{\mu}_t(u)$ is the  $S(t)$-measurable payout mortality rate curve. These curves are updated regularly (e.g. yearly) and are examples of future management actions relevant in the context of prognoses. As we shall see, the choice of $\bar{r}_t(u)$ and $\bar{\mu}_t(u)$ has great impact on how the surplus is paid out over the course of retirement:
+where $\bar{r}_t(u)$ is the payout interest rate curve ("beregningsrenten") and $\bar{\mu}_t(u)$ is the payout mortality rate curve. These curves are updated regularly (e.g. yearly) and are examples of future management actions relevant in the context of prognoses. So in a stochastic model of the financial market, these curves will be adapted to the state market process.
+
+\begin{remark}
+	As we shall see, the choice of $\bar{r}_t(u)$ and $\bar{\mu}_t(u)$ has great impact on how the surplus is paid out over the course of retirement:
 
 \begin{itemize}
 	\item If $\bar{r}_t(u)<r(u)$ and $\bar{\mu}_t(u)<\mu_{02}(u),\mu_{12}(u)$ for $u \geq t$, the pension benefit rate $Y(t)/a(t)$ will tend to \textit{increase} over time.
@@ -1784,56 +1826,51 @@ where $\bar{r}_t(u)$ is the $S(t)$-measurable payout interest rate curve and $\b
 \end{itemize}
 
 Since $a(t) \underset{t \to n}{\longrightarrow} 0$, it follows that $a^{-1}(t) \underset{t \to n}{\longrightarrow} \infty$, which ensures that the surplus is eventually paid out.
+\end{remark}
 
-Say we want to prognosticate the pension rate at some time $t \geq R$, i.e.
+We are now ready to calculate prognoses. By equation (\ref{One}), the restricted path prognosis for the pension rate at some time $t \geq R$ is
 
-\begin{align*}
-	\hat{b}(t) =& \econd[\frac{Y(t-)}{a(t)}]{Z(t-) \in \bar{\mathcal{J}}} \\
-	=&\frac{\sum_{j \in \hat{\mathcal{J}}} \tilde{Y}_j(t)}{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,t)} \frac{1}{a(t)}.
-\end{align*}
+\begin{align} \label{Naja}
+\begin{split}
+		\hat{b}^{\hat{\mathcal{J}}}(t) =& \econd[\frac{Y(t-)}{a(t)}]{Z(t-) \in \bar{\mathcal{J}}} \\
+	=&\frac{\sum_{j \in \hat{\mathcal{J}}} \tilde{Y}_j(t)}{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,t)} \frac{1}{a(t)} \\
+	=&\frac{\tilde{Y}_0(t) + \tilde{Y}_1(t)}{p_{00}(0,t) + p_{01}(0,t)} \frac{1}{a(t)}.
+\end{split}
+\end{align}
 
-By XXX, $\tilde{Y}_j(t) = \expec[\1{Z(t)=j} Y(t)]$ is described by the system of differential equations
+Then by Proposition \ref{MainResult}, $\tilde{Y}_j(t) = \expec[\1{Z(t)=j} Y(t)]$ is described by the system of differential equations
 
 \begin{align} \label{Jaja}
 \begin{split}
 	\frac{\partial}{\partial t} \tilde{Y}_0(t) =& \left( r(t) + \mu_{02}(t) - \1{t \geq R} \frac{1}{a(t)}\right) \tilde{Y}_0(t) \\
-	&+ p_{00}(0,t) \left( \1{t<R} \left(\pi(t) - b_0^*(t)\right) + \left( r(t) - r^*(t) \right) V_{0}^{\circ*}(t) \right) \\
+	&+ p_{00}(0,t) \1{t<R} \pi(t) \\
 	&+ \mu_{10}(t) \tilde{Y}_1(t) - \mu_{01}(t) \tilde{Y}_0(t) - \mu_{02}(t) \tilde{Y}_0(t), \\
 	\frac{\partial}{\partial t} \tilde{Y}_1(t) =& \left( r(t) + \mu_{12}(t) - \1{t \geq R} \frac{1}{a(t)}\right) \tilde{Y}_1(t) \\
-	&+ p_{01}(0,t) \left( r(t) - r^*(t) \right) V_{1}^{\circ*}(t) \\
 	&+ \mu_{01}(t) \tilde{Y}_0(t) - \mu_{10}(t) \tilde{Y}_1(t) - \mu_{12}(t) \tilde{Y}_1(t).
 \end{split}
 \end{align}
 
-Obviously, $\tilde{Y}_0(0)=\tilde{Y}_1(0)=0$ and $\tilde{Y}_2(t)=0$.
+Obviously, $\tilde{Y}_0(0)=\tilde{Y}_1(0)=0$ and $\tilde{Y}_2(t)=0$ (since the surplus is forfeited upon death). Note that the quantity $\mu_{02}(t) \tilde{Y}_0(t)$ appear with both a positive and a negative sign in the differential equation for $\tilde{Y}_0$ (and $\mu_{12}(t) \tilde{Y}_1(t)$ for $\tilde{Y}_1$). The positive contribution is from the surpluses inherited when other policy holders die. The negative contribution is from the infinitesimal probability of dying, thereby forfeiting her own surplus. These two effects cancel exactly.
 
-We now solve this scheme numerically for four different scenarios. For each, scenario, we also compute the "classical" prognosis, i.e. the prognosis obtained by assuming that the insured remains active and premium paying until retirement. This prognosis is simply
+We can also compute the fixed path prognosis for the path $z=0$, i.e. the prognosis obtained by assuming that the insured remains active and premium paying until retirement.  By Proposition \ref{FixedPath}, this prognosis is simply
 
-\begin{align*}
-	\hat{b}_{Classical}(t) =& \frac{\bar{Y}(t)}{a(t)}
-\end{align*}
+\begin{align} \label{Naja2}
+	\hat{b}^z(t) =& \frac{Y_z(t)}{a(t)}
+\end{align}
 
-where $\bar{Y}(t)$ satisfies the differential equation
+where $Y_z(t)$ satisfies the differential equation
 
-\begin{align*}
-	\frac{\partial}{\partial t} \bar{Y}(t) =& \left( r(t) + \mu_{02}(t) - \1{t \geq R} \frac{1}{a(t)}\right) \bar{Y}(t) \\
-	&+ \1{t<R} \pi(t) + \left( r(t) - r^*(t) \right) V_{0}^{\circ*}(t)
-\end{align*}
+\begin{align} \label{Jaja2}
+\begin{split}
+		\frac{\partial}{\partial t}Y_z(t) =& \left( r(t) + \mu_{02}(t) - \1{t \geq R} \frac{1}{a(t)}\right) Y_z(t) \\
+	&+ \1{t<R} \pi(t)
+\end{split}
+\end{align}
 
-with $\bar{Y}(0) = 0$. The scenarios are:
+with $Y_z(0) = 0$. We now solve the restricted- and fixed path prognoses schemes schemes numerically for four different scenarios. The scenarios are:
 
 \begin{itemize}
-	\item \textbf{Baseline}: A best estimate scenario with premiums set at $\pi = 80$ t.DKK annually until retirement at $R=65$, HUSK DØD og invalidydelser!!!! a real return rate of 3\% per annum and transition intensities given as in (Section 5 of \cite{BuchardtMoller}):
-	
-	\begin{align*}
-		\mu_{01}^{BE}(t) =& \left(0.0004 + 10^{4.54 + 0.06t - 10}\right) \1{t<R} \\
-		\mu_{10}^{BE}(t) =& \left(2.0058 \cdot e^{-0.117t}\right) \1{t<R} \\
-		\mu_{02}^{BE}(t) =& 0.0005 + 10^{5.88 + 0.038t - 10} \\
-		\mu_{12}^{BE}(t) =& \mu_{02}^{BE}(t) \left( 1 + \1{t<R} \right)
-	\end{align*}
-
-	Hvad med tekniske???
-	
+	\item \textbf{Baseline}: A best estimate scenario with premiums set at $\pi = 80$ t.DKK annually until retirement at $R=65$, a real return rate of 3\% per annum and transition intensities given as in (\ref{Intensities}). The payout interest rate $\bar{r}$ is constant at 3\% and the payout mortality rate $\bar{\mu}$ is equal to the realized active mortality, $\mu_{01}$.
 	\item \textbf{Disability Stress}: The baseline scenario, \textit{but} with a higher disability intensity.
 	\item \textbf{Longevity Stress}: The baseline scenario, \textit{but} with a lower mortality.
 	\item \textbf{Interest Stress}: The baseline scenario, \textit{but} with a lower rate of return $r$ in the retirement phase.
@@ -1841,81 +1878,89 @@ with $\bar{Y}(0) = 0$. The scenarios are:
 
 Formally, the scenarios are:
 
-\begin{center}
-	\begin{tabular}{ |c|c|c|c|c|c|c|c| }
+\begin{table}[H]
+	\caption{Four prognosis scenarios.}
+	\begin{center}
+	\begin{tabular}{ |c|c|c|c|c|c| }
 		\hline
-		Scenario & $\mu_{01}$ & $\mu_{10}$ & $\mu_{02}$ & $\mu_{12}$ & $r$ & $\bar{r}$ & $\bar{\mu}$ \\
+		Scenario & $\mu_{01}$ & $\mu_{10}$ & $\mu_{02}$ & $\mu_{12}$ & $r$ \\
 		\hline
-		Baseline & $\mu_{01}^{BE}(t)$ & $\mu_{10}^{BE}(t)$ & $\mu_{02}^{BE}(t)$ &$\mu_{12}^{BE}(t)$ & 0.03 & 0.03 & $\mu_{01}^{BE}(t)$ \\
-		Disability Stress & $1.5 \cdot \mu_{01}^{BE}(t)$ & $\mu_{10}^{BE}(t)$ & $\mu_{02}^{BE}(t)$ & $\mu_{12}^{BE}(t)$ & 0.03 & 0.03 & $\mu_{01}^{BE}(t)$ \\
-		Longevity Stress & $\mu_{01}^{BE}(t)$ & $\mu_{10}^{BE}(t)$ & $0.8 \cdot \mu_{02}^{BE}(t)$ & $0.8 \cdot \mu_{12}^{BE}(t)$ & 0.03 & 0.03 & $\mu_{01}^{BE}(t)$ \\
-		Interest Stress & $\mu_{01}^{BE}(t)$ & $\mu_{10}^{BE}(t)$ & $\mu_{02}^{BE}(t)$ & $\mu_{12}^{BE}(t)$ & $\1{t < R} 0.03 + \1{t \geq R} 0.02$ & 0.03 & $\mu_{01}^{BE}(t)$ \\
+		Baseline & $\mu_{01}^{BE}(t)$ & $\mu_{10}^{BE}(t)$ & $\mu_{02}^{BE}(t)$ &$\mu_{12}^{BE}(t)$ & 0.03 \\
+		Disability Stress & $1.5 \cdot \mu_{01}^{BE}(t)$ & $\mu_{10}^{BE}(t)$ & $\mu_{02}^{BE}(t)$ & $\mu_{12}^{BE}(t)$ & 0.03 \\
+		Longevity Stress & $\mu_{01}^{BE}(t)$ & $\mu_{10}^{BE}(t)$ & $0.8 \cdot \mu_{02}^{BE}(t)$ & $0.8 \cdot \mu_{12}^{BE}(t)$ & 0.03 \\
+		Interest Stress & $\mu_{01}^{BE}(t)$ & $\mu_{10}^{BE}(t)$ & $\mu_{02}^{BE}(t)$ & $\mu_{12}^{BE}(t)$ & $\1{t < R} 0.03 + \1{t \geq R} 0.02$ \\
 		\hline
 	\end{tabular}
+\newline
 \end{center}
+\end{table}
 
 \begin{figure}[H]
 	\centering
-	\caption{Annual benefit prognoses (classical and proposed) for the four scenarios.}
+	\caption{The development $\tilde{Y}_0$, $\tilde{Y}_1$ and $Y_z$ for the four scenarios, cf. equations (\ref{Jaja}) and (\ref{Jaja2}).}
+	\includegraphics[width=\textwidth]{Reserves}
+\end{figure}
+
+\begin{itemize}
+	\item For each scenario, the restricted path state-wise surpluses $\tilde{Y}_0$ and $\tilde{Y}_1$ are well below the fixed path surplus $Y_z$. This is because the state-wise surpluses $\tilde{Y}_j(t) = \expec[\1{Z(t)=j}Y(t)]$ include information on the transition probabilities via the indicator function. Recall that the $\tilde{Y}_j$'s are summed and normalized according to equation (\ref{Naja}) to obtain the restricted path prognoses.
+	\item For the state-wise surpluses, the Disability Stress scenario differ the most from the other scenarios. This is because the policy holder is much more likely to enter the disabled, which increases $\tilde{Y}_1$ and decreases $\tilde{Y}_0$. Also, the disability intensity is so high for ages close to retirement that the intensity actually overpowers the return rate, which leads to a decreasing $\tilde{Y}_0$ \textit{before} retirement.
+\end{itemize}
+
+Next we graph the actual prognoses $\hat{b}^{\hat{\mathcal{J}}}$ and $\hat{b}^z$:
+
+\begin{figure}[H] \label{FigureBens}
+	\centering
+	\caption{Annual benefit prognoses (fixed- and restricted path) for the four scenarios, cf. equations (\ref{Naja}) and (\ref{Naja2}).}
 	\includegraphics[width=\textwidth]{Benefits}
 \end{figure}
 
-A few things are worth noting in figure XXX:
+A few things are worth noting in the Figure 5.3:
 
 \begin{itemize}
-	\item For each scenario, the classical prognosis is higher than the proposed prognosis $\hat{b}(t)$. This is what was expected and one of the principal reason for building the theory in the first place. The difference is, however, quite small -- and the inter-scenario difference is much larger.
+	\item For each scenario, the classical prognosis is higher than the proposed prognosis $\hat{b}(t)$. This is what was expected and one of the principal reason for building the theory in the first place. The difference is, however, quite small -- and the inter-scenario variation is much larger.
 	\item The difference between the BE- and the Disability Stress-scenario shows the promise of the proposed prognoses. When the disability rate is high, the insured is more likely to exit the premium paying state, which translates to a lower surplus at retirement. As noted earlier, an "unemployed"-state can be added to the state space, with an intensity that is probably much higher than the disability intensity.
 	\item The Interest Stress scenario shows that if the payout interest rate $\bar{r}$ is set high than the realized rate, benefits decrease over time because the surplus is paid out "too quickly" in the early phase of retirement.
 	\item The Longevity Stress scenario tells the same story, but with $\bar{\mu}$. Also, the start rate (at age 65) is lower in this scenario, because fewer people have died before retirement (their death would benefit the surpluses of the survivors). BEMÆRK KONKAVITET.
 	\item Finally, note that BE\_Clas and DisStress\_Clas are exactly equal (and thus only one is visible on the graph) because only the technical disability rate $\mu_{01}^*$ is involved in the classical prognoses and this rate is not stressed.
 \end{itemize}
 
-\begin{figure}[H]
-	\centering
-	\caption{The development of the state wise reserves for the four scenarios.}
-	\includegraphics[width=\textwidth]{Reserves}
-\end{figure}
 
-\begin{itemize}
-	\item bemærkninger
-\end{itemize}
-
-
-
-\begin{itemize}
-	\item bemærkninger
-\end{itemize}
 
 \textbf{Remark om at lade premium afhænge af Y}
 
 \textbf{Remark om at man nok skal have en unemployed state for at forskelle er store nok}
 
-\subsubsection{Premium waiver}
+\subsubsection{Example Continued -- Premium Waiver} \label{Waiver}
 
-In the last section, we saw how periods of disability can negatively impact the pension benefits paid out. It is in the interest of most policy holders to get rid of this risk. One way of achieving this is with a premium waiver ("indbetalingssikring"/"præmiefritagelse"). The idea is that the company assumes the premium payments in case of disability, ensuring that savings increase at the same pace as in the active state.
+In the last section, we saw how periods of disability can negatively impact the pension benefits paid out. It is in the interest of most policy holders to get rid of this risk. One way of achieving this is with a premium waiver ("indbetalingssikring"/"præmiefritagelse"). The idea is that the company assumes the premium payments in the disabled state, ensuring that savings increase at the same pace as in the active state.
 
-Continuing the contract from the last section, we formalize the idea of a premium waiver as follows: The policy holder is still paying the total premium $\pi(t)$ as active. From this is deducted the payment $\bar{b}_0^\circ(t)$, which now not only covers the death and disability benefits, but also the premium waiver. The premium waiver is an additional liability to the company, i.e. a payment stream $\pi(t) - \bar{b}_0^\circ(t)$ paid in the disabled state. The payment $\bar{b}_0^\circ(t)$ can be determined by the equivalence principle as a solution to (MANGLER rente)
+Continuing the contract from the last section, we formalize the idea of a premium waiver as follows: The policy holder is still paying the premium rate $\pi(t)$ as active. From this is deducted the payment $q(t)$, which covers the premium waiver. The residual $\pi(t) - q(t)$ is then paid into the surplus $Y$.
 
-\begin{align*}
-	0 =& V_0^*(0) \\
-	=& \int_0^R p_{00}(0,s) \left( - b_0^\circ(s)  + \mu_{02}(s) b_{02}^\circ \right) \\
-	&+ p_{01}^*(0,s) \left( \left( \pi(s) - b_0^\circ(s) \right) + b_1^\circ(t) + \mu_{12}^*(s) b_{12}^\circ \right) ds
-\end{align*}
-
-With the simplifying assumption that all payment functions are constant, we can isolate $b_0^\circ$
+The premium waiver must ensure that the same quantity, $\pi(t) - q(t)$, is paid into $Y$ as disabled. The $q(t)$ can then be determined under technical equivalence as a solution to 
 
 \begin{align*}
-	\bar{b}_0^\circ = \frac{\int_0^R p_{00}^*(0,s) \mu_{02}^*(s) b_{02}^\circ + p_{01}^*(0,s) \left( \pi + b_1^\circ + \mu_{12}^*(s) b_{12}^\circ \right) ds}{\int_0^R p_{00}^*(0,s) + p_{01}^*(0,s)ds}.
+	\int_0^R e^{-\int_0^s r^*(u)du}  p_{01}^*(0,s) \left( \pi(s) - q(s) \right) ds = \int_0^R e^{-\int_0^s r^*(u)du} p^*_{00}(0,s) q(s) ds,
 \end{align*}
 
-The rate paid into the surplus $Y$ -- as active as well as disabled -- is then $\pi(t) - \bar{b}_0^\circ(t)$. Consulting equation (\ref{YExampleDyn}), we see that $Y$ then has dynamics
+which just states that the expected present value of the premium waiver cover -- the left hand side -- must be equal to the expected present value of the \textit{payment} for the cover -- the right hand side.
+
+\begin{remark}
+	In the simple case where all payment functions are constant, we can isolate $q$ as
+
+\begin{align*}
+	q = \pi \frac{\int_0^R e^{-\int_0^s r^*(u)du} p_{01}^*(0,s) ds}{\int_0^R e^{-\int_0^s r^*(u)du} \left(p_{00}^*(0,s) + p_{01}^*(0,s)\right) ds}.
+\end{align*}
+
+Intuitively, this payment for the premium waiver cover is increasing in $p_{01}^*$ -- as it is then more likely that the cover will be activated -- and decreasing in $p_{00}^*$ -- as it is then less likely.
+\end{remark}
+
+As mentioned, the rate paid into the surplus $Y$ -- as active as well as disabled -- is then $\pi(t) - q(t)$. Consulting equation (\ref{YExampleDyn}), we see that $Y$ then has dynamics
 
 \begin{align*}
 \begin{split}
 	dY(t) =& \left( r(t) + \mu_{Z(t)2}(t) \right) Y(t) dt \\
-	&+ \1{t<R} \left( \1{Z(t)=0} + \1{Z(t)=1} \right) \left(\pi(t) - \bar{b}_0^\circ(t) \right) dt \\
+	&+ \1{t<R} \left( \1{Z(t)=0} + \1{Z(t)=1} \right) \left(\pi(t) - q(t) \right) dt \\
 	&- \1{t \geq R} \left( \1{Z(t)=0} + \1{Z(t)=1} \right) \frac{Y(t)}{a(t)} dt \\
-	&+ \left( r(t) - r^*(t) \right) V_{Z(t)}^{\circ*}(t) dt \\
 	&- Y(t-) dN_2(t).
 \end{split}
 \end{align*}
@@ -1923,26 +1968,25 @@ The rate paid into the surplus $Y$ -- as active as well as disabled -- is then $
 With the added assumptions that
 
 \begin{itemize}
-	\item $\mu_{02}(t) = \mu_{12}(t)$, meaning that the accrual from the surpluses of deceased happens at the same rate as active and as disabled.
-	\item $r(t) = r^*(t)$, meaning that is no contribution from the guaranteed payments to the surplus.
+	\item $\mu_{02}(t) = \mu_{12}(t)$, meaning that the accrual from the surpluses of deceased happens at the same rate as active and as disabled,
 \end{itemize}
 
-Then there is no distinction between the policy holder being in the active or the disabled state. The premium waiver effectively erases the risk from the transitions $0 \to 1$ (disability) and $1 \to 0$ (reactivation) from the point of view of the policy holder. No matter her state path inside $\hat{\mathcal{J}} = \{ 0,1 \}$, her surplus will develop at the same rate.
+then there is no distinction between the policy holder being in the active or the disabled state. The premium waiver effectively erases the risk from the transitions $0 \to 1$ (disability) and $1 \to 0$ (reactivation) from the point of view of the policy holder. No matter her state path inside $\hat{\mathcal{J}} = \{ 0,1 \}$, her surplus will develop at the same rate.
 
-The computation of the prognosis can also be simplified by noting that
+The computation of the prognosis can now be simplified by noting that
 
 \begin{align*}
 	\frac{\partial}{\partial t} \left(\tilde{Y}_0(t) + \tilde{Y}_1(t)\right) =& \left( r(t) + \mu_{02}(t) - \1{t \geq R} \frac{1}{a(t)}\right) \left(\tilde{Y}_0(t) + \tilde{Y}_1(t)\right) \\
-	&+ \left(p_{00}(t) + p_{01}(t)\right)\1{t<R}\left(\pi(t) - \bar{b}_0^\circ(t)\right) \\
+	&+ \left(p_{00}(t) + p_{01}(t)\right)\1{t<R}\left(\pi(t) - q(t)\right) \\
 	&- \mu_{02}(t) \left(\tilde{Y}_0(t) + \tilde{Y}_1(t)\right) \\
 	=& \left( r(t) - \1{t \geq R} \frac{1}{a(t)}\right) \left(\tilde{Y}_0(t) + \tilde{Y}_1(t)\right) \\
-	&+ \left(p_{00}(t) + p_{01}(t)\right)\1{t<R}\left(\pi(t) - \bar{b}_0^\circ(t)\right),
+	&+ \left(p_{00}(t) + p_{01}(t)\right)\1{t<R}\left(\pi(t) - q(t)\right),
 \end{align*}
 
-which is obtained by adapting (\ref{Jaja}) to the current setup. Solving this, the prognosis can be readily calculated as
+which is obtained by adapting (\ref{Jaja}) to the case with premium waiver. Solving this, the restricted path prognosis can be readily calculated as
 
 \begin{align*}
-	\hat{b}(t) =& \econd[\frac{Y(t-)}{a(t)}]{Z(t-) \in \bar{\mathcal{J}}} \\
+	\hat{b}^{\hat{\mathcal{J}}}(t) =& \econd[\frac{Y(t-)}{a(t)}]{Z(t-) \in \bar{\mathcal{J}}} \\
 	=&\frac{\sum_{j \in \hat{\mathcal{J}}} \tilde{Y}_j(t)}{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,t)} \frac{1}{a(t)} \\
 	=&\frac{\tilde{Y}_0(t) + \tilde{Y}_1(t)}{p_{00}(t) + p_{01}(t)} \frac{1}{a(t)}.
 \end{align*}
@@ -1950,19 +1994,21 @@ which is obtained by adapting (\ref{Jaja}) to the current setup. Solving this, t
 The simplification is that we no longer have to solve a system of differential equations -- only the single one for $\tilde{Y}_0(t) + \tilde{Y}_1(t)$.
 
 \begin{remark}
-	It can be shown that $p_{00}(t) + p_{01}(t) = e^{-\int_0^t \mu_{02}(s)ds}$
+	In the construction of the premium waiver cover, we have assumed that it is priced under technical equivalence and that there is no contribution to the surplus as the return rate and the intensities $(r,\mu)$ are realized more favourably than assumed in the technical basis $(r^*,\mu^*)$. The assumption is made to make the mathematics more tractable and easier to interpret intuitively. In a more detailed contract, a favourable realization of $(r,\mu)$ would be paid back to the policy holder via the contribution process $C$ as described in Section \ref{WithProfit}. However, if $(r,\mu)=(r^*,\mu^*)$, then $C=0$ and so the results of Section \ref{Waiver} are exact.
 \end{remark}
+
+MÅSKE GRAF?
 
 \subsection{Nominal Benefits Revisited}
 
-We can replicate the prognoses of the last chapter -- -- in the present framework. Recall that the prospective technical reserve $V_{Z(t)}^*(t)$ for some payment stream $B$ has dynamics
+We close the chapter on reserve-dependent benefits by showing that the prognoses for nominal benefits presented in Chapter \ref{ChapGuaranteedBen} can actually be replicated in the present reserve-dependent framework. Recall that the prospective technical reserve $V_{Z(t)}^*(t)$ for some payment stream $B$ has dynamics
 
 \begin{align*}
 	dV_{Z(t)}^*(t) =& r^*(t) V_{Z(t)}^* dt - b_{Z(t-)}(t) dt - \sum_{k \in \mathcal{J} \atop k \neq Z(t-)} R_{Z(t-)k}^*(t) \mu_{Z(t-)k}^*(t) dt \\
 	&+ \sum_{k \in \mathcal{J} \atop k \neq Z(t-)} \left( V_k^*(t) - V_{Z(t-)}^*(t) \right) dN_k(t) - \triangle B_{Z(t-)}(R) d\varepsilon_{R}(t).
 \end{align*}
 
-which is clearly on the form (\ref{WDynamics}). Assuming that $B$ satisfies the equivalence principle under the technical basis $(r^*,\mu^*)$, the initial value is $V_{Z(0)}^*(0)=0$. Then, by Proposition \ref{MainResult},
+which is clearly on the form (\ref{WDynamicsStart}). Assuming that $B$ satisfies the equivalence principle under the technical basis $(r^*,\mu^*)$, the initial value is $V_{Z(0)}^*(0)=0$. Then, by Proposition \ref{MainResult},
 
 \begin{align*}
 	\tilde{V}_j^*(t) = \expec[\1{Z(t)=j} V_{Z(t)}^*(t)] = p_{0j}(0,t) V_j^*(t)
