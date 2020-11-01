@@ -2079,11 +2079,11 @@ XXXXX
 \newpage
 \section{Sensitivities -- Reserve-Dependent Benefits}
 
+In recent years, the question of retirement age has been vividly discussed in the Danish public. The main issue is whether workers of certain professions -- typically hard physical labor -- can (or rather, should) remain in the workforce until the rather high pension ages laid down in the 2006 political settlement Velfærdsforliget. For these groups, sensitivities are of great interest\footnote{Of course, the public discussion has focused on state pensions which are pay-as-you-go systems.}, as they reveal the trade-offs between premiums paid, time of retirement and benefits received.
+
 Having defined the prognoses, we will now formalize the concept of prognosis sensitivities. The point is to give the policy holder an idea of how much she can expect her benefits to increase if she postpones her time of retirement or if she increases premiums paid. And -- conversely -- how much she can expect her benefits to \textit{decrease} if she retires at an \textit{earlier} point in time or if she \textit{decreases} premiums paid.
 
-In recent years, the question of retirement age has been vividly discussed in the Danish public. The main issue is whether workers of certain professions -- typically hard physical labor -- can (or rather, should) remain in the workforce until the rather high pension ages laid down in the 2006 political settlement Velfærdsforliget. For these groups, sensitivities are of great interest\footnote{Of course, the public discussion has focused on state pensions which are pay-as-you-go systems.}, as they reveal the trade-offs between benefit level, premium level and time of retirement.
-
-Although we settle for two kinds of sensitivities in this thesis -- time of retirement and premium level -- the techniques presented can be used to obtain sensitivities for many other contract elements.
+We focus on only two kinds of sensitivities in this thesis -- time of retirement and premium level. However, the techniques presented can be used to obtain sensitivities for many other contract elements.
 
 The point of retirement is already formalized as $R$. We will now formalize what we mean by premium level. Given a payment stream $B$, we assume that the premium (i.e. negative) part of the payment stream takes the form
 
@@ -2101,35 +2101,37 @@ where $\alpha>0$ is the premium level. The sensitivities are now simply defined 
 
 for  $\theta = R,\alpha$. Since we have already seen that the case with guaranteed benefits is a special case of the case with reserve-dependent benefits, we only treat the latter.
 
-\subsection{Fixed Path}
+\newpage
+\subsection{Fixed Path} \label{FixedSens}
 
-For the case with reserve-dependent benefits, the quantities quickly become quite involved. For this reason, we start out in an extremely simple setting and incrementally move to more sophisticated modelling.
+For the entirety of Section \ref{FixedSens}, we assume that the policy holder remains active until retirement (and alive until age 100). In other words, we assume the fixed path $z=0$, where 0 is the active state.
 
-Consider a model without any insurance risk (let $\mathcal{J} = \{ 0 \}$ so there is only \textit{one} state-wise retrospective reserve; $W(t,R)$, which is the value of the reserve at time $t$, given retirement at time $R$). The contract simply consists of the reserve $W$ accruing with interest and with premium paid into it until retirement. Starting at time $R$, pension is paid out continuously as a fraction $a^{-1}(t)$ of the reserve. The reserve then has the continuous dynamics
+Recall the Unit Link savings contract from Section \ref{Numerics} (without any premium waiver). Assuming that the policy holder remains active until retirement $R$, her savings can be described by the differential equation (recall equation (\ref{Jaja2}))
 
 \begin{align} \label{ReserveDE}
-	W(dt,R) = r(t) W(t-,R) dt + 1_{t<R} \pi(t) dt - 1_{t \geq R} \frac{W(t-,R)}{a(t)} dt
+	\begin{split}
+		\frac{\partial}{\partial t}W(t) =& \left( r(t) + \mu(t) - \1{t \geq R} \frac{1}{a(t)}\right) W(t) \\
+		&+ \1{t<R} \pi(t)
+	\end{split}
 \end{align}
 
-and initial value $W(0,R)=0$. The quantity $a$ is the annuity
+where we have suppressed the subscripts on the mortality. The fixed path prognosis is (recall equation (\ref{Naja2}))
 
 \begin{align*}
-	a(t) = \int_t^n e^{-\int_t^s \bar{r}_t(u) du} ds
+	\hat{b}(t) =& \frac{W(t)}{a(t)}
 \end{align*}
 
-where $\bar{r}_t$ is some continuous payout interest rate curve decided by the company at time $t$. Since $a(t) \underset{t \to n}{\longrightarrow} 0$, it follows that $a^{-1}(t) \underset{t \to n}{\longrightarrow} \infty$, which ensures that the reserve is eventually paid out.
-
-Since there is only one benefit in this setting -- and since there is only one state -- the only prognosis is of course the pension benefit
+where we have suppressed the $z$-subscripts. Again, the quantity $a$ is the annuity
 
 \begin{align*}
-	\hat{b}(t) = \frac{W(t-,R)}{a(t)}, \, \, t \geq R
+	a(t) = \int_t^n e^{-\int_t^s \bar{r}_t(u) + \bar{\mu}_t(u) du} ds
 \end{align*}
 
-In the following, we will derive sensitivities for this prognosis.
+where $\bar{r}_t(u)$ is the payout interest rate curve ("beregningsrenten") and $\bar{\mu}_t(u)$ is the payout mortality rate curve.
 
 \subsubsection{Retirement sensitivity}
 
-With regard to the retirement sensitivity, i.e. infinitesimally postponing retirement, there are two interesting, but sensitivities to consider:
+Denote by $W(t,R)$ the savings at time $t$ given retirement at time $R$. With regard to the retirement sensitivity, i.e. infinitesimally postponing retirement, there are two interesting, but distinct sensitivities to consider:
 
 \begin{itemize}
 	\item The sensitivity of the pension benefit \textit{start} rate, i.e.
@@ -2148,65 +2150,88 @@ With regard to the retirement sensitivity, i.e. infinitesimally postponing retir
 
 The distinction is that in the first case, both the time of retirement and the time of payment are being moved infinitesimally. In the second case, only the time of retirement is moved whereas the time of payment is fixed.
 
-For the first case (\ref{StartPens}), we can solve the differential equation (\ref{ReserveDE}) to obtain
+\textbf{For the first case (\ref{StartPens})}, we can solve the differential equation (\ref{ReserveDE}) to obtain
 
 \begin{align} \label{ReserveAtRetirement}
-	W(R-,R) = \int_0^R e^{\int_s^R r(u) du} \pi(s) ds
+	W(R-,R) = \int_0^R e^{\int_s^R r(u) + \mu(u) du} \pi(s) ds
 \end{align}
 
-Differentiating, we obtain
+Differentiating, we obtain by Leibniz' integral rule
 
 \begin{align*}
-	\frac{\partial}{\partial R} W(R-,R) =& e^{\int_R^R r(u) du} \pi(R) + \int_0^R \frac{\partial}{\partial R} e^{\int_s^R r(u) du} \pi(s) ds \\
-	=& \pi(R) + r(R) W(R-,R)
+	\frac{\partial}{\partial R} W(R-,R) =& e^{\int_R^R r(u) + \mu(u) du} \pi(R) + \int_0^R \frac{\partial}{\partial R} e^{\int_s^R r(u) + \mu(u) du} \pi(s) ds \\
+	=& \pi(R) + \left(r(R) + \mu(R)\right) W(R-,R)
 \end{align*}
 
-which has the intuitive interpretation that postponing retirement has the effect of increasing the account \textit{at} retirement by the premium rate $\pi(R)$ and the rate of interest accrual $r(R) W(R-,R)$. By the quotient rule -- and assuming the necessary differentiability -- the sensitivity of the benefit rate at retirement is then
-
-\begin{align} \label{hatderiv}
-	\frac{\partial}{\partial R} \hat{b}(R) =& \frac{\partial}{\partial R} \frac{W(R-,R)}{a(R)} \nonumber \\
-	=& \frac{\left( \pi(R) + r(R) W(R-,R) \right) a(R) - W(R-,R) \left( \left( \bar{r}_R(R) - \gamma(R) \right) a(R) - 1 \right)}{\left( a(R) \right)^2} \nonumber \\
-	=& \frac{\pi(R) a(R)  + W(R-,R) + \left( r(R) - \left( \bar{r}_R(R) - \gamma(R) \right) \right) W(R-,R) a(R)}{\left( a(R) \right)^2},
-\end{align}
-
-where
+which has the intuitive interpretation that postponing retirement has the effect of increasing the saving \textit{at} retirement by the premium rate $\pi(R)$ and the rate of interest accrual $\left(r(R) + \mu(R)\right) W(R-,R)$. We also need the derivative of the annuity $a$, which  -- assuming the necessary differentiability -- is
 
 \begin{align*}
-	\gamma(R) = \int_R^n e^{-\int_R^s \bar{r}_R(u) du} \int_R^s 	\frac{\partial}{\partial R} \bar{r}_R(u) du ds
+	\frac{\partial}{\partial R} a(R) =& \frac{\partial}{\partial R} \int_R^n e^{-\int_R^s \bar{r}_R(u) + \bar{\mu}_R(u) du} ds \\
+	=& - 1 + \int_R^n \frac{\partial}{\partial R} e^{-\int_R^s \bar{r}_R(u) + \bar{\mu}_R(u) du} ds \\
+	=& - 1 + \int_R^n \left( \frac{\partial}{\partial R} \int_s^R \bar{r}_R(u) + \bar{\mu}_R(u) \right) e^{-\int_R^s \bar{r}_R(u) + \bar{\mu}_R(u) du} ds \\
+	=& - 1 + \int_R^n \left( \bar{r}_R(R) + \bar{\mu}_R(R) + \int_s^R 	\frac{\partial}{\partial R} \left(\bar{r}_R(u)+\bar{\mu}_R(u)\right) du \right) e^{-\int_R^s \bar{r}_R(u) + \bar{\mu}_R(u) du} ds.
 \end{align*}
 
-It is hard to give an intuitive interpretation of (\ref{hatderiv}). However, if we further make the two further assumptions that
+The term
+
+\begin{align*}
+	\frac{\partial}{\partial R} \left(\bar{r}_R(u)+\bar{\mu}_R(u)\right)
+\end{align*}
+
+describes how the payout rates curves $\bar{r}_R(u)$ and $\bar{\mu}_R(u)$ change as more information is gained by postponing $R$. We will here assume that
 
 \begin{itemize}
-	\item $\bar{r}_R (R) \approx r (R)$, i.e. that the payout interest rate curve initial value at retirement is close to the actual return rate at retirement, (which doesn't seem unreasonable).
-	\item $\frac{\partial}{\partial R} \bar{r}_R(u) \approx 0$ for $u > R$, i.e. that the information gained by postponing $R$ does not greatly change the payout interest curve $\bar{r}_R(u)$. This assumption is certainly eligible for criticism and is an interesting research question in its own right. It is however outside the scope of this thesis. Having made the assumption, we have $\gamma(R) \approx 0$.
+	\item $\frac{\partial}{\partial R} \bar{r}_R(u) = \frac{\partial}{\partial R} \bar{\mu}_R(u) = 0$ for $u > R$, i.e. that the information gained by postponing $R$ does not greatly change the curves $\bar{r}_R(u)$ and $\bar{\mu}_R(u)$. This assumption is certainly eligible for criticism and is an interesting research question in its own right. It is however outside the scope of this thesis.
 \end{itemize}
 
-We then obtain
+Having made the assumption, we have
+
+\begin{align*}
+	\frac{\partial}{\partial R} a(R) =& - 1 +  \left(\bar{r}_R(R)+\bar{\mu}_R(R)\right) a(R)
+\end{align*}
+
+Then, by the quotient rule, the prognosis sensitivity for the pension benefit start rate is
+
+\begin{align*}
+	\frac{\partial}{\partial R} \hat{b}(R) =& \frac{\partial}{\partial R} \frac{W(R-,R)}{a(R)} \\
+	=& \frac{\left( \pi(R) + \left(r(R) + \mu(R)\right) W(R-,R) \right) a(R) - W(R-,R) \left( \left(\bar{r}_R(R) + \bar{\mu}_R(R)\right) a(R) - 1 \right)}{\left( a(R) \right)^2} \\
+	=& \frac{\pi(R) a(R)  + W(R-,R) + \left( r(R) - \bar{r}_R(R) + \mu(R) - \bar{\mu}_R(R) \right) W(R-,R) a(R)}{\left( a(R) \right)^2} \\
+	=& \frac{\pi(R)  + W(R-,R) a^{-1}(R) + \left( r(R) - \bar{r}_R(R) + \mu(R) - \bar{\mu}_R(R) \right) W(R-,R)}{ a(R) }
+\end{align*}
+
+which is interpreted as follows: The numerator is the increment additional premium paid in $\pi(R)$ plus the increment benefit $W(R,R) a^{-1}(R)$ \textit{not} paid out, i.e. saved (hence the positive sign) plus the difference between the realized interest $r(R)$ and the payout interest $\bar{r}_R(R)$ weighted with the savings $W(R,R)$. So the sensitivity is the ratio between the infinitesimally additional savings and the annuity $a(R)$.
+
+With the added assumption that
+
+\begin{itemize}
+	\item $\bar{r}_R (R) \approx r (R)$, i.e. that the payout interest rate curve initial value at retirement is close to the interest rate at retirement,
+\end{itemize}
+
+we then obtain
 
 \begin{align*}
 	\frac{\partial}{\partial R} \hat{b}(R) \approx \frac{\pi(R) + W(R-,R) a^{-1}(R)}{a(R)},
 \end{align*}
 
-which is interpreted as follows: The numerator is the increment additional premium paid in $\pi(R)$ plus the increment benefit $W(R-,R) a^{-1}(R)$ \textit{not} paid out, i.e. saved (hence the positive sign). So the sensitivity is just the ratio between the  infinitesimal additional savings and the annuity $a(R)$.
+which -- again -- is interpreted as the ratio between 1) the increment additional premium paid in $\pi(R)$ plus the increment benefit $W(R-,R) a^{-1}(R)$ saved, and 2) the annuity $a(R)$.
 
-For the second case (\ref{LaterPens}), we can solve the differential equation (\ref{ReserveDE}) for $t>R$ as
+\textbf{For the second case (\ref{LaterPens})}, we can solve the differential equation (\ref{ReserveDE}) for $t>R$ as
 
 \begin{align} \label{ReserveAfterRetirement}
-	W(t-,R) =& W(R-,R) e^{\int_R^t r(u) - a^{-1}(u) du},
+	W(t-,R) =& W(R-,R) e^{\int_R^t r(u) + \mu(u) - a^{-1}(u) du},
 \end{align}
 
 which just says that the account at time $t>R$ is the account at retirement, positively compounded with interest and negatively compounded with benefits paid out. Differentiating, we obtain
 
 \begin{align*}
-	\frac{\partial}{\partial R} W(t-,R) =& \left( \pi(R) + r(R) W(R-,R) \right) e^{\int_R^t r(u) - a^{-1}(u) du} \\
-	&+ W(R-,R) \left( - r(u) + a^{-1}(u) \right) e^{\int_R^t r(R) - a^{-1}(R) du} \\
-	=& e^{\int_R^t r(u) - a^{-1}(u) du} \left( \pi (R) + W(R-,R) a^{-1}(R) \right)
+	\frac{\partial}{\partial R} W(t-,R) =& \left( \pi(R) + \left(r(R) + \mu(R)\right) W(R-,R) \right) e^{\int_R^t r(u) + \mu(u) - a^{-1}(u) du} \\
+	&+ W(R-,R) \left( - r(R) - \mu(R) + a^{-1}(R) \right) e^{\int_R^t r(u) + \mu(u) - a^{-1}(u) du} \\
+	=& e^{\int_R^t r(u) + \mu(u) - a^{-1}(u) du} \left( \pi (R) + W(R-,R) a^{-1}(R) \right)
 \end{align*}
 
-which is interpreted as follows: By postponing retirement, an additional increment of $\pi(R)$ is paid in. Also, an increment \textit{less} of the benefit rate $W(R-,R) a^{-1}(R)$ is paid out, i.e. saved (hence the positive sign). These additional savings are then compounded (positively with $r$ and negatively with $a^{-1}$) until time $t>R$. Note that, contrary to the first case, there is no interest term $r(R)W(R-,R)$. This is because we -- in this case -- are keeping $t$ fixed.
+which is interpreted as follows: By postponing retirement, an additional increment of $\pi(R)$ is paid in. Also, an increment \textit{less} of the benefit rate $W(R-,R) a^{-1}(R)$ is paid out, i.e. saved (hence the positive sign). These additional savings are then compounded (positively with $r$ and $\mu$ and negatively with $a^{-1}$) until time $t>R$.
 
-The sensitivity of the pension benefit rate paid out at time $t$ is then
+The sensitivity of the pension benefit rate paid out at time $t>R$ is then
 
 \begin{align*}
 	\frac{\partial}{\partial R} \hat{b}(t) =& \frac{\partial}{\partial R} \frac{W(t-,R)}{a(t)} \\ =& \frac{e^{\int_R^t r(u) - a^{-1}(u) du} \left( \pi (R) + W(R-,R) a^{-1}(R) \right)}{a(t)}
@@ -2215,21 +2240,21 @@ The sensitivity of the pension benefit rate paid out at time $t$ is then
 Note that this is consistent with the 
 
 \begin{example}
-Premiums are set to 80 t.DKK (real) per annum starting at age 25. We consider three scenarios with varying real return rates; Low (1\%), Mean (3\%) and High (5\%). The table below then shows the value of the reserve at retirement at age 65, i.e. $W(R-,R)|_{R=65}$ along with the start benefit $\hat{b}(R)|_{R=65}$. Tallene er små idet der ikke er arv fra døde, mu er 0.
+As in Example \ref{Numerics}, premiums are set to 80 t.DKK (real) per annum starting at age 25. We consider three scenarios with varying real return rates; Low (1\%), Mean (3\%) and High (5\%). The table below then shows the value of the reserve at retirement at age 65, i.e. $W(R,R)|_{R=65}$ along with the start benefit $\hat{b}(R)|_{R=65}$.
 
 \begin{center}
 	\begin{tabular}{ |c|c|c|c|c| }
 		\hline
-		Scenario & $r$ & $\bar{r}$ & $W(R-,R)$ in t.DKK & $\hat{b}(R)$ in t.DKK \\
+		Scenario & $r$ & $\bar{r}$ & $W(R-,R)$ in m.DKK & $\hat{b}(R)$ in t.DKK \\
 		\hline
-		Low & 0.02 & 0.03 & 4,905 & 226 \\
-		Mean & 0.03 & 0.03 & 6,188 & 285 \\
-		High & 0.04 & 0.03 & 7,902 & 364 \\
+		Low & 0.02 & 0.03 & 6.059 & 529 \\
+		Mean & 0.03 & 0.03 & 7.691 & 671 \\
+		High & 0.04 & 0.03 & 9.876 & 862 \\
 		\hline
 	\end{tabular}
 \end{center}
 
-Note that the payout interest rate $\bar{r}$ is the same in all three scenarios. This means that the scenarios differ not only on the realized return rates $r$, but also on whether the payout interest rate $\bar{r}$ is fixed above or below the realized return rate $r$. The result is the following figure:
+Note that the payout interest rate $\bar{r}$ is the same in all three scenarios. This means that the scenarios differ not only on the realized interest rates $r$, but also on whether the payout interest rate $\bar{r}$ is fixed above or below the realized interest rate $r$. The result is the following figure:
 
 \begin{figure}[H] \label{RSensiGraph}
 	\centering
@@ -2240,38 +2265,9 @@ Note that the payout interest rate $\bar{r}$ is the same in all three scenarios.
 There are at least two features worth noting on Figure \ref{RSensiGraph}:
 
 \begin{itemize}
-	\item As can be seen from the starting points of the three curves, the effect on the annual start benefit rate $\hat{b}(R)$ of postponing retirement one year is around 15-20 t.DKK (or equivalently 1.3-1.7 t.DKK effect on the monthly rate) -- depending on the rate of return in the savings phase.
-	\item This postponement effect then increases/decreases/remains constant for later benefit rates $\hat{b}(t)$, $t>R$ depending on the scenario. For instance -- when $r < \bar{r}$ -- the retirement sensitivity decreasess in time because the benefit rate does (as we saw in Example XXX). Intuitively, when most of the reserve is paid out in the early phase of retirement, increasing the reserve by postponing retirement matters most for these early benefit rates.
+	\item As can be seen from the starting points of the three curves, the effect on the annual start benefit rate $\hat{b}(R)$ of postponing retirement one year is around 50-80 t.DKK on the annual rate (or equivalently 4-6 t.DKK effect on the monthly rate) -- depending on the rate of return in the savings phase. This figure is of interest to a policy holder considering whether to postpone retirement by a year.
+	\item This postponement effect then increases/decreases/remains constant for later benefit rates $\hat{b}(t)$, $t>R$ depending on the scenario. For instance -- when $r < \bar{r}$ -- the retirement sensitivity decreases in time because the benefit rate does (as we saw in Example \ref{Numerics}). Intuitively, when most of the reserve is paid out in the early phase of retirement, increasing the reserve by postponing retirement matters most for these early benefit rates.
 \end{itemize}
-
-\end{example}
-
-\begin{remark}
-As we saw in Chapter \ref{ChapReserveDepBen}, If $\bar{r}=r$, 
-
-\begin{align*}
-	\frac{\partial}{\partial R} \frac{W(t-,R)}{a(t)} = \frac{\pi (R) + W(R-,R) a^{-1}(R)}{a(R)}
-\end{align*}
-\end{remark}
-
-Comment
-
-\begin{example}
-	Assume that
-	
-	\begin{align*}
-		x =& 25 \\
-		R =& 68 \\
-		r = \bar{r} =& 0.05 \\
-		\pi =& 80,000
-	\end{align*}
-
-	By numerical computations, we obtain
-	
-	\begin{align*}
-		\frac{\partial}{\partial R} W(R-,R) =& XXX \\
-		\pi =& 50,000
-	\end{align*}
 \end{example}
 
 \subsubsection{Premium sensitivity}
@@ -2304,7 +2300,7 @@ which just states that increasing the premium intensity increases the reserve at
 	\frac{\partial}{\partial \alpha }\frac{W(t-,R,\alpha)}{a(t)} = \frac{W(t-,R,1)}{a(t)},
 \end{align}
 
-which, again, is constant in $\alpha$.
+which -- again -- is constant in $\alpha$.
 
 \subsubsection{A contour map of benefits}
 
@@ -2318,7 +2314,7 @@ Having calculated the sensitivities (i.e. derivatives) of the prognosis benefit 
 	\end{bmatrix}
 \end{align*}
 
-for each $t \geq R$. With this, we can obtain a contour map of benefits, illustrating the trade-off between premium level $\alpha$ and time of retirement $R$. Samme tal som sidste eksempel.
+for each $t \geq R$. With this, we can obtain a contour map of benefits, illustrating the trade-off between premium level $\alpha$ and time of retirement $R$. Premiums are again set at 80 t.DKK yearly beginning at age 25.
 
 \begin{figure}[H] \label{ContourGraph}
 	\centering
@@ -2326,7 +2322,12 @@ for each $t \geq R$. With this, we can obtain a contour map of benefits, illustr
 	\includegraphics[width=\textwidth]{Contour}		
 \end{figure}
 
-Figure XXX shows the different avenues available (given that the pension scheme legislation is flexible enough) for obtaining a certain benefit level. This information is useful to the policy holder planning his retirement.
+Figure 6.2 shows the different avenues available (given that the pension scheme legislation is flexible enough) for obtaining a certain benefit level. This information is useful to the policy holder planning her retirement timing. Worth noting is:
+
+\begin{itemize}
+	\item The standard parameters $\alpha=1$ and $R=65$ gives a start benefit rate of around 670 t.DKK per annum, which is consistent with earlier results.
+	\item From the bottom-left to the top-right the lines get increasingly close (going from one line to the next -- starting in the bottom left -- symbolizes an annual benefit rate increase of 200 t.DKK). This is because XXX.
+\end{itemize}
 
 \subsubsection{Exchange ratios}
 
@@ -2356,6 +2357,7 @@ In the simple contract pursued in this section, the exchange ratio for the progn
 
 In the preceding section, intuitive results on sensitivities and exchange ratios were obtained for a simple savings contract. However, the setting had been without insurance event risk. The natural next step is to adapt the results of the preceding section to a setting with insurance risk.
 
+\newpage
 \subsection{Restricted Path}
 
 When adding insurance risk, most quantities -- reserves, sensitivities, exchange ratios -- no longer have closed form solutions. Consequently, we have to settle for deriving systems of differential equations describing the sensitivities and solving them numerically.
@@ -2534,6 +2536,7 @@ Having calculated the prognosis sensitivities in time of retirement $R$ and prem
 
 that is the rate by which the policy holder must increase her premium level in order to retire one year earlier with the same benefit rate. 
 
+\newpage
 \section{Suggestions for further research}
 
 \begin{itemize}
@@ -2605,24 +2608,46 @@ Now letting $h$ tend to zero, we obtain the desired result by the following lemm
 
 \section{Proof of Proposition \ref{MainResult}} \label{MainProof}
 
-Assume that $p_{Z(t_0)j}(t_0,t)>0$ for all $t>t_0$ and all $j \in \mathcal{J}$. We then have by Fubini's theorem and the tower property
+Assume that $p_{Z(t_0)j}(t_0,t)>0$ for all $t>t_0$ and all $j \in \mathcal{J}$. We then have
 
 \begin{align*}
     \tilde{W}_j(t) =& \expec[W(t) \1{Z(t)=j}] \\
     =& \expec[w_0 \1{Z(t)=j}] + \expec[\int_0^t \1{Z(t)=j} dW(s)] \\
     =& p_{Z(t_0)j}(t_0,t) \cdot w \\
-    &+ \expec[\int_0^t \1{Z(t)=j} f_{Z(s-)}(s,W(s-)) ds] \\
-    &+ \expec[\int_0^t \sum_{k \in \mathcal{J} \atop k \neq Z(s-)} \1{Z(t)=j} g_{Z(s-)k}(s,W(s-)) dN_k(s)] \\
-    &+ \expec[\int_0^t \1{Z(t)=j} h_{Z(s-)}(s,W(s-)) d \varepsilon_{R}(s)] \\
-    =& p_{Z(t_0)j}(t_0,t) \cdot w \\
-    &+ \int_0^t \mathbbm{E} \left[ \econd[\1{Z(t)=j} f_{Z(s-)}(s,W(s-))]{Z(s-)} \right] ds \\
-    &+ \mathbbm{E} \left[ \econd[ \int_0^t \sum_{k \in \mathcal{J} \atop k \neq Z(s-)} \1{Z(t)=j} g_{Z(s-)k}(s,W(s-)) dN_k(s)]{Z(t)} \right] \\
-    &+ \mathbbm{E} \left[ \econd[\int_0^t \1{Z(t)=j} h_{Z(s-)}(s,W(s-)) d \varepsilon_{R}(s)]{Z(R-)} \right] \\
-    =& p_{Z(t_0)j}(t_0,t) \cdot w \\
-    &+ \int_0^t \sum_{i \in \mathcal{J}} p_{0i}(0,s-) \econd[\1{Z(t)=j} f_{i}(s,W(s-))]{Z(s-)=i} ds \\
-    &+ \expec[ \int_0^t \sum_{k \in \mathcal{J} \atop k \neq Z(s-)} \1{Z(t)=j} g_{Z(s-)k}(s,W(s-)) \1{Z(s-)=i} \mu_{ik}(s) \frac{p_{kj}(s,t)}{p_{ij}(s,t)} ds] \\
-    &+ \sum_{i \in \mathcal{J}} p_{0i}(0,R-) \econd[\int_0^t \1{Z(t)=j} h_{i}(s,W(s-)) d \varepsilon_{R}(s)]{Z(R-)=i} \\
-    =& p_{Z(t_0)j}(t_0,t) \cdot w \\
+    &+ \underbrace{\expec[\int_0^t \1{Z(t)=j} f_{Z(s-)}(s,W(s-)) ds]}_* \\
+    &+ \underbrace{\expec[\int_0^t \sum_{k \in \mathcal{J} \atop k \neq Z(s-)} \1{Z(t)=j} g_{Z(s-)k}(s,W(s-)) dN_k(s)]}_{**} \\
+    &+ \underbrace{\expec[\int_0^t \1{Z(t)=j} h_{Z(s-)}(s,W(s-)) d \varepsilon_{R}(s)]}_{***}.
+\end{align*}
+
+By Fubini's Theorem and the Tower Property, we then have
+
+\begin{align*}
+	* =& \int_0^t \mathbbm{E} \left[ \econd[\1{Z(t)=j} f_{Z(s-)}(s,W(s-))]{Z(s-)} \right] ds \\
+	=& \int_0^t \sum_{i \in \mathcal{J}} p_{0i}(0,s-) \econd[\1{Z(t)=j} f_{i}(s,W(s-))]{Z(s-)=i} ds.
+\end{align*}
+
+For $**$ we have
+
+\begin{align*}
+	** =& \mathbbm{E} \left[ \econd[ \int_0^t \sum_{k \in \mathcal{J} \atop k \neq Z(s-)} \1{Z(t)=j} g_{Z(s-)k}(s,W(s-)) dN_k(s)]{Z(t)} \right] \\
+	=& \expec[ \int_0^t \sum_{k \in \mathcal{J} \atop k \neq Z(s-)} \1{Z(t)=j} g_{Z(s-)k}(s,W(s-)) \1{Z(s-)=i} \mu_{ik}(s) \frac{p_{kj}(s,t)}{p_{ij}(s,t)} ds] \\
+	=& \int_0^t \sum_{i \in \mathcal{J}} p_{0i}(0,s-) \sum_{k \in \mathcal{J} \atop k \neq i} \econd[\1{Z(t)=j} g_{ik}(s,W(s-))]{Z(s-)=i} \mu_{ik}(s) \frac{p_{kj}(s,t)}{p_{ij}(s,t)} ds,
+\end{align*}
+
+where we used that $g_{Z(s-)k}(s,W(s-))$ is predictable and that $\1{Z(-s) \neq k}\1{Z(t)=j}dN_k(s)$ has predictable compensator $\1{Z(t)=j} \sum_{i \in \mathcal{J} \atop i \neq k} \1{Z(s-)=i} \mu_{ik}(s) \frac{p_{kj}(s,t)}{p_{ij}(s,t)}$ (see \cite{Lollike}). EVT SKIFT I MED Z NOGET.
+
+Finally, we have for $***$
+
+\begin{align*}
+	*** =& \mathbbm{E} \left[ \econd[\int_0^t \1{Z(t)=j} h_{Z(s-)}(s,W(s-)) d \varepsilon_{R}(s)]{Z(R-)} \right] \\
+	=& \sum_{i \in \mathcal{J}} p_{0i}(0,R-) \econd[\int_0^t \1{Z(t)=j} h_{i}(s,W(s-)) d \varepsilon_{R}(s)]{Z(R-)=i} \\
+	=& \1{t \geq R} \sum_{i \in \mathcal{J}} p_{0i}(0,R-) \econd[\1{Z(t)=j} h_{i}(R,W(R-))]{Z(R-)=i}
+\end{align*}
+
+Putting it all together, we have
+
+\begin{align*}
+    \tilde{W}_j(t) =& p_{Z(t_0)j}(t_0,t) \cdot w \\
     &+ \int_0^t \sum_{i \in \mathcal{J}} p_{0i}(0,s-) \econd[\1{Z(t)=j} f_{i}(s,W(s-))]{Z(s-)=i} ds \\
     &+ \int_0^t \sum_{i \in \mathcal{J}} p_{0i}(0,s-) \sum_{k \in \mathcal{J} \atop k \neq i} \econd[\1{Z(t)=j} g_{ik}(s,W(s-))]{Z(s-)=i} \mu_{ik}(s) \frac{p_{kj}(s,t)}{p_{ij}(s,t)} ds \\
     &+ \1{t \geq R} \sum_{i \in \mathcal{J}} p_{0i}(0,R-) \econd[\1{Z(t)=j} h_{i}(R,W(R-))]{Z(R-)=i} \\

@@ -189,18 +189,18 @@ for i = 0 to (timePoints-1) do
         p_10.[i,j] <- p_10.[i,j-1] + (-p_10.[i,j-1] * ((m_01MV time.[j-1]) + (m_02MV time.[j-1])) + p_11.[i,j-1] * (m_10MV time.[j-1])) * delta
 
     if i = 0 then W.[i] <- 0.0
-    else W.[i] <- W.[i-1] + (W.[i-1] * rMV.[i-1] + piSensi) * delta
+    else W.[i] <- W.[i-1] + (W.[i-1] * (rMV.[i-1] + (m_02MV time.[i-1])) + piSensi) * delta
 
     if i = 0 then W_high.[i] <- 0.0
-    else W_high.[i] <- W_high.[i-1] + (W_high.[i-1] * rMV_high.[i-1] + piSensi) * delta
+    else W_high.[i] <- W_high.[i-1] + (W_high.[i-1] * (rMV_high.[i-1] + (m_02MV time.[i-1])) + piSensi) * delta
 
     if i = 0 then W.[i] <- 0.0
-    else W_low.[i] <- W_low.[i-1] + (W_low.[i-1] * rMV_low.[i-1] + piSensi) * delta
+    else W_low.[i] <- W_low.[i-1] + (W_low.[i-1] * (rMV_low.[i-1] + (m_02MV time.[i-1])) + piSensi) * delta
 
     // a
 for i = (timePoints-1) downto 0 do
     if i = (timePoints-1) then a.[i] <- 0.0
-    else a.[i] <- a.[i+1] + (1.0 - a.[i+1] * rMV.[i+1]) * delta
+    else a.[i] <- a.[i+1] + (1.0 - a.[i+1] * (rMV.[i+1] + (m_02MV time.[i+1]))) * delta
 
 for i = (timePoints-1) downto 0 do
     if i = (timePoints-1) then a_high.[i] <- 0.0
@@ -213,67 +213,67 @@ for i = (timePoints-1) downto 0 do
     // faktors
 for i = 0 to (timePoints-1) do
     if time.[i] < R then faktor.[i] <- 1.0
-    else faktor.[i] <- faktor.[i-1] + (faktor.[i-1] * (rMV.[i-1] - 1.0/a.[i-1])) * delta
+    else faktor.[i] <- faktor.[i-1] + (faktor.[i-1] * ((rMV.[i-1] + (m_02MV time.[i-1])) - 1.0/a.[i-1])) * delta
 
 for i = 0 to (timePoints-1) do
     if time.[i] < R then faktor_high.[i] <- 1.0
-    else faktor_high.[i] <- faktor_high.[i-1] + (faktor_high.[i-1] * (rMV_high.[i-1] - 1.0/a.[i-1])) * delta
+    else faktor_high.[i] <- faktor_high.[i-1] + (faktor_high.[i-1] * ((rMV_high.[i-1] + (m_02MV time.[i-1])) - 1.0/a.[i-1])) * delta
 
 for i = 0 to (timePoints-1) do
     if time.[i] < R then faktor_low.[i] <- 1.0
-    else faktor_low.[i] <- faktor_low.[i-1] + (faktor_low.[i-1] * (rMV_low.[i-1] - 1.0/a.[i-1])) * delta
+    else faktor_low.[i] <- faktor_low.[i-1] + (faktor_low.[i-1] * ((rMV_low.[i-1] + (m_02MV time.[i-1])) - 1.0/a.[i-1])) * delta
     
 
 
 
 
 
-let ReservesMV = Chart.Combine([
-                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], YMV.Y0.[i]/1000000.0)],Name="\u1EF8\u2080")
-                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], YMV.Y1.[i]/1000000.0)],Name="\u1EF8\u2081")
-                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], YMV.Ybar.[i]/1000000.0)],Name="Yz")
-                        ])                  
-                |> Chart.WithLegend(Docking=ChartTypes.Docking.Right)
-                |> Chart.WithXAxis(TitleFontSize=16.0, Min = t_0)
-                |> Chart.WithYAxis(Title="m.DKK", TitleFontSize=16.0, Min = 0.0, Max = 8.0, MajorTickMark = ChartTypes.TickMark(Interval = 2.0))
-                |> Chart.WithTitle(Text = "Best Estimate",InsideArea = false)
+//let ReservesMV = Chart.Combine([
+//                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], YMV.Y0.[i]/1000000.0)],Name="\u1EF8\u2080")
+//                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], YMV.Y1.[i]/1000000.0)],Name="\u1EF8\u2081")
+//                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], YMV.Ybar.[i]/1000000.0)],Name="Yz")
+//                        ])                  
+//                |> Chart.WithLegend(Docking=ChartTypes.Docking.Right)
+//                |> Chart.WithXAxis(TitleFontSize=16.0, Min = t_0)
+//                |> Chart.WithYAxis(Title="m.DKK", TitleFontSize=16.0, Min = 0.0, Max = 8.0, MajorTickMark = ChartTypes.TickMark(Interval = 2.0))
+//                |> Chart.WithTitle(Text = "Best Estimate",InsideArea = false)
 
 
-let ReservesMV2 = Chart.Combine([
-                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], YDisStress.Y0.[i]/1000000.0)],Name="\u1EF8\u2080 ")
-                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], YDisStress.Y1.[i]/1000000.0)],Name="\u1EF8\u2081 ")
-                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], YDisStress.Ybar.[i]/1000000.0)],Name="Yz ")
-                        ])                  
-                |> Chart.WithLegend(Docking=ChartTypes.Docking.Right)
-                |> Chart.WithXAxis(Title="Age", TitleFontSize=16.0, Min = t_0)
-                |> Chart.WithYAxis(Title="m.DKK", TitleFontSize=16.0, Min = 0.0, Max = 8.0, MajorTickMark = ChartTypes.TickMark(Interval = 2.0))
-                |> Chart.WithTitle(Text = "Disability Stress",InsideArea = false)
+//let ReservesMV2 = Chart.Combine([
+//                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], YDisStress.Y0.[i]/1000000.0)],Name="\u1EF8\u2080 ")
+//                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], YDisStress.Y1.[i]/1000000.0)],Name="\u1EF8\u2081 ")
+//                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], YDisStress.Ybar.[i]/1000000.0)],Name="Yz ")
+//                        ])                  
+//                |> Chart.WithLegend(Docking=ChartTypes.Docking.Right)
+//                |> Chart.WithXAxis(Title="Age", TitleFontSize=16.0, Min = t_0)
+//                |> Chart.WithYAxis(Title="m.DKK", TitleFontSize=16.0, Min = 0.0, Max = 8.0, MajorTickMark = ChartTypes.TickMark(Interval = 2.0))
+//                |> Chart.WithTitle(Text = "Disability Stress",InsideArea = false)
 
-let ReservesMV3 = Chart.Combine([
-                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], YLongStress.Y0.[i]/1000000.0)],Name="\u1EF8\u2080  ")
-                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], YLongStress.Y1.[i]/1000000.0)],Name="\u1EF8\u2081  ")
-                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], YLongStress.Ybar.[i]/1000000.0)],Name="Yz  ")
-                        ])                  
-                |> Chart.WithLegend(Docking=ChartTypes.Docking.Right)
-                |> Chart.WithXAxis(TitleFontSize=16.0, Min = t_0)
-                |> Chart.WithYAxis(TitleFontSize=16.0, Min = 0.0, Max = 8.0, MajorTickMark = ChartTypes.TickMark(Interval = 2.0))
-                |> Chart.WithTitle(Text = "Longevity Stress",InsideArea = false)
-
-
-let ReservesMV4 = Chart.Combine([
-                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], YInterestStress.Y0.[i]/1000000.0)],Name="\u1EF8\u2080   ")
-                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], YInterestStress.Y1.[i]/1000000.0)],Name="\u1EF8\u2081   ")
-                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], YInterestStress.Ybar.[i]/1000000.0)],Name="Yz   ")
-                        ])                  
-                |> Chart.WithLegend(Docking=ChartTypes.Docking.Right)
-                |> Chart.WithXAxis(Title="Age", TitleFontSize=16.0, Min = t_0)
-                |> Chart.WithYAxis(TitleFontSize=16.0, Min = 0.0, Max = 8.0, MajorTickMark = ChartTypes.TickMark(Interval = 2.0))
-                |> Chart.WithTitle(Text = "Interest Stress",InsideArea = false)
+//let ReservesMV3 = Chart.Combine([
+//                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], YLongStress.Y0.[i]/1000000.0)],Name="\u1EF8\u2080  ")
+//                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], YLongStress.Y1.[i]/1000000.0)],Name="\u1EF8\u2081  ")
+//                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], YLongStress.Ybar.[i]/1000000.0)],Name="Yz  ")
+//                        ])                  
+//                |> Chart.WithLegend(Docking=ChartTypes.Docking.Right)
+//                |> Chart.WithXAxis(TitleFontSize=16.0, Min = t_0)
+//                |> Chart.WithYAxis(TitleFontSize=16.0, Min = 0.0, Max = 8.0, MajorTickMark = ChartTypes.TickMark(Interval = 2.0))
+//                |> Chart.WithTitle(Text = "Longevity Stress",InsideArea = false)
 
 
-let ReservesCombo1 = Chart.Rows (seq {ReservesMV; ReservesMV2})
-let ReservesCombo2 = Chart.Rows (seq {ReservesMV3; ReservesMV4})
-let ReservesCombo3 = Chart.Columns (seq {ReservesCombo1; ReservesCombo2}) |> Chart.Save "H:\SpecialyNY\Reserves.png"
+//let ReservesMV4 = Chart.Combine([
+//                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], YInterestStress.Y0.[i]/1000000.0)],Name="\u1EF8\u2080   ")
+//                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], YInterestStress.Y1.[i]/1000000.0)],Name="\u1EF8\u2081   ")
+//                        Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], YInterestStress.Ybar.[i]/1000000.0)],Name="Yz   ")
+//                        ])                  
+//                |> Chart.WithLegend(Docking=ChartTypes.Docking.Right)
+//                |> Chart.WithXAxis(Title="Age", TitleFontSize=16.0, Min = t_0)
+//                |> Chart.WithYAxis(TitleFontSize=16.0, Min = 0.0, Max = 8.0, MajorTickMark = ChartTypes.TickMark(Interval = 2.0))
+//                |> Chart.WithTitle(Text = "Interest Stress",InsideArea = false)
+
+
+//let ReservesCombo1 = Chart.Rows (seq {ReservesMV; ReservesMV2})
+//let ReservesCombo2 = Chart.Rows (seq {ReservesMV3; ReservesMV4})
+//let ReservesCombo3 = Chart.Columns (seq {ReservesCombo1; ReservesCombo2}) |> Chart.Save "H:\SpecialyNY\Reserves.png"
 
 
 
@@ -293,15 +293,17 @@ let ReservesCombo3 = Chart.Columns (seq {ReservesCombo1; ReservesCombo2}) |> Cha
 //              |> Chart.WithLegend(Title="")
 //              |> Chart.Save "H:\SpecialyNY\BenefitsNy.png"
 
-//let RSensi = Chart.Combine([
-//                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], faktor_low.[i]*(piSensi + W_low.[Rindex]/a.[Rindex])/a.[i]/1000.0)],Name="r < r_bar")
-//                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], faktor.[i]*(piSensi + W.[Rindex]/a.[Rindex])/a.[i]/1000.0)],Name="r = r_bar")
-//                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], faktor_high.[i]*(piSensi + W_high.[Rindex]/a.[Rindex])/a.[i]/1000.0)],Name="r > r_bar")
-//                    ])                  
-//                |> Chart.WithLegend(Docking=ChartTypes.Docking.Left)
-//                |> Chart.WithXAxis(Title="Age", TitleFontSize=16.0, Min = R)
-//                |> Chart.WithYAxis(Title="Retirement sensitivity for annual benefits in t.DKK", TitleFontSize=16.0)
-//                |> Chart.Save "H:\SpecialyNY\RsensiNy.png"
+let RSensi = Chart.Combine([
+                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], faktor_low.[i]*(piSensi + W_low.[Rindex]/a.[Rindex])/a.[i]/1000.0)],Name="r < r_bar")
+                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], faktor.[i]*(piSensi + W.[Rindex]/a.[Rindex])/a.[i]/1000.0)],Name="r = r_bar")
+                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], faktor_high.[i]*(piSensi + W_high.[Rindex]/a.[Rindex])/a.[i]/1000.0)],Name="r > r_bar")
+                    ])                  
+                |> Chart.WithLegend(Docking=ChartTypes.Docking.Left)
+                |> Chart.WithXAxis(Title="Age", TitleFontSize=16.0, Min = R)
+                |> Chart.WithYAxis(Title="Retirement sensitivity for annual benefits in t.DKK", TitleFontSize=16.0)
+                |> Chart.Save "H:\SpecialyNY\Rsensi.png"
+
+W_high.[Rindex]/a.[Rindex]
 
 //let LumpSum = Chart.Combine([
 //                    Chart.Line ([for i in Rindex .. SeventyIndex -> (time.[i], 1.0)],Name="Fixed Path Prognosis")
