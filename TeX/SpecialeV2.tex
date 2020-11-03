@@ -32,6 +32,8 @@
 \usetikzlibrary{arrows}
 \usetikzlibrary{calc}
 
+\usepackage[nottoc,numbib]{tocbibind}
+
 \newcommand{\alg}[2]{\sigma \left(\mathcal{#1}_#2 \right)} 
 \let\oldemptyset\emptyset
 \let\emptyset\varnothing
@@ -117,12 +119,37 @@
 
 \title{a} %Slet denne og indkommenter ovenstående
 
+\usepackage{glossaries}
+\newglossary[slg]{symbolslist}{syi}{syg}{Notation overview} 
+\makeglossaries
+
+\include{glossaries}
+\setlength{\glsdescwidth}{20cm}
+
+\newglossarystyle{notationlong}{%
+	\setglossarystyle{long}% base this style on the list style
+	\renewenvironment{theglossary}{% Change the table type --> 3 columns
+		\begin{longtable}{lp{0.6\glsdescwidth}}}%
+		{\end{longtable}}%
+	
+	\renewcommand*{\glossaryheader}{%  Change the table header
+		\bfseries Sign & \bfseries Description \\
+		\hline
+		\endhead}
+	\renewcommand*{\glossentry}[2]{%  Change the displayed items
+		\glstarget{##1}{\glossentryname{##1}} %
+		& \glossentrydesc{##1}
+		\tabularnewline
+	}
+	
+}
+
 \begin{document}
 
 \maketitle
 
 \begin{abstract}
-	content...
+	Few other actuarial topics can garner more policy holder interest than the topic of benefit prognoses. In spite of this, relatively little attention has been given to this area in the literature and in the industry. In this thesis, we show how most currently offered prognoses can be classified as \textit{fixed path prognoses}, i.e. prognoses assuming a fixed path for the state process of the policy holder. We then propose an alternative -- \textit{restricted path prognoses}, where the state process is not fixed, but only restricted to a subset of states -- and show how this can lead to more conservative prognoses. Also, the thesis introduces \textit{prognosis sensitivities} as a way to quantify and communicate how the decisions available to the policy holder -- such as retirement timing and premium payments -- affect the level of benefits paid out.
 \end{abstract}
 
 \newpage
@@ -135,9 +162,12 @@ A list of symbol... Cn.... dirac-mål
 
 \section{Introduction}
 
-In March 2018, the insurance and pension industry association Forsikring \& Pension published new guidelines for the pension prognoses presented to policy holders. The purpose was to secure more consistent methods of calculation between companies and to present the financial risk associated with the prognoses.
+In March 2018, the Danish insurance and pension industry association Forsikring \& Pension published new guidelines for the pension prognoses presented to policy holders. The purpose was to secure more consistent methods of calculation between companies and to present the financial risk associated with the prognoses.
 
-The biometric risks are, however, somewhat neglected, as the prognoses still make the (rather optimistic) assumption that the policy holder remains active and premium paying up until retirement -- the possibility of spells of disability or unemployment is ignored. Also, the prognoses give the policy holder no information on how she can influence them -- e.g. by postponing retirement or by saving at a higher rate.
+The events risks are, however, somewhat neglected. Most prognoses still make the assumption that the policy holder remains active and premium paying up until retirement -- the possibility of spells of disability or unemployment is ignored.
+
+
+Also, the prognoses give the policy holder no information on how she can influence them -- e.g. by postponing retirement or by saving at a higher rate.
 
 The thesis attempts to remedy these two shortcomings. The idea is to take the financial market as given (deterministic or simulated scenario) and handle the realization risks with classic actuarial techniques. This will result in differential equations describing the prognoses, which can then be computed numerically. The differential equations are then themselves differentiated with respect to the premium level and time of retirement, thereby arriving at new sets of differential equations for the derivatives, which again can be solved numerically. With these derivatives in hands, we can give the policy holder valuable information on how she can influence her expected benefits by retiring later or paying more premiums.
 
@@ -155,11 +185,13 @@ LOLLIKE, KALASHNIKOV OG REITZEL. extends lollike with lump sum and cash dividend
 
 Chapter 2 introduces the general multi-state Markov model setup that forms the foundation for the rest of the thesis. Then, the scenario-based approach to systematic risks (financial and biometric) is presented and motivated. Finally, a number of classical results are refreshed for later use.
 
-Chapter 3 broaches the question of which quantities to prognosticate and the case is made for the expected benefit rates (sojourn, lump sum and transition). Next is a discussion of the assumptions on the state path of the insured between the time of prognostication and the time of payout. It is here that the thesis makes its first contribution by breaking with the classical assumption that the insured remains active until retirement. Following these considerations, formal prognosis definitions are proposed and exemplified in three classical life insurance models.
+Chapter 3 broaches the question of which quantities to prognosticate and the case is made for the expected benefit rates (sojourn, lump sum and transition). Next is a discussion of the assumptions on the state path of the insured between the time of prognostication and the time of payment. It is here that the thesis makes its first contribution by presenting an alternative to the classical prognosis approach. Classically, it is assumed that the insured remains active until retirement. We denote this approach \textit{fixed path prognoses}. The proposed alternative is the so-called \textit{restricted path prognoses}, where the state process is allowed to move within a subset of states. Following these considerations, formal prognosis definitions are proposed and exemplified in three classical life insurance models.
 
-Chapter 4 treats 
+Chapter 4 treats the case of \textit{nominal benefits}, i.e. benefits that are completely determined at the signing of the contract. It is shown how to compute fixed- and restricted path prognoses for this type of benefits. The chapter is concluded with two examples that illustrate the difference between the two prognosis approaches.
 
-Section PROGNOSES will make rigorous exactly what is meant by \textit{prognosis} and is in
+Chapter 5 is devoted to the case of \textit{reserve-dependent benefits}, meaning benefits that depend on reserves, accounts or indices of a general form. Again, we show how to compute both fixed- and restricted path prognoses. In both cases, the procedure has two steps: First, derive a system of differential equations for the reserves and solve them. Second, weigh the payment functions with these reserves to obtain the prognoses. We then show how a broad class of contracts -- in \cite{Liv2Bog} denoted \textit{With Profit insurance} -- fits into this reserve-dependent framework and obtain prognoses for this class of contracts. Finally, we exemplify the difference between fixed- and restricted path prognoses with a simple savings contract.
+
+Chapter 6 introduces the concept of \textit{prognosis sensitivities}, which are just derivatives of the prognoses in various contract elements. The focus will be on the time of retirement- and premium level sensitivities. The sensitivities are meant as tools -- not for valuation -- but for aiding the policy holder in making decisions about her savings scheme and retirement timing. We derive explicit results for fixed path prognoses present them graphically. Finally, we sketch how the sensitivities may be obtained for restricted path prognoses.
 
 Each section begins with a short summary of the key points contained therein.
 
@@ -211,7 +243,7 @@ counting the number of transitions into state $k$ up until and including time $t
 
 is an $F^Z$-martingale. Recall that $F^Z= \{ F^Z(t) \}_{t \geq 0}$ is the filtration naturally generated by the process $Z$, i.e. $F^Z(t) = \sigma(Z(s) : s \leq t)$.
 
-\subsection{The Financial Market}
+\subsection{Scenario-Based Systematic Risk}
 
 The financial market enters into the insurance setting via the return on investment of the payments made by the policy holder to the company. Denote this rate $r = \{ r(t) \}_{t \geq 0}$ and assume that it is continuous and FV. It may comprise returns on bonds, stocks and other investments depending on the portfolio profile which in turn may depend on the contract type and risk appetite of the policy holder. Also, it may depend on the age and the \textit{current} state of the policy. Formally,
 
@@ -224,7 +256,7 @@ We make no assumptions about the market producing this rate of return, but inste
 Interesting scenarios include:
 
 \begin{itemize}
-	\item Best estimate scenarios, e.g. the Common Return Expectations (Samfundsforudsætninger) published by the Council for Return Expectations (Rådet for Afkastforventninger) -- see \cite{ReturnExpectations2020} for the return expectations calibrated in 2020.
+	\item Best estimate scenarios, e.g. the Common Return Expectations (Samfundsforudsætninger) published by the Council for Return Expectations (Rådet for Afkastforventninger).
 	\item Stress scenarios, e.g. market crashes or drawn out recessions.
 	\item Simulated scenarios. Having decided on some stochastic model for the financial market, one can simulate a large number of scenarios and calculate the prognoses in each of them. A suitable average can then be applied. Or the financial uncertainty can be quantified with the empirical variance or with empirical quantiles.
 \end{itemize}
@@ -529,7 +561,7 @@ Having introduced the novel restricted path conditioning -- and the resulting pr
 
 First up is the alive-dead model:
 
-\subsubsection{The Alive-Dead Model}
+\subsubsection{The Alive-Dead Model} \label{ExampleOne}
 In the simple alive-dead model, as we shall see, the proposed conditioning approach actually coincides with the classical conditioning (i.e. staying active).
 
 \begin{figure}[H]\label{fig: alive-death}
@@ -597,7 +629,7 @@ which is also the classical conditioning. With regard to the only transition ben
 
 This prognosis gives the policy holder an estimate of what she will leave to her bereaved in the event of her death \textit{exactly} at time $t$.
 
-Example \ref{ExampleOne} demonstrates that in the alive-death model, the conditioning approach proposed doesn't really bring anything new to the table, as it coincides with the classical conditioning of staying active until payout time $t$. This is because "not dying" is the same event as "staying active". This is no longer the case in the active-disabled-death model, as the next example shows.
+Section \ref{ExampleOne} demonstrates that in the alive-death model, the conditioning approach proposed doesn't really bring anything new to the table, as it coincides with the classical conditioning of staying active until payout time $t$. This is because "not dying" is the same event as "staying active". This is no longer the case in the active-disabled-death model, as the next example shows.
 
 \subsubsection{The Disability Model} \label{DisModel}
 
@@ -1117,82 +1149,6 @@ In the preceding chapter, we saw how to calculate .
 
 However, many modern insurance contracts include benefits that are not guaranteed, but instead depend on the performance of a number of individual or collective reserves and accounts. 
 
-\subsubsection{Slet}
-
-which is just the probability of staying active until retirement (given survival until retirement) times the lump sum $\triangle B_0$ rewarded for doing so. Obviously, the restricted path prognosis in (\ref{Restricted}) is more conservative than the fixed path prognosis in (\ref{Fixed}).
-
-SLET MÅSKERecalling Remark \ref{ReducedStateSpace}, $\pcond[Z(R) = 0]{Z(R) \in \{ 0,1 \}}$ can be interpreted as the probability -- in a model with only two states: 0 and 1 -- of being in state 0 at time $t$. It is worth noting that this probability does not depend on the mortalities, $\mu_{02}$ and $\mu_{12}$.
-
-
-The contract is specified as follows:
-
-\begin{itemize}
-    \item Before retirement, the policy holder pays a constant premium rate $\pi$ if active, and receives a constant disability benefit rate $b_1$ if disabled.
-    \item In case of death before retirement, a transition lump sum is paid out to the bereaved: $b_{01}$ if she dies as active, $b_{12}$ if she dies as disabled.
-    \item At retirement, she is paid a lump sum pension benefit $\triangle b_0$ if and only if she is active at the point of retirement $R$. As retired, she is paid a constant pension benefit $b_0=b_1$ as long as she remains alive.
-\end{itemize}
-
-Mathematically put, the payment stream takes the form
-
-\begin{align*}
-    dB(t) =& \1{t<R} \left( - \1{Z(t-)=0)} \pi + \1{Z(t-)=1} b_1 \right) dt \\
-    &+ \1{t<R} \left( \1{Z(t-)=0} b_{02} + \1{Z(t-)=1} b_{12} \right) dN_2(t) \\
-    &+ \1{Z(t-)=0} \triangle b_0 d \varepsilon_R(t) + \1{t \geq R} \1{Z(t-) \neq 2} b_0dt
-\end{align*}
-
-The payments are determined such that the equivalence principle is satisfied under the technical basis, i.e.
-
-\begin{align*}
-    \expecStar[\int_0^n e^{-\int_0^s r^*(u)du} dB(s)] = 0
-\end{align*}
-
-We can now calculate prognoses using Propositions \ref{SojournWithoutBonus}, \ref{RetireWithoutBonus} and \ref{TransitionWithoutBonus}. Due to the simplicity of the model and the payments, some prognoses are trivial. For instance, the sojourn pension benefit prognosis (so let $t \geq R$) is calculated with Proposition \ref{SojournWithoutBonus} as
-
-\begin{align*}
-    \econd[b_{Z(t-)} (t)]{Z(t-) \in \{ 0,1 \}} =& \frac{\sum_{j = 0}^1 p_{0j}(0,t) b_j(t)}{\sum_{j = 0}^1 p_{0j}(0,t)} \\
-    =& b_0
-\end{align*}
-
-because the pension benefit $b$ is the same for the active and disabled states.
-
-A nontrivial prognosis, however, is the retirement lump sum prognosis. By Proposition \ref{RetireWithoutBonus},
-
-\begin{align*}
-    \econd[\triangle b_{Z(R-)} (R)]{Z(R-) \in \{ 0,1 \}} =& \frac{\sum_{j = 0}^1 p_{0j}(0,R) \triangle b_j(R)}{\sum_{j = 0}^1 p_{0j}(0,R)} \\
-    =&\frac{p_{00}(0,R) \triangle b_0 + p_{01}(0,R) \cdot 0}{p_{00}(0,R) + p_{01}(0,R)} \\
-    =& \frac{p_{00}(0,R)}{p_{00}(0,R) + p_{01}(0,R)} \triangle b_0 \\
-    =& \pcond[Z(R) = 0]{Z(R) \in \{ 0,1 \}} \cdot \triangle b_0,
-\end{align*}
-    
-which is just the probability of staying active until retirement (given survival until retirement) times the lump sum $\triangle b_0$ rewarded for doing so. Recalling Remark \ref{ReducedStateSpace}, $\pcond[Z(R) = 0]{Z(R) \in \{ 0,1 \}}$ can be interpreted as the probability -- in a model with only two states: 0 and 1 -- of being in state 0 at time $t$. It is worth noting that this probability does not depend on the intensities out of $\hat{\mathcal{J}}$, $\mu_{02}$ and $\mu_{12}$.
-
-If we assume that no reactivation can occur, i.e. $\mu_{10}=0$, the prognosis simplify to
-
-\begin{align*}
-\econd[\triangle b_{Z(R)} (R)]{Z(R) \in \{ 0,1 \}} =& \frac{p_{00}(0,R)}{p_{00}(0,R) + p_{01}(0,R)} \triangle b_0 \\
-=& e^{-\int_0^t \mu_{01}(u)du} \triangle b_0,
-\end{align*}
-
-where the transition probabilities were found with Kolmogorovs forward differential equation\footnote{See Appendix \ref{KolmoProof} for proof.}. Again recalling Remark \ref{ReducedStateSpace}, this can be interpreted as the probability -- in a model with only two states: 0 and 1 -- of not making the transition from state $0$ to state $1$ before time $R$, times the lump sum reward for not doing so.
-
-Finally, using Proposition \ref{TransitionWithoutBonus}, we can calculate the state $2$ transition prognosis, i.e. the expected death sum paid out given death at time $t<R$:
-
-\begin{align*}
-    \econd[b_{Z(t-)2}(t)]{Z(t-) \in \{ 0,1 \}, Z(t)=2} =& \frac{\sum_{j=0}^1 p_{0j}(0,t) \mu_{j2}(t) b_{j2}(t)}{\sum_{j=0}^1 p_{0j}(0,t) \mu_{j2}(t)} \\
-    =&\frac{p_{00}(0,t) \mu_{02}(t) b_{02} + p_{01}(0,t) \mu_{12}(t) b_{12}}{p_{00}(0,t) \mu_{02}(t) + p_{01}(0,t) \mu_{12}(t)},
-\end{align*}
-
-which is again a weighted average of the transition payments with weights given by the 'densities' $p_{0j}(0,t) \mu_{j2}(t)$. In contrast to the retirement lump sum prognosis, the transition prognosis depends on the intensities out of $\hat{\mathcal{J}}$ -- i.e. $\mu_{02}$ and $\mu_{12}$ -- and so does not simplify nicely with the assumption of no reactivation.
-
-However, if we also assume that $\mu_{02}=\mu_{12}$ the prognosis simplifies to
-
-\begin{align*}
-    \econd[b_{Z(t-)2}(t)]{Z(t-) \in \{ 0,1 \}, Z(t)=2} =&\frac{p_{00}(0,t) b_{02} + p_{01}(0,t) b_{12}}{p_{00}(0,t) + p_{01}(0,t)} \\
-    =& e^{-\int_0^t \mu_{01}(u)du} b_{02} + \left(1 - e^{-\int_0^t \mu_{01}(u)du} \right) b_{12}
-\end{align*}
-
-which, again recalling Remark \ref{ReducedStateSpace}, can be interpreted as a weighted average in a two state model -- the first weight being the probability of there being no transition from state $0$ to state $1$ before $t$, the second being the probability of a transition taking place.
-
 TABLE FOR COMPARISON
 
 In the preceding chapter, we saw how to calculate .
@@ -1501,6 +1457,32 @@ We have now arrived at a system of differential equations for a one-dimensional 
 	The proof closely mimics the one in \cite{Lollike}, but extends it to allow for the deterministic jumps in $W$ at time $R$ via the $h$-function. The proof can be found in Appendix \ref{MainProof}.
 \end{proof}
 
+The proposition says that XXX
+
+\begin{remark} \label{WithoutBonusAsSpecialCase}
+	We can replicate the prognoses for nominal payments in the present reserve-dependent framework. Simply let $W$ be one-dimensional with $w_0=1$ and $f=g=h=0$. Then by Proposition \ref{MainResult}, $\tilde{W}_j(t)=\expec[W(t) 1_{\{Z(t)=j\}}]$ is characterized by the system of differential equations
+	
+	\begin{align*}
+		\frac{\partial}{\partial t} \tilde{W}_j(t) = \sum_{k \in \mathcal{J} \atop k \neq j} \left( \mu_{kj}(t) \tilde{W}_k(t) - \mu_{jk}(t) \tilde{W}_j(t) \right), \tilde{W}_j(0) = \1{j=0},
+	\end{align*}
+	
+	for $j \in \mathcal{J}$, which we recognize as the Kolmogorov forward equations for the transition probabilities. The unique solution is
+	
+	\begin{align*}
+		\tilde{W}_j(t) = p_{0j}(0,t)
+	\end{align*}
+	
+	and so by equations (\ref{One}), (\ref{Two}) and (\ref{Three}), the prognoses are
+	
+\begin{align*}
+	\hat{b}^{\hat{\mathcal{J}}}(t) =& \frac{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,t) b_j(t)}{\sum_{j \in \hat{\mathcal{J}}} p_{Z(t_0)j}(t_0,t)} \\
+	\triangle \hat{B}^{\hat{\mathcal{J}}}(R) =& \frac{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,t) \triangle B_j(R)}{\sum_{j \in \hat{\mathcal{J}}} p_{Z(t_0)j}(t_0,R)} \\
+	\hat{b}_{\cdot k}^{\hat{\mathcal{J}}}(t) =& \frac{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,t) \mu_{jk}(t) b_{jk}(t)}{\sum_{j \in \hat{\mathcal{J}}} p_{Z(t_0)j}(t_0,t) \mu_{jk}(t)},
+\end{align*}
+	
+	which are exactly the prognoses in the case with nominal benefits (recall Propositions \ref{SojournWithoutBonus}, \ref{RetireWithoutBonus} and \ref{TransitionWithoutBonus}). This example shows that we were actually already employing Proposition \ref{MainResult} when calculating prognoses in the case with nominal benefits, because the transition probabilities $p_{0j}(0,t)$ are just special cases of $\tilde{W}_j(t)$.
+\end{remark}
+
 To sum up, the scheme for calculating restricted path prognoses is as follows:
 
 \begin{itemize}
@@ -1568,6 +1550,12 @@ X(t) = V_{Z(t)}^{\circ*}(t) + Q(t) V_{Z(t)}^{\dagger*}(t),
 and note that 
 
 \begin{align*}
+	Q(t) = \frac{X(t) - V_{Z(t)}^{\circ*}(t)}{V_{Z(t)}^{\dagger*}(t)}
+\end{align*}
+
+and that
+
+\begin{align*}
 X(0) =& V_{0}^{\circ*}(0) + Q(0) V_{0}^{\dagger*}(0) \\
 =& 0 + 0 \cdot V_{0}^{\dagger*}(0) \\
 =& 0.
@@ -1627,16 +1615,16 @@ dB(t) =& dB^\circ(t) + Q(t-) dB^\dagger(t) + dD_1(t)\\
 This is the payment stream that we want to prognosticate. Assume that the cash dividends $D_1$ are affine in $X$ and $Y$, i.e.
 
 \begin{align} \label{LinearCashDiv}
-dD_1(t) = dB^{D_1}(t) + X(t-) dB_X^{D_1}(t) + Y(t-)dB_Y^{D_1}(t),
+dD_1(t) = dB^{D_1}(t) + X(t-) dB_x^{D_1}(t) + Y(t-)dB_y^{D_1}(t),
 \end{align}
 
-for payment streams $B^{D_1}$,$B_X^{D_1}$and $B_Y^{D_1}$ on the form (\ref{PaymentProcessDef}). The total payment stream is then
+for payment streams $B^{D_1}$,$B_x^{D_1}$and $B_y^{D_1}$ on the form (\ref{PaymentProcessDef}). The total payment stream is then
 
 \begin{align}
-dB(t) =& dB^\circ(t) + \frac{X(t-) - V_{Z(t-)}^{\circ*}(t-)}{V_{Z(t-)}^{\dagger*}(t-)} dB^\dagger(t-) + dB^{D_1}(t) + X(t-) dB_X^{D_1}(t) + Y(t-) dB_Y^{D_1}(t) \nonumber \\
+dB(t) =& dB^\circ(t) + \frac{X(t-) - V_{Z(t-)}^{\circ*}(t-)}{V_{Z(t-)}^{\dagger*}(t-)} dB^\dagger(t-) + dB^{D_1}(t) + X(t-) dB_x^{D_1}(t) + Y(t-) dB_y^{D_1}(t) \nonumber \\
 =& \underbrace{\left( dB^\circ(t) - \frac{V_{Z(t-)}^{\circ*}(t-)}{V_{Z(t-)}^{\dagger*}(t-)} dB^\dagger(t) + dB^{D_1}(t) \right)}_{dB^\Theta(t)} \label{FirstLine} \\
-&+ X(t-) \underbrace{\left( \frac{1}{V_{Z(t-)}^{\dagger*}(t-)} dB^\dagger(t) + dB_X^{D_1}(t) \right)}_{dB^\mathcal{X}(t)} \label{SecondLine} \\
-&+ Y(t-) \underbrace{dB_Y^{D_1}(t)}_{dB^\mathcal{Y}(t)}. \label{ThirdLine}
+&+ X(t-) \underbrace{\left( \frac{1}{V_{Z(t-)}^{\dagger*}(t-)} dB^\dagger(t) + dB_x^{D_1}(t) \right)}_{dB^\mathcal{X}(t)} \label{SecondLine} \\
+&+ Y(t-) \underbrace{dB_y^{D_1}(t)}_{dB^\mathcal{Y}(t)}. \label{ThirdLine}
 \end{align}
 
 Note that the payment streams $B^\Theta(t)$ and $B^\mathcal{X}(t)$ are actually on the form (\ref{PaymentProcessDef}) since
@@ -1667,7 +1655,7 @@ which can be found with Kolmogorovs forward equations. Proposition \ref{MainResu
 if the process $(X,Y)$ has affine dynamics in the sense (\ref{WDynamicsStart}). Inspecting equations (\ref{XDynamics}) and (\ref{YDynamics}), this is certainly the case if $\delta_2(t)$ is affine in $X$ and $Y$, i.e. if
 
 \begin{align} \label{LinearBenDiv}
-	\delta_2(t) = \delta_2^0(t) + X(t) \cdot \delta_2^1(t) + Y(t) \cdot \delta_2^2(t)
+	\delta_2(t) = \delta_2^0(t) + X(t) \cdot \delta_2^x(t) + Y(t) \cdot \delta_2^y(t)
 \end{align}
 
 holds \textit{and} (\ref{LinearCashDiv}) holds. With these assumptions, the process $(X,Y)$ has affine dynamics and so we can employ Proposition \ref{MainResult} to obtain:
@@ -1687,12 +1675,12 @@ is described by the system of differential equations
 &+ \sum_{k \in \mathcal{J} \atop k \neq j} \left( \mu_{kj}(t) \begin{pmatrix}\tilde{X}_k(t) \\ \tilde{Y}_k(t)\end{pmatrix} - \mu_{jk}(t) \begin{pmatrix}\tilde{X}_j(t) \\ \tilde{Y}_j(t)\end{pmatrix} \right),
 \end{align*}
 
-for $t \in (0,R)\cup(R,n)$ and functions
+for $t \in (0,R)\cup(R,n)$, $j \in \mathcal{J}$ and
 
-\begin{align*}
-	f,g,h
-\end{align*}
-
+\begin{itemize}
+	\item $2 \times 2$-matrices $f_j^1(t)$ and $g_{kj}^1(t)$ (see Appendix \ref{AppendixFunctions}),
+	\item $2$-dimensional vectors $f_j^0(t)$ and $g_{kj}^0(t)$ (see Appendix \ref{AppendixFunctions})
+\end{itemize}
 
 The initial value is
 
@@ -1706,12 +1694,12 @@ and the gluing condition is
 \begin{pmatrix}\tilde{X}_j(R) \\ \tilde{Y}_j(R)\end{pmatrix} =& h_j^1(R) \begin{pmatrix}\tilde{X}_j(R-) \\ \tilde{Y}_j(R-)\end{pmatrix} + p_{0j}(0,R) h_j^0(R)
 \end{align*}
 
-for functions
+for
 
-\begin{align*}
-	h_j^1(t) = \\
-	h_j^0(R) = a
-\end{align*}
+\begin{itemize}
+	\item $2 \times 2$-matrices $h_j^1(R)$ (see Appendix \ref{AppendixFunctions}),
+	\item $2$-dimensional vectors $h_j^0(R)$ (see Appendix \ref{AppendixFunctions})
+\end{itemize}
 
 The restricted path prognoses are then
 
@@ -1721,10 +1709,10 @@ The restricted path prognoses are then
 	\hat{b}_{\cdot k}^{\hat{\mathcal{J}}}(t) =& \frac{\sum_{j \in \hat{\mathcal{J}}} \left(p_{0j}(0,t) b_{jk}^\Theta(t) + \tilde{X}_j(t) b_{jk}^\mathcal{X}(t) + \tilde{Y}_j(t) b_{jk}^\mathcal{Y}(t)\right) \mu_{jk}(t)}{\sum_{j \in \hat{\mathcal{J}}} p_{Z(t_0)j}(t_0,t) \mu_{jk}(t)}
 \end{align*}
 
-where the payment functions are given in equations (\ref{FirstLine}), (\ref{SecondLine}) and (\ref{ThirdLine}).
+where the payment functions are given in lines (\ref{FirstLine}), (\ref{SecondLine}) and (\ref{ThirdLine}).
 \end{proposition}
 \begin{proof}
-	Follows directly from Proposition \ref{MainResult} and equations (\ref{One}), (\ref{Two}) and (\ref{Three}).
+	Follows directly from Proposition \ref{MainResult} and equations (\ref{One}), (\ref{Two}) and (\ref{Three}). The function $f$, $g$ and $h$ 
 \end{proof}
 
 By specifying the dividend process $D$, we can arrive at many typical contract types. In the following section, we treat an example of a With Profit contract -- a Unit Link savings contract. We shall see how the restricted path prognoses lead to conservative benefit prognoses.
@@ -1997,75 +1985,9 @@ The simplification is that we no longer have to solve a system of differential e
 	In the construction of the premium waiver cover, we have assumed that it is priced under technical equivalence and that there is no contribution to the surplus as the return rate and the intensities $(r,\mu)$ are realized more favourably than assumed in the technical basis $(r^*,\mu^*)$. The assumption is made to make the mathematics more tractable and easier to interpret intuitively. In a more detailed contract, a favourable realization of $(r,\mu)$ would be paid back to the policy holder via the contribution process $C$ as described in Section \ref{WithProfit}. However, if $(r,\mu)=(r^*,\mu^*)$, then $C=0$ and so the results of Section \ref{Waiver} are exact.
 \end{remark}
 
+We close this chapter with a recap of the results obtained.
+
 MÅSKE GRAF?
-
-\subsection{Nominal Benefits Revisited}
-
-We close the chapter on reserve-dependent benefits by showing that the prognoses for nominal benefits presented in Chapter \ref{ChapGuaranteedBen} can actually be replicated in the present reserve-dependent framework. Recall that the prospective technical reserve $V_{Z(t)}^*(t)$ for some payment stream $B$ has dynamics
-
-\begin{align*}
-	dV_{Z(t)}^*(t) =& r^*(t) V_{Z(t)}^* dt - b_{Z(t-)}(t) dt - \sum_{k \in \mathcal{J} \atop k \neq Z(t-)} R_{Z(t-)k}^*(t) \mu_{Z(t-)k}^*(t) dt \\
-	&+ \sum_{k \in \mathcal{J} \atop k \neq Z(t-)} \left( V_k^*(t) - V_{Z(t-)}^*(t) \right) dN_k(t) - \triangle B_{Z(t-)}(R) d\varepsilon_{R}(t).
-\end{align*}
-
-which is clearly on the form (\ref{WDynamicsStart}). Assuming that $B$ satisfies the equivalence principle under the technical basis $(r^*,\mu^*)$, the initial value is $V_{Z(0)}^*(0)=0$. Then, by Proposition \ref{MainResult},
-
-\begin{align*}
-	\tilde{V}_j^*(t) = \expec[\1{Z(t)=j} V_{Z(t)}^*(t)] = p_{0j}(0,t) V_j^*(t)
-\end{align*}
-
-is characterized by the system of differential equations STJERNER PÅ P'er
-
-\begin{align*}
-	\frac{\partial}{\partial t} \tilde{V}_j^*(t) =& XXX\left( r^*(t) + \sum_{k \in \mathcal{J} \atop k \neq j} \mu_{jk}^*(t) \right) \tilde{V}_j^*(t) - p_{0j}(0,t) \left( b_j(t) + \sum_{k \in \mathcal{J} \atop k \neq j} \mu_{jk}^*(t) \left( b_{jk}(t) + V_k^*(t) \right) \right) \\
-	&+ \sum_{k \in \mathcal{J} \atop k \neq j} \mu_{kj}(t) \left( \tilde{V}_k^*(t) + p_{0k}(0,t) V_k^*(t) \right) \\
-	&+ \sum_{k \in \mathcal{J} \atop k \neq j} \left( \mu_{kj}(t) \tilde{V}_k^*(t) - \mu_{jk}(t) \tilde{V}_j^*(t) \right)XXX \\
-	=& r^*(t) \tilde{V}_j^*(t) - p_{0j}(0,t) b_j(t) - \sum_{k \in \mathcal{J} \atop k \neq j} p_{0k}(0,t) \mu_{kj} b_{kj}(t) \\
-	&+ \sum_{k \in \mathcal{J} \atop k \neq j} \left( \mu_{kj}(t) \tilde{V}_k^*(t) - \mu_{jk}(t) \tilde{V}_j^*(t) \right),
-\end{align*}
-
-with gluing condition
-
-\begin{align*}
-	\tilde{V}_j^*(R) =& \tilde{V}_j(R-) - p_{0j}(0,R) \triangle B_j(R)
-\end{align*}
-
-and initial value
-
-\begin{align*}
-	\tilde{V}_j^*(0) =& \1{j=0} V_{Z(0)}^*(t) \\
-	=& 0
-\end{align*}
-
-In \cite{Lollike}, the authors show that XXX
-
-To obtain the prognoses of the last chapter, define the payment stream
-
-\begin{align*}
-	d\bar{B}(t) = \frac{1}{V_{Z(t)}^*(t)}dB(t),
-\end{align*}
-
-we can prognosticate the payment stream
-
-\begin{align*}
-	V_{Z(t)}^*(t) d\bar{B}(t),
-\end{align*}
-
-which is clearly on the form (\ref{TotalPaymentStream}). By (XXX), the sojourn benefit prognosis is then
-
-\begin{align*}
-	\hat{\bar{b}}(t) =& \frac{\sum_{j \in \hat{\mathcal{J}}} \tilde{V}_j^*(t) \bar{b}_j(t)}{\sum_{j \in \hat{\mathcal{J}}} p_{Z(t_0)j}(t_0,t)} \\
-	=& \frac{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,t) V_j^*(t) \frac{b_j(t)}{V_j^*(t)}}{\sum_{j \in \hat{\mathcal{J}}} p_{Z(t_0)j}(t_0,t)} \\
-	=& \frac{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,t) b_j(t)}{\sum_{j \in \hat{\mathcal{J}}} p_{Z(t_0)j}(t_0,t)},
-\end{align*}
-
-which we recognize as the sojourn prognosis for the guaranteed payments from the last chapter, cf. (XXX). So in effect, the case with reserve-dependent benefits is a generalization of the case with guaranteed benefits.
-
-\begin{remark}
-	Dynamikken må gerne afhænge af hele den fortidige Z-sti
-\end{remark}
-
-
 
 XXXXX
 \begin{table}[]
@@ -2545,6 +2467,11 @@ that is the rate by which the policy holder must increase her premium level in o
 
 \newpage
 
+\bibliographystyle{plain}
+\bibliography{Speciale}
+
+\newpage
+
 \begin{appendices}
 
 \section{Proof of Lemma \ref{Split}} \label{SplitProof}
@@ -2726,11 +2653,47 @@ and by inspecting equations (\ref{FirstLineA}) through (\ref{SecondGlue}), the g
 	\tilde{W}_j(R) - \tilde{W}_j(R-) = p_{Z(t_0)j}(t_0,R) h_j^0(R) + \tilde{W}_j(R-) h_j^1(R)
 \end{align*}
 
+\newpage
+\section{Functions $f_j^0$, $f_j^1$, $g_{kj}^0$, $g_{kj}^1$, $h_j^0$ and $h_j^1$ for the With Profit contract} \label{AppendixFunctions}
+
+The functions $f_j^0$, $f_j^1$, $g_{kj}^0$, $g_{kj}^1$, $h_j^0$ and $h_j^1$ can be derived from the dynamics of $X$ and $Y$, which are given by equations (\ref{XDynamics}) and (\ref{YDynamics}). We start out with the functions that pertain to the continuous part of the dynamics, $f_j^0$ and $f_j^1$:
+
+\begin{align*}
+f_j^0(t) =&
+\begin{pmatrix}
+	f_j^{0x}(t) \\
+	f_j^{0y}(t) 
+\end{pmatrix}, \\
+f_j^1(t) =&
+\begin{pmatrix}
+	f_j^{1xx}(t) & f_j^{1xy}(t) \\
+	f_j^{1yx}(t) & f_j^{1yy}(t)
+\end{pmatrix},
+\end{align*}
+
+where $f_j^{1xx}$ is the function multiplied by $\tilde{X}_j$, contributing to $\tilde{X}_j$ and $f_j^{1xy}$ is the function multiplied by $\tilde{Y}_j$, contributing to $\tilde{X}_j$, etc. Recalling that assumptions (\ref{LinearCashDiv}) and (\ref{LinearBenDiv}) are satisfied, we can now read off from equation (\ref{XDynamics}):
+
+\begin{align*}
+	f_j^{1xx}(t) =& r^*(t) + \delta_2^x(t) \\
+	&+ \frac{1}{V_j^{\circ *}(t)} \left( -b_j^\dagger(t) - \sum_{k \in \mathcal{J} \atop k \neq j} \rho_{jk}^\dagger(t) - \sum_{k \in \mathcal{J} \atop k \neq j} R_{jk}^{\dagger*}(t) \mu_{jk}(t) \right) \\
+	f_j^{1xy}(t) =& \delta_2^y(t)\\
+	f_j^{0x}(t) =& \delta_2^0(t) - b_j^\circ(t) - \sum_{k \in \mathcal{J} \atop k \neq j} \rho_{jk}^\circ(t)(t) - \sum_{k \in \mathcal{J} \atop k \neq j} R_{jk}^{\circ*}(t) \mu_{jk}(t) \\
+	&+ \frac{V_j^{\circ *}(t)}{V_j^{\dagger *}(t)} \left( -b_j^\dagger(t) - \sum_{k \in \mathcal{J} \atop k \neq j} \rho_{jk}^\dagger(t) - \sum_{k \in \mathcal{J} \atop k \neq j} R_{jk}^{\dagger*}(t) \mu_{jk}(t) \right)
+\end{align*}
+
+and from equation (\ref{YDynamics}):
+
+\begin{align*}
+	f_j^{1yy}(t) =& r(t) - \delta_2^y(t) - b_y^{D_1}(t) \\
+	f_j^{1yx}(t) =& \left( r(t) - r^*(t) \right) - \delta_2^x(t) - b_x^{D_1}(t) \\
+	&+ \frac{1}{V_j^{\circ *}(t)} \left( \sum_{k \in \mathcal{J} \atop k \neq j} \rho_{jk}^\dagger(t) + \sum_{k \in \mathcal{J} \atop k \neq j} R_{jk}^{\dagger*}(t) \mu_{jk}(t) \right) \\
+	f_j^{0y}(t) =& \sum_{k \in \mathcal{J} \atop k \neq j} \rho_{jk}^\circ(t)(t) + \sum_{k \in \mathcal{J} \atop k \neq j} R_{jk}^{\circ*}(t) \mu_{jk}(t) \\
+	&- \frac{V_j^{\circ *}(t)}{V_j^{\dagger *}(t)} \left( \sum_{k \in \mathcal{J} \atop k \neq j} \rho_{jk}^\dagger(t) + \sum_{k \in \mathcal{J} \atop k \neq j} R_{jk}^{\dagger*}(t) \mu_{jk}(t) \right) \\
+	&- \delta_2^0(t) - b^{D_1} (t)
+\end{align*}
+
 \end{appendices}
 
-\newpage
 
-\bibliographystyle{plain}
-\bibliography{Speciale}
 
 \end{document}
