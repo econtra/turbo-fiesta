@@ -90,7 +90,7 @@
 
 \pagestyle{fancy}
 \fancyhf{}
-
+ 
 \lhead{}
 \chead{}
 \rhead{\leftmark}
@@ -117,32 +117,7 @@
 %\dato{\today}  
 %\vejleder{Supervisor: Mogens Steffensen}
 
-\title{a} %Slet denne og indkommenter ovenstående
-
-\usepackage{glossaries}
-\newglossary[slg]{symbolslist}{syi}{syg}{Notation overview} 
-\makeglossaries
-
-\include{glossaries}
-\setlength{\glsdescwidth}{20cm}
-
-\newglossarystyle{notationlong}{%
-	\setglossarystyle{long}% base this style on the list style
-	\renewenvironment{theglossary}{% Change the table type --> 3 columns
-		\begin{longtable}{lp{0.6\glsdescwidth}}}%
-		{\end{longtable}}%
-	
-	\renewcommand*{\glossaryheader}{%  Change the table header
-		\bfseries Sign & \bfseries Description \\
-		\hline
-		\endhead}
-	\renewcommand*{\glossentry}[2]{%  Change the displayed items
-		\glstarget{##1}{\glossentryname{##1}} %
-		& \glossentrydesc{##1}
-		\tabularnewline
-	}
-	
-}
+\title{a} %Slet denne og indkommenter ovenstående 
 
 \begin{document}
 
@@ -154,11 +129,53 @@
 
 \newpage
 
-\tableofcontents
+\tableofcontents 
 
 \newpage
 
-A list of symbol... Cn.... dirac-mål
+\section{Glossary}
+
+\begin{table}[H]
+	\begin{tabular}{lll}
+		\hline
+		\textbf{Symbol}	& \textbf{Description} & \textbf{Cf.}  \\
+		\hline
+		&&\\
+		General&&\\
+		\hline
+		$R$& Time of retirement & Section \ref{PayStreams}\\
+		$n$& Time of contract termination. No payments beyond this point. & Section \ref{PayStreams}\\
+		&&\\
+		$\hat{\mathcal{J}}$	& Subset of the state space $\mathcal{J}$ used for restricted path prognoses & Section \ref{RestrPathSect} \\
+		$a$	& Annuity used to calculate the  & Section \ref{RestrPathSect} \\
+		$\bar{r}_t$	& "beregningsrente"  & Section \ref{RestrPathSect} \\
+		$\bar{\mu}_t$	& Annuity used to calculate the  & Section \ref{RestrPathSect} \\
+		&&\\
+		Prognoses&&\\
+		\hline
+		$\hat{b}^z(t)$ & Sojourn benefit rate \textit{fixed} path prognosis given the state path $z$ & Equation (\ref{DefSojFix}) \\
+		$ \triangle \hat{B}^z(t) $& Lump sum benefit \textit{fixed} path prognosis given the state path $z$ & Equation (\ref{DefLumpFix}) \\
+		$ \hat{b}_{\cdot k}^z(t) $& State $k$ transition benefit \textit{fixed} path prognosis given the state path $z$ & Equation (\ref{DefTraFix}) \\
+		&&\\
+		$\hat{b}^{\hat{\mathcal{J}}}(t)$ & Sojourn benefit rate \textit{restricted} path prognosis given the subset $\hat{\mathcal{J}}$ & Equation (\ref{DefSojRestr}) \\
+		$ \triangle \hat{B}^{\hat{\mathcal{J}}}(t) $& Lump sum benefit \textit{restricted} path prognosis given the subset $\hat{\mathcal{J}}$ & Equation (\ref{DefLumpRestr}) \\
+		$ \hat{b}_{\cdot k}^{\hat{\mathcal{J}}}(t) $& State $k$ transition benefit \textit{restricted} path prognosis given the subset $\hat{\mathcal{J}}$ & Equation (\ref{DefTraRestr}) \\
+		&&\\
+		With Profit&&\\
+		\hline
+		$X$& Technical value of future guaranteed payments & Equation (\ref{XDef})\\
+		$Y$& Surplus & Equation (\ref{YDef}) \\
+		&&\\
+		$D_1$& Cash dividend payment stream. & Equation (\ref{LinearCashDiv})\\
+		$D_2$& Absolutely continuous dividends ($\delta_2$) used to purchase unit benefits & Equation (\ref{LinearBenDiv}) \\
+		&&\\
+		$B^\Theta$& Nominal part of total payments $B$ & Equation (\ref{FirstLine}) \\
+		$B^\mathcal{X}$& X-linear part of total payments $B$ & Equation (\ref{SecondLine})\\
+		$B^\mathcal{Y}$& Y-linear part of total payments $B$ & Equation (\ref{ThirdLine})
+	\end{tabular}
+\end{table}
+
+\newpage
 
 \section{Introduction}
 
@@ -261,7 +278,7 @@ Interesting scenarios include:
 	\item Simulated scenarios. Having decided on some stochastic model for the financial market, one can simulate a large number of scenarios and calculate the prognoses in each of them. A suitable average can then be applied. Or the financial uncertainty can be quantified with the empirical variance or with empirical quantiles.
 \end{itemize}
 
-\subsection{Payment Streams}
+\subsection{Payment Streams} \label{PayStreams}
 
 Throughout the thesis we will need a number of different payment processes. We make the small departure from the classical construction that the time of retirement $R$ is stressed as the only time point where payment rates are discontinuous and lump sums are paid out. We follow the convention that positive payments are benefits, while negative payments are premiums.
 
@@ -436,37 +453,37 @@ Instead of simply staying active, other specific paths -- which includes periods
 
 Formally, the fixed path prognoses are (superscript $F$ for 'fixed'):
 
-\begin{definition}
+\begin{definition} \label{DefSojFix}
 	A sojourn benefit rate fixed path prognosis is a quantity on the form
 	
 	\begin{gather*}
-		\hat{b}^F(t) = \econd[b_{Z(t)}(t)]{Z(s) = z(s) : 0 \leq s \leq t},
+		\hat{b}^z(t) = \econd[b_{Z(t)}(t)]{Z(s) = z(s) : 0 \leq s \leq t},
 	\end{gather*}
 	
 	for some deterministic function $z: [0,t] \to \mathcal{J}$.
 \end{definition}
 
-\begin{definition}
+\begin{definition} \label{DefLumpFix}
 	A retirement lump sum fixed path prognosis is a quantity on the form
 	
 	\begin{gather*}
-		\triangle \hat{B}^F(t) = \econd[\triangle B_{Z(R)}(R)]{Z(s) = z(s) : 0 \leq s \leq R},
+		\triangle \hat{B}^z(t) = \econd[\triangle B_{Z(R)}(R)]{Z(s) = z(s) : 0 \leq s \leq R},
 	\end{gather*}
 	
 	for some deterministic function $z: [0,t] \to \mathcal{J}$.
 \end{definition}
 
-\begin{definition}
+\begin{definition} \label{DefTraFix}
 	A state $k$ transition benefit fixed path prognosis is a quantity on the form
 	
 	\begin{gather*}
-		\hat{b}_{\cdot k}^F(t) = \econd[b_{Z(t-)k}(t)]{ Z(s) = z(s) : 0 \leq s \leq t},
+		\hat{b}_{\cdot k}^z(t) = \econd[b_{Z(t-)k}(t)]{ Z(s) = z(s) : 0 \leq s \leq t},
 	\end{gather*}
 	
 	for some state $k \in \mathcal{J}$ and some deterministic function $z: [0,t] \to \mathcal{J}$.
 \end{definition}
 
-\subsubsection{Restricted Path}
+\subsubsection{Restricted Path} \label{RestrPathSect}
 
 The conditioning proposed in this thesis is an attempt to bridge the two extremes of no conditioning and conditioning on an entire state path. The idea is to condition on the event that the policy holder does not make some specified transitions until the payout time $t$ (e.g. die, surrender or convert to free policy), i.e. remains in some subset of states $\hat{\mathcal{J}} \subset \mathcal{J}$ until time $t$. Formally put, restricted path conditioning involves events on the form
 
@@ -494,24 +511,24 @@ FIGURE
 
 Having formalized the class of conditioning events, we are now ready to give a formal definition of sojourn prognoses and retirement lump sum prognoses:
 
-\begin{definition}
+\begin{definition} \label{DefSojRestr}
 	A sojourn benefit rate restricted path prognosis is a quantity on the form
 	
 	\begin{gather*}
-		\hat{b}^R(t) = \econd[b_{Z(t-)}(t)]{Z(t-) \in \hat{\mathcal{J}}},
+		\hat{b}^{\hat{\mathcal{J}}}(t) = \econd[b_{Z(t-)}(t)]{Z(t-) \in \hat{\mathcal{J}}},
 	\end{gather*}
 	
-	for some subset $\bar{\mathcal{J}} \subset \mathcal{J}$.
+	for some subset $\hat{\mathcal{J}} \subset \mathcal{J}$.
 \end{definition}
 
-\begin{definition}
+\begin{definition} \label{DefLumpRestr}
 	A retirement lump sum restricted path prognosis is a quantity on the form
 	
 	\begin{gather*}
-		\triangle \hat{B}^R(t) = \econd[\triangle B_{Z(R-)}(R)]{Z(R-) \in \bar{\mathcal{J}}},
+		\triangle \hat{B}^{\hat{\mathcal{J}}}(t) = \econd[\triangle B_{Z(R-)}(R)]{Z(R-) \in \bar{\mathcal{J}}},
 	\end{gather*}
 	
-	for some subset $\bar{\mathcal{J}} \subset \mathcal{J}$.
+	for some subset $\hat{\mathcal{J}} \subset \mathcal{J}$.
 \end{definition}
 
 \textbf{A Modified Conditioning For Transition Prognoses}
@@ -537,7 +554,7 @@ The difference between the event in (\ref{FirstAssump}) and the event in (\ref{S
 
 With this is mind, we can define the transition prognoses:
 
-\begin{definition}
+\begin{definition} \label{DefTraRestr}
 	A state $k$ transition benefit restricted path prognosis is a quantity on the form
 	
 	\begin{gather*}
@@ -979,7 +996,7 @@ The state $k$ transition benefit prognosis in the case without bonus is given by
     \econd[b_{Z(t-)k}(t)]{Z(t-) \in \hat{\mathcal{J}}, Z(t)=k} = \frac{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,t) \mu_{jk}(t) b_{jk}(t)}{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,t) \mu_{jk}(t)},
 \end{align*}
 
-for some subset $\bar{\mathcal{J}} \subset \mathcal{J}$ and $k \notin \bar{\mathcal{J}}$.
+for some subset $\hat{\mathcal{J}} \subset \mathcal{J}$ and $k \notin \bar{\mathcal{J}}$.
 \end{proposition}
 \begin{proof}
 The result follows immediately from Lemma \ref{Split} (letting $W=0$) since
@@ -1507,7 +1524,7 @@ The first ingredient in a With Profit contract is the guaranteed payment stream 
 
 where the technical interest rate $r^*$ is deterministic and $\mathbbm{E}^*$ is integration with respect to $\mathbbm{P}^*$, which is a probability measure under which $Z$ has intensities $\mu^*$.
 
-With premiums determined under this prudent technical basis, a systematic surplus will emerge if everything goes well. Part of this surplus belongs to the insured and is paid back in the form of dividends. Let $D = \{ D(t) \}_{0 \leq t \leq n}$ be the process of accumulated dividends. Assume that it is $\mathcal{F}$-adapted and that it can be decomposed as
+With premiums determined under this prudent technical basis, a surplus will emerge if everything goes well. Part of this surplus belongs to the insured and is paid back in the form of dividends. Let $D = \{ D(t) \}_{0 \leq t \leq n}$ be the process of accumulated dividends. Assume that it is $\mathcal{F}$-adapted and that it can be decomposed as
 
 \begin{align*}
 D = D_1 + D_2,
@@ -1543,9 +1560,9 @@ dB(t) = dB^\circ(t) + Q(t-) dB^\dagger(t) + dD_1(t).
 
 We now introduce the technical value of future guaranteed payments
 
-\begin{align*}
+\begin{align} \label{XDef}
 X(t) = V_{Z(t)}^{\circ*}(t) + Q(t) V_{Z(t)}^{\dagger*}(t),
-\end{align*}
+\end{align}
 
 and note that 
 
@@ -1577,9 +1594,9 @@ dX(t) =& dV_{Z(t)}^{\circ*}(t) + Q(t-) dV_{Z(t)}^{\dagger*}(t) + V_{Z(t)}^{\dagg
 
 We can then define the surplus
 
-\begin{align*}
+\begin{align} \label{YDef}
 Y(t) = - \int_0^t e^{\int_s^t r(u)du} dB(s) - X(t),
-\end{align*}
+\end{align}
 
 which is the value of past payments accumulated with financial returns less the technical value of future guaranteed payments. Again using integration by parts and Leibniz' rule, we obtain
 
@@ -1598,7 +1615,13 @@ which is the value of past payments accumulated with financial returns less the 
 	dC(t) = \left( r(t) - r^*(t) \right) X(t) dt + \sum_{k \in \mathcal{J} \atop k \neq Z(t-)} \left( \rho_{Z(t-)k}^\circ(t) + Q(t-) \rho_{Z(t-)k}^\dagger(t) \right) dt,
 \end{align*}
 
-representing the systematic contributions from $X$ to $Y$. The martingale term in the last line of (\ref{YDynamics}) is discarded. It is left for the company to cover, as the policy holder is not supposed to participate in the performance of diversifiable risk; only the systematic. Finally, note that
+representing the systematic contributions from $X$ to $Y$.
+
+\begin{remark}
+	Sometimes, the martingale term in the last line of (\ref{YDynamics}) is discarded. It is then for the company to cover, and the policy holder then does not participate in the performance of diversifiable risk; only the systematic. In the present contract formulation, however, we shall keep it.
+\end{remark}
+
+Finally, note that
 
 \begin{align*}
 	Y(0) =& - 0 - X(0) \\
@@ -2675,7 +2698,7 @@ where $f_j^{1xx}$ is the function multiplied by $\tilde{X}_j$, contributing to $
 
 \begin{align*}
 	f_j^{1xx}(t) =& r^*(t) + \delta_2^x(t) \\
-	&+ \frac{1}{V_j^{\circ *}(t)} \left( -b_j^\dagger(t) - \sum_{k \in \mathcal{J} \atop k \neq j} \rho_{jk}^\dagger(t) - \sum_{k \in \mathcal{J} \atop k \neq j} R_{jk}^{\dagger*}(t) \mu_{jk}(t) \right) \\
+	&+ \frac{1}{V_j^{\dagger *}(t)} \left( -b_j^\dagger(t) - \sum_{k \in \mathcal{J} \atop k \neq j} \rho_{jk}^\dagger(t) - \sum_{k \in \mathcal{J} \atop k \neq j} R_{jk}^{\dagger*}(t) \mu_{jk}(t) \right) \\
 	f_j^{1xy}(t) =& \delta_2^y(t)\\
 	f_j^{0x}(t) =& \delta_2^0(t) - b_j^\circ(t) - \sum_{k \in \mathcal{J} \atop k \neq j} \rho_{jk}^\circ(t)(t) - \sum_{k \in \mathcal{J} \atop k \neq j} R_{jk}^{\circ*}(t) \mu_{jk}(t) \\
 	&+ \frac{V_j^{\circ *}(t)}{V_j^{\dagger *}(t)} \left( -b_j^\dagger(t) - \sum_{k \in \mathcal{J} \atop k \neq j} \rho_{jk}^\dagger(t) - \sum_{k \in \mathcal{J} \atop k \neq j} R_{jk}^{\dagger*}(t) \mu_{jk}(t) \right)
@@ -2684,13 +2707,78 @@ where $f_j^{1xx}$ is the function multiplied by $\tilde{X}_j$, contributing to $
 and from equation (\ref{YDynamics}):
 
 \begin{align*}
-	f_j^{1yy}(t) =& r(t) - \delta_2^y(t) - b_y^{D_1}(t) \\
-	f_j^{1yx}(t) =& \left( r(t) - r^*(t) \right) - \delta_2^x(t) - b_x^{D_1}(t) \\
-	&+ \frac{1}{V_j^{\circ *}(t)} \left( \sum_{k \in \mathcal{J} \atop k \neq j} \rho_{jk}^\dagger(t) + \sum_{k \in \mathcal{J} \atop k \neq j} R_{jk}^{\dagger*}(t) \mu_{jk}(t) \right) \\
+	f_j^{1yy}(t) =& r(t) - \delta_2^y(t) - b_{j,y}^{D_1}(t) \\
+	f_j^{1yx}(t) =& \left( r(t) - r^*(t) \right) - \delta_2^x(t) - b_{j,x}^{D_1}(t) \\
+	&+ \frac{1}{V_j^{\dagger *}(t)} \left( \sum_{k \in \mathcal{J} \atop k \neq j} \rho_{jk}^\dagger(t) + \sum_{k \in \mathcal{J} \atop k \neq j} R_{jk}^{\dagger*}(t) \mu_{jk}(t) \right) \\
 	f_j^{0y}(t) =& \sum_{k \in \mathcal{J} \atop k \neq j} \rho_{jk}^\circ(t)(t) + \sum_{k \in \mathcal{J} \atop k \neq j} R_{jk}^{\circ*}(t) \mu_{jk}(t) \\
 	&- \frac{V_j^{\circ *}(t)}{V_j^{\dagger *}(t)} \left( \sum_{k \in \mathcal{J} \atop k \neq j} \rho_{jk}^\dagger(t) + \sum_{k \in \mathcal{J} \atop k \neq j} R_{jk}^{\dagger*}(t) \mu_{jk}(t) \right) \\
-	&- \delta_2^0(t) - b^{D_1} (t)
+	&- \delta_2^0(t) - b_j^{D_1} (t)
 \end{align*}
+
+Moving on to the transition functions (the $dN_k(t)$-part), we have
+
+\begin{align*}
+	g_j^0(t) =&
+	\begin{pmatrix}
+		g_j^{0x}(t) \\
+		g_j^{0y}(t) 
+	\end{pmatrix}, \\
+	g_j^1(t) =&
+	\begin{pmatrix}
+		g_j^{1xx}(t) & g_j^{1xy}(t) \\
+		g_j^{1yx}(t) & g_j^{1yy}(t)
+	\end{pmatrix},
+\end{align*}
+
+Again, looking to equation (\ref{XDynamics}), we have
+
+\begin{align*}
+	g_{kj}^{1xx}(t) =& \frac{1}{V_k^{\dagger *}(t)} \left(  -b_{kj}^\dagger(t) + \sum_{j \in \mathcal{J} \atop j \neq k} R_{kj}^{\dagger*}(t) \right) \\
+	g_{kj}^{1xy}(t) =& 0\\
+	g_{kj}^{0x}(t) =&   -b_{kj}^\circ(t) +   R_{kj}^{\circ*}(t) \\
+	&+ \frac{V_k^{\circ *}(t)}{V_k^{\dagger *}(t)} \left(  -b_{kj}^\dagger(t) + \sum_{j \in \mathcal{J} \atop j \neq k} R_{kj}^{\dagger*}(t) \right)
+\end{align*}
+
+and from equation (\ref{YDynamics}):
+
+\begin{align*}
+	g_{kj}^{1yy}(t) =&   -b_{kj,y}^{D_1}(t) \\
+	g_{kj}^{1yx}(t) =& \frac{1}{V_k^{\dagger *}(t)} \left( -  R_{kj}^{\dagger*}(t) \right) -   b_{kj,x}^{D_1}(t)\\
+	g_{kj}^{0y}(t) =& \frac{V_k^{\circ *}(t)}{V_k^{\dagger *}(t)}  R_{kj}^{\dagger*}(t) - R_{kj}^{\circ*}(t) -b_{kj}^{D_1}(t).
+\end{align*}
+
+Finally, we can deduce the lump sum functions as
+
+\begin{align*}
+	h_j^0(t) =&
+	\begin{pmatrix}
+		h_j^{0x}(t) \\
+		h_j^{0y}(t) 
+	\end{pmatrix}, \\
+	h_j^1(t) =&
+	\begin{pmatrix}
+		h_j^{1xx}(t) & h_j^{1xy}(t) \\
+		h_j^{1yx}(t) & h_j^{1yy}(t)
+	\end{pmatrix}.
+\end{align*}
+
+where -- looking to (\ref{XDynamics}) -- we have
+
+\begin{align*}
+	h_j^{1xx}(t) =& -\frac{1}{V_j^{\dagger *}(t)} \triangle B_j^{\dagger}(t) \\
+	h_j^{1xy}(t) =& 0\\
+	h_j^{0x}(t) =&  \frac{V_j^{\circ *}(t)}{V_j^{\dagger *}(t)} \triangle B_j^{\dagger}(t) - \triangle B_j^{\circ}(t)
+\end{align*}
+
+and from equation (\ref{YDynamics}):
+
+\begin{align*}
+	h_j^{1yy}(t) =&  \triangle B_{j,y}^{D_1}(t) \\
+	h_j^{1yx}(t) =& \triangle B_{j,x}^{D_1}(t) \\
+	h_j^{0y}(t) =&  \triangle B_{j}^{D_1}(t)
+\end{align*}
+
+
 
 \end{appendices}
 
