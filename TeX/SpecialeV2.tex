@@ -152,6 +152,8 @@
 		&&\\
 		Prognoses&&\\
 		\hline
+		$z$	& A deterministic path $z: [0,t] \to \mathcal{J}$ used for fixed path prognoses. & Section \ref{FixedPathz} \\
+		&&\\
 		$\hat{b}^z(t)$ & Sojourn benefit rate fixed path prognosis given the state path $z$. & Equation (\ref{DefSojFix}) \\
 		$ \triangle \hat{B}^z(t) $& Lump sum benefit fixed path prognosis given the state path $z$. & Equation (\ref{DefLumpFix}) \\
 		$ \hat{b}_{\cdot k}^z(t) $& State $k$ transition benefit fixed path prognosis given the state path $z$. & Equation (\ref{DefTraFix}) \\
@@ -172,7 +174,11 @@
 		&&\\
 		$B^\Theta$& Nominal part of total payments $B$. & Equation (\ref{FirstLine}) \\
 		$B^\mathcal{X}$& Part of total payments $B$ linear in $X$. & Equation (\ref{SecondLine})\\
-		$B^\mathcal{Y}$& Part of total payments $B$ linear in $Y$. & Equation (\ref{ThirdLine})
+		$B^\mathcal{Y}$& Part of total payments $B$ linear in $Y$. & Equation (\ref{ThirdLine}) \\
+		&&\\
+		Prognoses&&\\
+		\hline
+		$\alpha$& Premium level & Equation (\ref{PremLvl}).
 	\end{tabular}
 \end{table}
 
@@ -433,9 +439,9 @@ This consideration leads us toward the conditioning event that is classically us
 
 At the extreme opposite of no conditioning is conditioning on the entire state path up until the time of payment, i.e.
 
-\begin{align*}
+\begin{align} \label{FixedPathz}
 \left( Z(s) = z(s) : 0 \leq s \leq t \right)
-\end{align*}
+\end{align}
 
 for some deterministic function $z: [0,t] \to \mathcal{J}$. Many current prognoses do exactly this by conditioning on the policy holder staying active. However, this conditioning eradicates the risk of the state process $Z$ completely, which may lead to overly optimistic prognoses, as $Z$ is assumed to remain in the premium paying state until retirement, which may overestimate the level of benefits paid out. This is the crucial shortfall of the fixed path conditioning that is attempted remedied in the novel conditioning proposed in the next section.
 
@@ -553,6 +559,10 @@ With this is mind, we can define the transition prognoses:
 	
 	for some subset $\hat{\mathcal{J}} \subset \mathcal{J}$ and $k \notin \hat{\mathcal{J}}$.
 \end{definition}
+
+\begin{remark} \label{FixedRestricted}
+	Note that the fixed path conditioning is actually a special case of the restricted path conditioning if $|\hat{\mathcal{J}}|=1$, i.e. if the restriction subset has only one state.
+\end{remark}
 
 \newpage
 
@@ -1256,7 +1266,7 @@ Having obtained the reserve $W_z$, the prognoses follow from equation (\ref{Tota
 	\begin{align*}
 		\hat{b}^{z}(t) =& W_z(t-)b_{z(t-)}(t) , \\
 		\triangle \hat{B}^{z}(R) =& W_z(R-)\triangle B_{z(R-)}(R) , \\
-		\hat{b}_{\cdot k}^{z}(t) =& \1{z(t-) \neq k} \1{z(t) = k} W_z(t-) b_{z(t-) k}(t) ,
+		\hat{b}_{\cdot k}^{z}(t) =& \1{z(t-) \neq k} \1{z(t) = k} W_z(t-) b_{z(t-) k}(t),
 	\end{align*}
 
 where $W_z$ is a deterministic function described by equations (\ref{Et}) and (\ref{To}).
@@ -1292,7 +1302,7 @@ The restricted path prognoses for reserve-dependent benefits are much more chall
 The restricted path prognoses for reserve-dependent benefits are given by
 
 \begin{align*}
-\hat{b}^{\hat{\mathcal{J}}}(T) =& \econd[W(t-) b_{Z(t-)}]{\{Z(s) \}_{0 \leq s < t} \in \hat{\mathcal{J}}} \\
+\hat{b}^{\hat{\mathcal{J}}}(t) =& \econd[W(t-) b_{Z(t-)}]{\{Z(s) \}_{0 \leq s < t} \in \hat{\mathcal{J}}} \\
 \triangle \hat{B}^{\hat{\mathcal{J}}}(R) =& \econd[W(R-) \triangle B_{Z(R-)}]{\{Z(s) \}_{0 \leq s < R} \in \hat{\mathcal{J}}} \\
 \hat{b}^{\hat{\mathcal{J}}}_{\cdot k}(t) =& \econd[W(t-) b_{Z(t-)k}]{\{Z(s) \}_{0 \leq s < t} \in \hat{\mathcal{J}}, Z(t) = k}
 \end{align*}
@@ -1995,46 +2005,49 @@ The simplification is that we no longer have to solve a system of differential e
 
 We close this chapter with a recap of the results obtained.
 
-MÅSKE GRAF?
-
-XXXXX
-\begin{table}[]
-	\begin{tabular}{lll}
-	Tabel med prognoser for nominal/reservedep og fixed/restric	&  &  \\
-		&  &  \\
-		&  & 
-	\end{tabular}
-\end{table}
+Having defined the prognoses, we will now formalize the concept of prognosis sensitivities. The point is to give the policy holder an idea of how much she can expect her benefits to increase if she postpones her time of retirement or if she increases premiums paid. And -- conversely -- how much she can expect her benefits to \textit{decrease} if she retires at an \textit{earlier} point in time or if she \textit{decreases} premiums paid.
 
 \newpage
 \section{Sensitivities -- Reserve-Dependent Benefits}
 
 In recent years, the question of retirement age has been vividly discussed in the Danish public. The main issue is whether workers of certain professions -- typically hard physical labor -- can (or rather, should) remain in the workforce until the rather high pension ages laid down in the 2006 political settlement Velfærdsforliget. For these groups, sensitivities are of great interest\footnote{Of course, the public discussion has focused on state pensions which are pay-as-you-go systems.}, as they reveal the trade-offs between premiums paid, time of retirement and benefits received.
 
-Having defined the prognoses, we will now formalize the concept of prognosis sensitivities. The point is to give the policy holder an idea of how much she can expect her benefits to increase if she postpones her time of retirement or if she increases premiums paid. And -- conversely -- how much she can expect her benefits to \textit{decrease} if she retires at an \textit{earlier} point in time or if she \textit{decreases} premiums paid.
+Since we have already seen that the case with nominal benefits is a special case of the case with reserve-dependent benefits (recall Remark \ref{WithoutBonusAsSpecialCase}), we only treat the latter.
+
+The chapter is structured as follows:
+
+\begin{itemize}
+	\item First, we formally define exactly what we mean by \textit{sensitivities}.
+	\item Second, we revisit the \textit{fixed} path prognosis for the unit link savings contract from Section \ref{Numerics}. We derive explicit results for this simple prognosis, including sensitivities, a contour map of benefits and so-called \textit{exchange ratios}.
+	\item Finally, we propose a method for calculating sensitivities for \textit{restricted} path prognoses as well. As a sanity check, we verify that the proposed method can actually replicate the fixed path results when $\hat{\mathcal{J}} = \{0\}$ (recall Remark \ref{FixedRestricted}).
+\end{itemize}
+
+\bigbreak
+\bigbreak
+\bigbreak
 
 We focus on only two kinds of sensitivities in this thesis -- time of retirement and premium level. However, the techniques presented can be used to obtain sensitivities for many other contract elements.
 
 The point of retirement is already formalized as $R$. We will now formalize what we mean by premium level. Given a payment stream $B$, we assume that the premium (i.e. negative) part of the payment stream takes the form
 
-\begin{align*}
+\begin{align} \label{PremLvl}
 	dB^-(t, \alpha) = \alpha \cdot dB^-(t),
-\end{align*}
+\end{align}
 
-where $\alpha>0$ is the premium level. The sensitivities are now simply defined as the derivatives of the prognoses in $R$ and $\alpha$, respectively. For the case with reserve-dependent benefits, these are
+where $\alpha>0$ is the premium level. The sensitivities are now simply defined as the derivatives (assuming they exist) of the prognoses in $R$ and $\alpha$, respectively. For the fixed path prognoses, these are
 
 \begin{align*}
-	\frac{\partial}{\partial \theta} \econd[W(t-)b_{Z(t-)}]{\{Z(s) \}_{0 \leq s < t} \in \bar{\mathcal{J}}}, \\
-	\frac{\partial}{\partial \theta} \econd[W(R-) \triangle B_{Z(R-)}]{\{Z(s) \}_{0 \leq s < R} \in \bar{\mathcal{J}}}, \\
-	\frac{\partial}{\partial \theta} \econd[W(t-)b_{Z(t-)k}]{\{Z(s) \}_{0 \leq s < t} \in \bar{\mathcal{J}}, Z(t) = k}.
+	\frac{\partial}{\partial \theta} \hat{b}^{z}(t) =& \frac{\partial}{\partial \theta} W_z(t-)b_{z(t-)}(t) , \\
+	\frac{\partial}{\partial \theta} \triangle \hat{B}^{z}(R) =& \frac{\partial}{\partial \theta} W_z(R-)\triangle B_{z(R-)}(R) , \\
+	\frac{\partial}{\partial \theta} \hat{b}_{\cdot k}^{z}(t) =& \frac{\partial}{\partial \theta} \1{z(t-) \neq k} \1{z(t) = k} W_z(t-) b_{z(t-) k}(t),
 \end{align*}
 
-for  $\theta = R,\alpha$. Since we have already seen that the case with guaranteed benefits is a special case of the case with reserve-dependent benefits, we only treat the latter.
+for  $\theta = R,\alpha$. In the following sections, we shall derive explicit sensitivities results for a simple fixed path prognosis. In Section \ref{SensRestr}, we revisit the restricted path sensitivities.
 
 \newpage
 \subsection{Fixed Path} \label{FixedSens}
 
-For the entirety of Section \ref{FixedSens}, we assume that the policy holder remains active until retirement (and alive until age 100). In other words, we assume the fixed path $z=0$, where 0 is the active state.
+For the entirety of Section \ref{FixedSens}, we assume that the policy holder remains active until retirement (and alive until time $n$). In other words, we assume the fixed path $z=0$, where 0 is the active state.
 
 Recall the Unit Link savings contract from Section \ref{Numerics} (without any premium waiver). Assuming that the policy holder remains active until retirement $R$, her savings can be described by the differential equation (recall equation (\ref{Jaja2}))
 
@@ -2051,7 +2064,7 @@ where we have suppressed the subscripts on the mortality. The fixed path prognos
 	\hat{b}(t) =& \frac{W(t)}{a(t)}
 \end{align*}
 
-where we have suppressed the $z$-subscripts. Again, the quantity $a$ is the annuity
+where we have suppressed the $z$-superscripts. Again, the quantity $a$ is the annuity
 
 \begin{align*}
 	a(t) = \int_t^n e^{-\int_t^s \bar{r}_t(u) + \bar{\mu}_t(u) du} ds
@@ -2108,7 +2121,7 @@ The term
 	\frac{\partial}{\partial R} \left(\bar{r}_R(u)+\bar{\mu}_R(u)\right)
 \end{align*}
 
-describes how the payout rates curves $\bar{r}_R(u)$ and $\bar{\mu}_R(u)$ change as more information is gained by postponing $R$. We will here assume that
+describes how the payout rates curves $\bar{r}_R(u)$ and $\bar{\mu}_R(u)$ change as more information is gained by postponing $R$. Assume that
 
 \begin{itemize}
 	\item $\frac{\partial}{\partial R} \bar{r}_R(u) = \frac{\partial}{\partial R} \bar{\mu}_R(u) = 0$ for $u > R$, i.e. that the information gained by postponing $R$ does not greatly change the curves $\bar{r}_R(u)$ and $\bar{\mu}_R(u)$. This assumption is certainly eligible for criticism and is an interesting research question in its own right. It is however outside the scope of this thesis.
@@ -2139,9 +2152,9 @@ With the added assumption that
 
 we then obtain
 
-\begin{align*}
+\begin{align} \label{ResultFirst}
 	\frac{\partial}{\partial R} \hat{b}(R) \approx \frac{\pi(R) + W(R-,R) a^{-1}(R)}{a(R)},
-\end{align*}
+\end{align}
 
 which -- again -- is interpreted as the ratio between 1) the increment additional premium paid in $\pi(R)$ plus the increment benefit $W(R-,R) a^{-1}(R)$ saved, and 2) the annuity $a(R)$.
 
@@ -2163,16 +2176,22 @@ which is interpreted as follows: By postponing retirement, an additional increme
 
 The sensitivity of the pension benefit rate paid out at time $t>R$ is then
 
-\begin{align*}
+\begin{align} \label{SecondCase}
+\begin{split}
 	\frac{\partial}{\partial R} \hat{b}(t) =& \frac{\partial}{\partial R} \frac{W(t-,R)}{a(t)} \\ =& \frac{e^{\int_R^t r(u) - a^{-1}(u) du} \left( \pi (R) + W(R-,R) a^{-1}(R) \right)}{a(t)}
-\end{align*}
+\end{split}
+\end{align}
 
-Note that this is consistent with the 
+Note that this is consistent with the result for the first case (equation (\ref{ResultFirst})) as $t \to R$. In other words, the equation (\ref{SecondCase}) is all we need.
+
+The sensitivity reveals the infinitesimal effect on pension benefits of pre- or postponing retirement by one year. For a policy holder deciding on her retirement timing, this is crucial information. In the following example, we shall put real number to the abstract quantities and see how different interest scenarios affect the retirement sensitivity.
 
 \begin{example}
 As in Example \ref{Numerics}, premiums are set to 80 t.DKK (real) per annum starting at age 25. We consider three scenarios with varying real return rates; Low (1\%), Mean (3\%) and High (5\%). The table below then shows the value of the reserve at retirement at age 65, i.e. $W(R,R)|_{R=65}$ along with the start benefit $\hat{b}(R)|_{R=65}$.
 
-\begin{center}
+\begin{table}[H]
+	\caption{Three scenarios for the retirement sensitivity.}
+	\begin{center}
 	\begin{tabular}{ |c|c|c|c|c| }
 		\hline
 		Scenario & $r$ & $\bar{r}$ & $W(R-,R)$ in m.DKK & $\hat{b}(R)$ in t.DKK \\
@@ -2183,6 +2202,7 @@ As in Example \ref{Numerics}, premiums are set to 80 t.DKK (real) per annum star
 		\hline
 	\end{tabular}
 \end{center}
+\end{table}
 
 Note that the payout interest rate $\bar{r}$ is the same in all three scenarios. This means that the scenarios differ not only on the realized interest rates $r$, but also on whether the payout interest rate $\bar{r}$ is fixed above or below the realized interest rate $r$. The result is the following figure:
 
@@ -2200,9 +2220,11 @@ There are at least two features worth noting on Figure \ref{RSensiGraph}:
 \end{itemize}
 \end{example}
 
+In the preceding section, we have obtained explicit results for the retirement time sensitivity for a simple fixed path prognosis. The next section treats the second sensitivity of interest -- the premium level sensitivity. As we shall see, the results are easily obtained for the simple savings contract considered.
+
 \subsubsection{Premium sensitivity}
 
-Intuitively -- for the simple contract considered here -- if the policy holder, say, doubles her premiums, the prognosis should double as well. This makes sense because the only flow into or from the reserve until retirement is the premium stream. This is exactly what the following calculations show.
+Intuitively -- for the simple contract considered here -- if the policy holder, say, doubles her premiums, the prognosis should double as well. This makes sense because the only flow to or from the reserve until retirement is the premium stream. This is exactly what the following calculations show.
 
 Assume that the premium rate takes the form
 
@@ -2218,19 +2240,28 @@ Consulting equations (\ref{ReserveAtRetirement}) and (\ref{ReserveAfterRetiremen
 	W(t,R,\alpha) = \alpha W(t,R,1)
 \end{align*}
 
-and so
+which states that the reserve at any point in time is equal to the premium level $\alpha$ times the reserve given a premium level of 1. And so
 
 \begin{align} \label{AlphaDeriv}
-	\frac{\partial}{\partial \alpha }W(t-,R,\alpha) = W(t-,R,1)
+	\frac{\partial}{\partial \alpha }W(t,R,\alpha) = W(t,R,1)
 \end{align}
 
-which just states that increasing the premium intensity increases the reserve at a rate constant in $\alpha$, which is equal to the reserve with the unscaled baseline premium plan. The sensitivity is then (for $t \geq R$)
+which says that increasing the premium intensity increases the reserve at a rate constant in $\alpha$, equal to the reserve given the unscaled baseline premium plan. The sensitivity is then (for $t \geq R$)
 
 \begin{align} \label{ResDeriv}
-	\frac{\partial}{\partial \alpha }\frac{W(t-,R,\alpha)}{a(t)} = \frac{W(t-,R,1)}{a(t)},
+\begin{split}
+		\frac{\partial}{\partial \alpha} \hat{b}(t) =& \frac{\partial}{\partial \alpha }\frac{W(t,R,\alpha)}{a(t)}\\
+	=& \frac{W(t,R,1)}{a(t)},
+\end{split}
 \end{align}
 
-which -- again -- is constant in $\alpha$.
+which -- again -- is constant in $\alpha$. In words, we have shown that increasing premiums paid by increasing $\alpha$ will increase the prognosis at the rate (\ref{ResDeriv}).
+
+\bigskip
+\bigskip
+\bigskip
+
+Many interesting quantities can be derived the pair of sensitivities $(\frac{\partial}{\partial R} \hat{b}(t),\frac{\partial}{\partial \alpha} \hat{b}(t))$. In the next two sections, we use the sensitivities to graphically present the trade-off facing the policy holder between time of retirement and premium level.
 
 \subsubsection{A contour map of benefits}
 
@@ -2288,7 +2319,7 @@ In the simple contract pursued in this section, the exchange ratio for the progn
 In the preceding section, intuitive results on sensitivities and exchange ratios were obtained for a simple savings contract. However, the setting had been without insurance event risk. The natural next step is to adapt the results of the preceding section to a setting with insurance risk.
 
 \newpage
-\subsection{Restricted Path}
+\subsection{Restricted Path} \label{SensRestr}
 
 When adding insurance risk, most quantities -- reserves, sensitivities, exchange ratios -- no longer have closed form solutions. Consequently, we have to settle for deriving systems of differential equations describing the sensitivities and solving them numerically.
 
