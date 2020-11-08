@@ -111,11 +111,11 @@
 %\usepackage[babel, farve, en, nat]{ku-forside}
 %\usepackage[english]{babel}
 %\titel{XXX}
-%\undertitel{XXXX} 
+%\undertitel{YYY} 
 %\opgave{Master Thesis in Actuarial Mathematics} 
 %\forfatter{Steffen Thyge Pedersen}
-%\dato{\today}  
-%\vejleder{Supervisor: Mogens Steffensen}
+%\dato{November 13, 2020}  
+%\vejleder{Supervisor: Mogens Steffensen, University of Copenhagen}
 
 \title{a} %Slet denne og indkommenter ovenstående 
 
@@ -176,9 +176,10 @@
 		$B^\mathcal{X}$& Part of total payments $B$ linear in $X$. & Equation (\ref{SecondLine})\\
 		$B^\mathcal{Y}$& Part of total payments $B$ linear in $Y$. & Equation (\ref{ThirdLine}) \\
 		&&\\
-		Prognoses&&\\
+		Sensitivities&&\\
 		\hline
-		$\alpha$& Premium level & Equation (\ref{PremLvl}).
+		$\alpha$& Premium level. & Equation (\ref{PremLvl}). \\
+		$e(t,R,\alpha)$& Exchange ratio for the benefit at time $t$. & Definition (\ref{Exchange}).
 	\end{tabular}
 \end{table}
 
@@ -186,24 +187,24 @@
 
 \section{Introduction}
 
-In March 2018, the Danish insurance and pension industry association Forsikring \& Pension published new guidelines for the pension prognoses presented to policy holders. The purpose was to secure more consistent methods of calculation between companies and to present the financial risk associated with the prognoses.
+In March 2018, the Danish insurance and pension industry association Forsikring \& Pension published new guidelines for the pension prognoses presented to policy holders (see \cite{Henstilling}). The purpose of the guidelines was twofold. First, secure more consistent methods of calculation between companies and to present the financial risk associated with the prognoses.
 
-The events risks are, however, somewhat neglected. Most prognoses still make the assumption that the policy holder remains active and premium paying up until retirement -- the possibility of spells of disability or unemployment is ignored.
+However, two stones are left unturned:
 
+\begin{itemize}
+	\item Events risks are neglected. Most prognoses still make the assumption that the policy holder remains active and premium paying up until retirement -- the possibility of spells of disability or unemployment is ignored. This may lead to overly optimistic prognoses.
+	\item Also, the prognoses give the policy holder no information on how or how much she can influence them -- e.g. by postponing retirement or by saving at a higher rate.
+\end{itemize}
 
-Also, the prognoses give the policy holder no information on how she can influence them -- e.g. by postponing retirement or by saving at a higher rate.
+The thesis proposes remedies for these two shortcomings.
 
-The thesis attempts to remedy these two shortcomings. The idea is to take the financial market as given (deterministic or simulated scenario) and handle the realization risks with classic actuarial techniques. This will result in differential equations describing the prognoses, which can then be computed numerically. The differential equations are then themselves differentiated with respect to the premium level and time of retirement, thereby arriving at new sets of differential equations for the derivatives, which again can be solved numerically. With these derivatives in hands, we can give the policy holder valuable information on how she can influence her expected benefits by retiring later or paying more premiums.
+The remedy for the first shortcoming is to propose a novel conditioning event, where the policy holder is no longer assumed fixed in the active state, but may make transitions inside a subset of states. We denote this \textit{restricted path conditioning}.
 
-\textbf{Literature review? In spite of these initiatives, the subject of prognoses has received relatively little attention in the actuarial literature. Norberg...}
+The second shortcoming is tackled with the concept of \textit{prognosis sensitivities}. The sensitivities quantify how decisions available to the policy holder -- retirement timing and level of premiums paid in -- affect the prognoses for the benefits paid out. Care is taken to present these sensitivities in a way that is relevant and understandable to a lay policy holder.
 
-In the literature, many different functionals have been proposed. \cite{Norberg2001} suggests expected total benefits paid out -- discounted or undiscounted. He also suggests simply expected benefits rates at certain times. \cite{NinnaReitzel} extends this last idea to an entire (expected) benefit stream.
+The fundamental idea is to take systematic risks (financial return and transition intensities) as given in scenarios. The event risk is then handled classic actuarial techniques. As we shall see, the principal theoretic workhorse is the notion of \textit{state-wise retrospective reserves} -- as introduced in \cite{Norberg1991} and further developed in \cite{Lollike}.
 
-The main theoretical workhorse is the notion of retrospective reserves first introduced in Norberg and expanded in Lollike. When doing valuation, it is prospective, when doing ALM, it is retrospective, and also when doing prognoses, as they both project into the future.
-
-Can be classified as "fixed path" - op i helikopteren.
-
-LOLLIKE, KALASHNIKOV OG REITZEL. extends lollike with lump sum and cash dividends
+Fixed path conditioning and prognosis sensitivities constitute the two major contributions of the thesis. On the road to achieving this, the thesis also contributes to the theory of state-wise retrospective reserves. The contribution is an extension of the system of differential equations derived in \cite{Lollike} to allow for state-dependent jumps at deterministic time points. Also, the With Profit-example treated in \cite{Lollike} is extended to allow for a slightly more general dividend process including cash dividends.
 
 \textbf{Structure}
 
@@ -225,7 +226,7 @@ Chapter 6 introduces the concept of \textit{prognosis sensitivities}, which are 
 
 \subsection{The Classical Markov Chain Life Insurance Setup}
 
-Let $\left( \Omega, \mathbbm{F}, \mathbbm{P} \right)$ be a probability space. The state of the policy holder is modelled in the classical fashion, i.e. as a continuous time Markov process $Z = \{ Z(t) \}_{t \geq 0}$ on a finite state space $\mathcal{J}= \{ 0, 1, ..., J \} $, deterministically starting in state $0$, i.e. $Z(0) = 0$.\footnote{State 0 is typically the active state, but in theory it could be anything.}
+Let $\left( \Omega, \mathbbm{F}, \mathbbm{P} \right)$ be a probability space. The state of the policy holder is modelled in the classical fashion, i.e. as a continuous time Markov process $Z = \{ Z(t) \}_{t \geq 0}$ on a finite state space $\mathcal{J}= \{ 0, 1, ..., J \} $, deterministically starting in state $0$, i.e. $Z(0) = 0$. Time 0 should be thought of as the time of prognostication, \textit{not} the time of contract signing.
 
 Define the transition probabilities
 
@@ -324,7 +325,7 @@ Having introduced the state process $Z$, the systematic risks $(r,\mu)$ and the 
 The contract is settled on the technical basis (sometimes called the first order basis) which consists of prudently determined interest rate and transition intensities $(r^*,\mu^*)$. As time passes, and if all goes well, the discrepancy between the technical basis and the actual rates creates a surplus that partially belongs to the policy holders. In order to specify the reallocation via dividends from the surplus to the policy holders (which will be crucial in Section \ref{WithProfit}) we need some theory on how to valuate payment streams. The results are well-known from the literature, see e.g. \cite{Norberg1991}, but are included here for the sake of completeness.
 
 \begin{definition}
-	Given a payment stream $B$, the prospective technical reserve at time $t \geq 0$ is
+	Given a payment stream $B$, the prospective technical reserve at time $t$ is
 	
 	\begin{align*}
 		V_{Z(t)}^*(t) = \econdStar[\int_t^n e^{-\int_t^s r^*(u)du} dB(s)]{Z(t)},
@@ -386,7 +387,11 @@ In the preceding chapter, we have presented the theoretical foundation for the t
 
 A prognosis should be a useful summary of the level of benefits that the policy holder can expect to receive in the future. But at the same time, it has to be  feasibly computable. The challenge is finding an approach that is both these things.
 
-Mathematically, a prognosis is a functional of the payment stream $B: [t_0,n] \times \Omega \to \mathbbm{R}$. Choices must then be made on how to handle both the time dimension of $B$ and its stochasticity. It is the object of this chapter to elucidate these choices.
+Mathematically, a prognosis is a functional of the payment stream $B: [0,n] \times \Omega \to \mathbbm{R}$. Choices must then be made on how to handle both the time dimension of $B$ and its stochasticity. It is the object of this chapter to elucidate these choices.
+
+We stress again that time 0 should be thought of as the time the prognostication takes place, \textit{not} the time of contract signing.
+
+In the literature, many different functionals have been proposed. \cite{Norberg2001} suggests expected total benefits paid out -- discounted or undiscounted. He also suggests simply expected benefits rates at certain times. \cite{NinnaReitzel} extends this last idea to an entire (expected) benefit stream.
 
 The chapter is structured as follows:
 
@@ -398,13 +403,13 @@ The chapter is structured as follows:
 
 \subsection{Choosing A Functional}
 
-\subsubsection{The $t$-dimension}
+\subsubsection{The $t$-Dimension}
 
-The thesis takes the view that it is benefit rates (e.g. monthly benefits) and single lump sum benefits (e.g. pension endowment or term insurance payout) that is of greatest interest to the policy holder -- not accumulated benefits. Questions such as "What benefit rate can I expect in my first month of retirement?" or "What can I expect to be paid out to my family if I die in 10 years?" are more likely to interest the policy holder than "How many benefits can I expect to receive across my entire lifetime?" (although this is also an interesting question, see Section XXX).
+The thesis takes the view that it is benefit rates (e.g. monthly benefits) and single lump sum benefits (e.g. pension endowment or term insurance payout) that is of greatest interest to the policy holder -- not accumulated benefits. Questions such as "What benefit rate can I expect in my first month of retirement?" or "What can I expect to be paid out to my family if I die in 10 years?" are more likely to interest the policy holder than "How many benefits can I expect to receive across my entire lifetime?".
 
 The benefit rates prognosticated should be real (as in inflation-adjusted), as the purpose of pension and life insurance is essentially to ensure that the policy holder has sufficient purchasing power in all stages and events of her life. For this reason, prognoses of real benefits in time $t_0$-currency that she can tie to her everyday consumption are the most useful. Therefore, all payments are assumed to be real and the rate of return $r$ is assumed to be a real rate as well. Of course, this rate might not be easy to model, but that discussion is outside the scope of this thesis.
 
-\subsubsection{The $\omega$-dimension}
+\subsubsection{The $\omega$-Dimension}
 
 When dealing with the realization risk of $Z$ in the context of valuation, the expectation has a privileged position as the summarizing functional of choice. This is because the law of large numbers ensures that the average liability converges towards the expectation as the portfolio increases in size.
 
@@ -447,7 +452,7 @@ for some deterministic function $z: [0,t] \to \mathcal{J}$. Many current prognos
 
 Instead of simply staying active, other specific paths -- which includes periods of invalidity or unemployment -- can be investigated in the fixed path setup. The path could even be chosen by the police holder herself in a "what if"-scenario. As $Z$ is then conditionally deterministic, there is no realization risk at all, and -- as we shall see -- calculating these prognoses is quite simple.
 
-Formally, the fixed path prognoses are (superscript $F$ for 'fixed'):
+Formally, the fixed path prognoses are:
 
 \begin{definition} \label{DefSojFix}
 	A sojourn benefit rate fixed path prognosis is a quantity on the form
@@ -1511,7 +1516,9 @@ In the preceding two sections, we have seen how to calculate fixed- and restrict
 
 In this section, we shall see how the With Profit class of contracts -- as described in \cite{Liv2Bog} -- can be made to fit the affine pattern of the equations (\ref{TotalPaymentStream}) and (\ref{WDynamicsStart}). Specifically, we will let $W=(X,Y)$, where $X$ is the technical value of future guaranteed payments and $Y$ is the surplus, and let payments depend linearly on these two processes in the sense of (\ref{TotalPaymentStream}). The specification of the dividend process $D$ then allows us to model a diversity of pension and life insurance contracts, including participating life insurance and unit-link. The section builds on the results of \cite{Lollike}, but extends them to include lump sum payments at retirement (as already mentioned) \textit{and} to include cash dividend payment stream.
 
-The first ingredient in a With Profit contract is the guaranteed payment stream $B^\circ$. The payment stream comprises both benefits and premiums, balanced such that the equivalence principle is satisfied on the technical basis, i.e.
+For the sake of simplicity, we assume that the time of prognosis (time 0) is also the time of contract signing. However, the results can be generalized to earlier times of signing $t_0<0$ by setting appropriate initial values for $X$ and $Y$ (i.e. values $x_0$ and $y_0$ that reflect the development of the contract in the interval $[t_0,0]$).
+
+The first ingredient in a With Profit contract is the guaranteed payment stream $B^\circ$. The payment stream comprises both benefits and premiums, balanced such that the equivalence principle is satisfied on the technical basis at the time of signing, i.e.
 
 \begin{align*}
 0 = V_0^{\circ*}(0) = \expecStar[\int_0^n e^{-\int_0^s r^*(u) du} dB^\circ(s)],
@@ -2265,55 +2272,73 @@ Many interesting quantities can be derived the pair of sensitivities $(\frac{\pa
 
 \subsubsection{A contour map of benefits}
 
-Having calculated the sensitivities (i.e. derivatives) of the prognosis benefit $\hat{b}(t,R,\alpha)$ in $R$ and $\alpha$, we have access to the gradient
+Having calculated the sensitivities (i.e. derivatives) of the prognosis benefit $\hat{b}(t)$ in $R$ and $\alpha$, we have access to the gradient
 
 \begin{align*}
 	\nabla \hat{b}(t,R,\alpha) =
 	\begin{bmatrix}
-		\frac{\partial}{\partial \alpha }\hat{b}(t,R,\alpha) \\
-		\frac{\partial}{\partial R }\hat{b}(t,R,\alpha)
+		\frac{\partial}{\partial R }\hat{b}(t,R,\alpha) \\
+		\frac{\partial}{\partial \alpha }\hat{b}(t,R,\alpha)
 	\end{bmatrix}
 \end{align*}
 
-for each $t \geq R$. With this, we can obtain a contour map of benefits, illustrating the trade-off between premium level $\alpha$ and time of retirement $R$. Premiums are again set at 80 t.DKK yearly beginning at age 25.
+for each $t \geq R$. Here, we view $t$ as fixed such that $\hat{b}(t,R,\alpha)$ is a function of the two variables $R$ and $\alpha$. Since the contours of $\hat{b}(t,R,\alpha)$ (also known as isolines, representing constant values of the function) are orthogonal to the gradient vector, we can obtain a contour map of benefits, illustrating the trade-off between premium level $\alpha$ and time of retirement $R$. Premiums are again set at 80 t.DKK yearly beginning at age 25.
 
 \begin{figure}[H] \label{ContourGraph}
 	\centering
-	\caption{A contour map of start benefits rates (i.e. the rate at retirement) as a function of premium level $\alpha$ and time of retirement $R$.}
+	\caption{A contour map of benefit start rates $\hat{b}(R,R,\alpha)$ as a function of premium level $\alpha$ and time of retirement $R$.}
 	\includegraphics[width=\textwidth]{Contour}		
 \end{figure}
 
-Figure 6.2 shows the different avenues available (given that the pension scheme legislation is flexible enough) for obtaining a certain benefit level. This information is useful to the policy holder planning her retirement timing. Worth noting is:
+Technical points worth noting on Figure 7.2 are:
 
 \begin{itemize}
-	\item The standard parameters $\alpha=1$ and $R=65$ gives a start benefit rate of around 670 t.DKK per annum, which is consistent with earlier results.
-	\item From the bottom-left to the top-right the lines get increasingly close (going from one line to the next -- starting in the bottom left -- symbolizes an annual benefit rate increase of 200 t.DKK). This is because XXX.
+	\item The standard parameters $\alpha=1$ and $R=65$ yields a start benefit rate of around 670 t.DKK per annum, which is consistent with earlier results.
+	\item From the bottom to the top the lines get increasingly steeper. Intuitively, this is because the $\alpha$-sensitivity is constant in $\alpha$ (recall equation (\ref{ResDeriv})), while the $R$-sensitivity increases in both $R$ and $\alpha$. So keeping $R$ fixed and increasing $\alpha$ will only increase the first entry of the gradient, which will 'flatten' it. Since the contour lines are orthogonal to the gradient, they get steeper.
 \end{itemize}
+
+From a policy holders point of view, Figure 7.2 shows the different avenues available (given that the pension scheme legislation is flexible enough) for obtaining a certain benefit level. This information is useful to her when planning her retirement timing and savings scheme. A figure similar to Figure 7.2 could be presented to her in the pension consultation sessions that many companies offer, and it could be available in an online tool.
+
+In the following section, we use the sensitivities obtained to derive another quantity interesting to the policy holder.
 
 \subsubsection{Exchange ratios}
 
-Closely related to the contour map of the previous subsection, we consider the ratio between the sensitivities and denote it the \textit{exhange ratio}. The exchange ratio is of interest to the policy holder as it informs her how much -- infinitesimally -- she will have to increase her premiums in order to retire earlier \textit{while keeping the same benefit prognosis level}. This is a key piece of information for a policy holder deciding on her retirement timing.
+Closely related to the contour map of the previous subsection, we now consider the ratio between the sensitivities and denote it the \textit{exhange ratio}. The exchange ratio is of interest to the policy holder as it informs her how much -- infinitesimally -- she will have to increase her premiums in order to retire earlier \textit{while keeping the same benefit prognosis level}. This is a key piece of information for a policy holder deciding on her retirement timing.
 
-\begin{definition}
+\begin{definition} \label{Exchange}
 	Given a benefit prognosis $\hat{b}(t,R,\alpha)$, the exchange ratio is defined as
 	
 \begin{align*}
-	e(t,R,\alpha) = \frac{\frac{\partial}{\partial \alpha }\hat{b}(t,R,\alpha)}{\frac{\partial}{\partial R }\hat{b}(t,R,\alpha)}
+	e(t,R,\alpha) = \frac{\frac{\partial}{\partial R }\hat{b}(t,R,\alpha)}{\frac{\partial}{\partial \alpha }\hat{b}(t,R,\alpha)}
 \end{align*}
 \end{definition}
 
-In the simple contract pursued in this section, the exchange ratio for the prognosis at retirement is simply
+In the simple contract pursued in this section, the exchange ratio for the start benefit rate prognosis $\hat{b}(R,R,\alpha)$ is simply (recall equations (\ref{SecondCase}) and (\ref{ResDeriv}))
 
 \begin{align*}
-	e(R,R,\alpha) =& \frac{\frac{\partial}{\partial \alpha }\frac{W(R-,R,\alpha)}{a(t)}}{\frac{\partial}{\partial R }\frac{W(R-,R,\alpha)}{a(t)}} \\
-	=& \frac{\frac{W(R-,R,1)}{a(R)}}{\frac{\pi (R) + W(R-,R,\alpha) a^{-1}(R)}{a(R)}} \\
-	=& \frac{W(R-,R,1)}{\pi (R) + W(R-,R,\alpha) a^{-1}(R)}
+	e(R,R,\alpha) =& \frac{\frac{\partial}{\partial R }\hat{b}(t,R,\alpha)}{\frac{\partial}{\partial \alpha }\hat{b}(t,R,\alpha)} \\
+	=& \frac{\frac{\pi (R) + W(R,R,\alpha) a^{-1}(R)}{a(R)}}{\frac{W(R,R,1)}{a(R)}} \\
+	=& \frac{\pi (R) + W(R,R,\alpha) a^{-1}(R)}{W(R,R,1)}
 \end{align*}
 
+In words, the exchange ratio is the ratio between the additional premium paid in $\pi(t)$ plus the additional benefit \textit{not} paid out $W(R,R,\alpha) a^{-1}(R)$ and the reserve at retirement given the baseline premium $W(R,R,1)$.
+
+\begin{figure}[H]
+	\centering
+	\caption{The exchange rate for the start benefit rate prognosis $e(R,R,\alpha)$.}
+	\includegraphics[width=\textwidth]{Exchange}		
+\end{figure}
+
+Worth noting on Figure 7.3 is:
+
+\begin{itemize}
+	\item For the standard parameters $R=65$ and $\alpha=1$, the exchange ratio is around 0.1. This means that the policy holder signing the simple savings contract at age 25 can retire a year earlier (age 64 instead of 65) with start benefit unchanged at 671 t.DKK annually \textit{if} she pays 88 t.DKK premiums annually instead of 80 t.DKK.
+	\item XX
+\end{itemize}
 
 
 \begin{remark}
-	Midle før eller efter man tager brøken
+	As with all other quantities considered in this thesis, the exchange ratio is computed \textit{per} scenario.
 \end{remark}
 
 In the preceding section, intuitive results on sensitivities and exchange ratios were obtained for a simple savings contract. However, the setting had been without insurance event risk. The natural next step is to adapt the results of the preceding section to a setting with insurance risk.
@@ -2321,13 +2346,13 @@ In the preceding section, intuitive results on sensitivities and exchange ratios
 \newpage
 \subsection{Restricted Path} \label{SensRestr}
 
-When adding insurance risk, most quantities -- reserves, sensitivities, exchange ratios -- no longer have closed form solutions. Consequently, we have to settle for deriving systems of differential equations describing the sensitivities and solving them numerically.
+When adding event risk, most quantities -- reserves, sensitivities, exchange ratios -- no longer have closed form solutions. Consequently, we have to settle for deriving systems of differential equations describing the sensitivities and solving them numerically.
 
 Recall that the sojourn benefit rate prognosis is given by
 
 \begin{align*}
 	\hat{b}(t)=& \econd[\sum_{i=1}^n W_i(t-)b_{Z(t)}^i]{\{Z(s) \}_{0 \leq s < t} \in \bar{\mathcal{J}}} \\
-	=& \frac{\sum_{j \in \hat{\mathcal{J}}} \tilde{W}_j(t-) b_j(t)}{\sum_{j \in \hat{\mathcal{J}}} p_{Z(t_0)j}(t_0,t)}.
+	=& \frac{\sum_{j \in \hat{\mathcal{J}}} \tilde{W}_j(t-) b_j(t)}{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,t)}.
 \end{align*}
 
 It it clear then that in order to calculate the sensitivities $\frac{\partial}{\partial \theta} \hat{b}(t,\theta)$ for $\theta=R,\alpha$, we need the sensitivities of the state-wise reserves, i.e.
@@ -2347,7 +2372,7 @@ Since we already have a system of differential equations describing $\tilde{W}_j
 		&+ h_{Z(t-)}(t,W(t-)) d \varepsilon_R(t),
 	\end{align*}
 
-	the $\theta$-sensitivity of the reserve
+	the $\theta$-sensitivity of the state wise reserve
 	
 	\begin{align*}
 		\frac{\partial}{\partial \theta} \tilde{W}_j(t) = \frac{\partial}{\partial \theta} \expec[\1{Z(t)=j} W(t)]
@@ -2378,7 +2403,8 @@ Since we already have a system of differential equations describing $\tilde{W}_j
 	As a sanity check of the corollary, we can reproduce the results of the last section. So assume that $\mathcal{J} = \{ 0 \}$ and that
 	
 	\begin{align*}
-		W(dt,R,\alpha) = r(t) W(t-,R,\alpha) + 1_{t<R} \alpha \cdot \pi(t) - 1_{t \geq R} W(t-,R,\alpha) b(t)
+		dW(t) =& \left( r(t) + \mu(t) - \1{t \geq R} \frac{1}{a(t)}\right) W(t)dt \\
+		&+ \1{t<R} \pi(t)dt
 	\end{align*}
 
 	Then by Corollary \ref{Corollary},
