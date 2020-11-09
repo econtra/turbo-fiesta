@@ -178,8 +178,8 @@
 		&&\\
 		Sensitivities&&\\
 		\hline
-		$\alpha$& Premium level. & Equation (\ref{PremLvl}). \\
-		$e(t,R,\alpha)$& Exchange ratio for the benefit at time $t$. & Definition (\ref{Exchange}).
+		$\alpha$& Premium level. & Equation (\ref{PremLvl}) \\
+		$e(t,R,\alpha)$& Exchange ratio for the benefit at time $t$. & Definition (\ref{Exchange})
 	\end{tabular}
 \end{table}
 
@@ -187,9 +187,9 @@
 
 \section{Introduction}
 
-In March 2018, the Danish insurance and pension industry association Forsikring \& Pension published new guidelines for the pension prognoses presented to policy holders (see \cite{Henstilling}). The purpose of the guidelines was twofold. First, secure more consistent methods of calculation between companies and to present the financial risk associated with the prognoses.
+In March 2018, the Danish insurance and pension industry association Forsikring \& Pension issued new guidelines for the pension prognoses presented to policy holders (see \cite{Henstilling}). The purpose of the guidelines was to secure more consistent methods of calculation between companies and to present the financial risk associated with the prognoses.
 
-However, two stones are left unturned:
+However, two stones were left unturned:
 
 \begin{itemize}
 	\item Events risks are neglected. Most prognoses still make the assumption that the policy holder remains active and premium paying up until retirement -- the possibility of spells of disability or unemployment is ignored. This may lead to overly optimistic prognoses.
@@ -198,27 +198,29 @@ However, two stones are left unturned:
 
 The thesis proposes remedies for these two shortcomings.
 
-The remedy for the first shortcoming is to propose a novel conditioning event, where the policy holder is no longer assumed fixed in the active state, but may make transitions inside a subset of states. We denote this \textit{restricted path conditioning}.
+The remedy for the first shortcoming is to propose a novel class of conditioning events, where the policy holder is no longer assumed fixed in the active state, but may make transitions inside a subset of states. We denote prognoses with this kind of conditioning \textit{restricted path prognoses}.
 
-The second shortcoming is tackled with the concept of \textit{prognosis sensitivities}. The sensitivities quantify how decisions available to the policy holder -- retirement timing and level of premiums paid in -- affect the prognoses for the benefits paid out. Care is taken to present these sensitivities in a way that is relevant and understandable to a lay policy holder.
+The second shortcoming is tackled with the concept of \textit{prognosis sensitivities}. The sensitivities quantify how decisions available to the policy holder -- retirement timing and the level of premiums paid in -- affect the prognoses for the benefits paid out. Care is taken to present these sensitivities in a way that is relevant and understandable to a lay policy holder.
 
 The fundamental idea is to take systematic risks (financial return and transition intensities) as given in scenarios. The event risk is then handled classic actuarial techniques. As we shall see, the principal theoretic workhorse is the notion of \textit{state-wise retrospective reserves} -- as introduced in \cite{Norberg1991} and further developed in \cite{Lollike}.
 
-Fixed path conditioning and prognosis sensitivities constitute the two major contributions of the thesis. On the road to achieving this, the thesis also contributes to the theory of state-wise retrospective reserves. The contribution is an extension of the system of differential equations derived in \cite{Lollike} to allow for state-dependent jumps at deterministic time points. Also, the With Profit-example treated in \cite{Lollike} is extended to allow for a slightly more general dividend process including cash dividends.
+Fixed path conditioning and prognosis sensitivities constitute the two major contributions of the thesis. On the road to achieving this, the thesis also contributes to the theory of state-wise retrospective reserves by extending the system of differential equations derived in \cite{Lollike} to allow for state-dependent jumps at deterministic time points. Also, the With Profit-example treated in \cite{Lollike} is extended to allow for a slightly more general dividend process including cash dividends.
 
 \textbf{Structure}
 
 Chapter 2 introduces the general multi-state Markov model setup that forms the foundation for the rest of the thesis. Then, the scenario-based approach to systematic risks (financial and biometric) is presented and motivated. Finally, a number of classical results are refreshed for later use.
 
-Chapter 3 broaches the question of which quantities to prognosticate and the case is made for the expected benefit rates (sojourn, lump sum and transition). Next is a discussion of the assumptions on the state path of the insured between the time of prognostication and the time of payment. It is here that the thesis makes its first contribution by presenting an alternative to the classical prognosis approach. Classically, it is assumed that the insured remains active until retirement. We denote this approach \textit{fixed path prognoses}. The proposed alternative is the so-called \textit{restricted path prognoses}, where the state process is allowed to move within a subset of states. Following these considerations, formal prognosis definitions are proposed and exemplified in three classical life insurance models.
+Chapter 3 broaches the question of which quantities to prognosticate and the case is made for expected benefit rates (sojourn, lump sum and transition). Next is a discussion of the assumptions on the state path of the insured between the time of prognostication (time 0) and the time of payment (time $t$). It is here that the thesis makes its first contribution by presenting an alternative to the classical prognosis conditioning. Classically, it is assumed that the insured remains active until retirement. We denote this approach \textit{fixed path prognoses}. The proposed alternative is the so-called \textit{restricted path prognoses}, where the state process is allowed to move within a subset of states. Following these considerations, formal prognosis definitions are proposed and exemplified in three classical life insurance models.
 
-Chapter 4 treats the case of \textit{nominal benefits}, i.e. benefits that are completely determined at the signing of the contract. It is shown how to compute fixed- and restricted path prognoses for this type of benefits. The chapter is concluded with two examples that illustrate the difference between the two prognosis approaches.
+Chapter 4 treats the case of \textit{nominal benefits}, i.e. benefits that are completely determined at the signing of the contract. It is shown how to compute fixed- and restricted path prognoses for this type of benefits. The chapter is concluded with two examples that illustrate the difference between the fixed- and restricted path prognoses.
 
-Chapter 5 is devoted to the case of \textit{reserve-dependent benefits}, meaning benefits that depend on reserves, accounts or indices of a general form. Again, we show how to compute both fixed- and restricted path prognoses. In both cases, the procedure has two steps: First, derive a system of differential equations for the reserves and solve them. Second, weigh the payment functions with these reserves to obtain the prognoses. We then show how a broad class of contracts -- in \cite{Liv2Bog} denoted \textit{With Profit insurance} -- fits into this reserve-dependent framework and obtain prognoses for this class of contracts. Finally, we exemplify the difference between fixed- and restricted path prognoses with a simple savings contract.
+Chapter 5 is devoted to the case of \textit{reserve-dependent benefits}, meaning benefits that depend on reserves, accounts or indices with dynamics on a specific form. Again, we show how to compute both fixed- and restricted path prognoses. In both cases, the procedure has two steps: First, derive a system of differential equations for the state-wise reserves and solve them (numerically if necessary). Second, weigh the payment functions with these reserves to obtain the prognoses. We then show how a broad class of contracts -- in \cite{Liv2Bog} denoted \textit{With Profit insurance} -- fits into this reserve-dependent framework and obtain prognoses for this class of contracts. Finally, we exemplify the difference between fixed- and restricted path prognoses with a simple savings contract.
 
-Chapter 6 introduces the concept of \textit{prognosis sensitivities}, which are just derivatives of the prognoses in various contract elements. The focus will be on the time of retirement- and premium level sensitivities. The sensitivities are meant as tools -- not for valuation -- but for aiding the policy holder in making decisions about her savings scheme and retirement timing. We derive explicit results for a simple fixed path prognosis present them graphically. Finally, we sketch how the sensitivities may be obtained for restricted path prognoses.
+Chapter 6 introduces the concept of \textit{prognosis sensitivities}, which are just derivatives of the prognoses in various contract elements. The focus will be on the time of retirement- and premium level sensitivities. The sensitivities are meant as tools -- not for valuation -- but for aiding the policy holder in making decisions about her savings scheme and retirement timing. We derive explicit results for a simple fixed path prognosis and present them graphically. Finally, we sketch how the sensitivities may be obtained for restricted path prognoses.
 
 \textbf{Acknowledgements}
+
+XXXX
 
 \newpage
 
@@ -234,13 +236,13 @@ Define the transition probabilities
     p_{ij}(t,s) =  \mathbbm{P} \left( Z(s)=j \;\middle\vert\; Z(t)=i \right), \, \, \, \, \, i,j \in \mathcal{J}, \, \, t < s,
 \end{align*}
 
-and assume that they are continuously differentiable in $t$ and $s$, i.e. the function $(t,s) \mapsto p_{ij}(t,s)$ is $C^{1,1}$ for $t < s$. It is then possible to define the transition intensities
+and assume that they are continuously differentiable in $t$ and $s$, i.e. the functions $(t,s) \mapsto p_{ij}(t,s)$ are $C^{1,1}$ for $t < s$. It is then possible to define the transition intensities
 
 \begin{align*}
     \mu_{ij}(t) = \lim_{h \searrow 0} \frac{p_{ij} \left( t,t+h \right)}{h}, \, \, \, \, \, i,j \in \mathcal{J}, \, \, i \neq j.
 \end{align*}
 
-Finally, let $N = \{ N_{k} \}_{k \in \mathcal{J}}$ be the vector counting process associated with $Z$. It has entries $N_{k} = \{ N_{k}(t) \}_{t \geq 0}$ given by
+Also, let $N = \{ N_{k} \}_{k \in \mathcal{J}}$ be the vector counting process associated with $Z$. It has entries $N_{k} = \{ N_{k}(t) \}_{t \geq 0}$ given by
 
 \begin{align*}
     N_{k}(t) = \# \{ s \in (0,t] \, : \, Z(s-) \neq k, Z(s)=k \},
@@ -255,7 +257,7 @@ counting the number of transitions into state $k$ up until and including time $t
 is an $F^Z$-martingale. Recall that $F^Z= \{ F^Z(t) \}_{t \geq 0}$ is the filtration naturally generated by the process $Z$, i.e. $F^Z(t) = \sigma(Z(s) : s \leq t)$.
 
 \subsection{Scenario-Based Systematic Risks}
-The systematic risks comprise the transition intensities $\mu$ (describing the state process $Z$) and the financial market. The financial market enters into the insurance setting via the return on investment of the payments made by the policy holder to the company. Denote this rate $r = \{ r(t) \}_{t \geq 0}$ and assume that it is continuous and FV. It may comprise returns on bonds, stocks and other investments depending on the portfolio composition which in turn may depend on the contract type and risk appetite of the policy holder. We make no assumptions about the market producing this rate of return, but instead take it as exogenously given (along with $\mu$) in scenarios. This approach allows for prognostication in any model for $(r,\mu)$ without added mathematical complexity.
+The systematic risks comprise the transition intensities $\mu$ (characterizing the state process $Z$) and the financial market. The financial market enters into the insurance setting via the interest carried by the payments made by the policy holder to the company. Denote this interest rate $r = \{ r(t) \}_{t \geq 0}$ and assume that it is continuous and of finite variation (FV). It may comprise returns on bonds, stocks and other investments depending on the portfolio composition which in turn may depend on the contract type and risk appetite of the policy holder. We make no assumptions about the market producing this rate of return, but instead take it as exogenously given (along with $\mu$) in scenarios. This approach allows for prognostication in any model for $(r,\mu)$ without added mathematical complexity.
 
 Interesting scenarios include:
 
@@ -2527,7 +2529,7 @@ that is the rate by which the policy holder must increase her premium level in o
 \section{Suggestions for further research}
 
 \begin{itemize}
-	\item Higher moments
+	\item Moments, quantiles, simulations
 \end{itemize}
 
 \newpage
@@ -2600,12 +2602,12 @@ Now letting $h$ tend to zero, we obtain the desired result by the following lemm
 
 \section{Proof of Proposition \ref{MainResult}} \label{MainProof}
 
-Assume that $p_{Z(t_0)j}(t_0,t)>0$ for all $t>t_0$ and all $j \in \mathcal{J}$. We then have
+Assume that $p_{0j}(0,t)>0$ for all $t>0$ and all $j \in \mathcal{J}$. We then have
 
 \begin{align*}
     \tilde{W}_j(t) =& \expec[W(t) \1{Z(t)=j}] \\
-    =& \expec[w_0 \1{Z(t)=j}] + \expec[\int_0^t \1{Z(t)=j} dW(s)] \\
-    =& p_{Z(t_0)j}(t_0,t) \cdot w \\
+    =& \expec[w \1{Z(t)=j}] + \expec[\int_0^t \1{Z(t)=j} dW(s)] \\
+    =& p_{Z0j}(0,t) \cdot w \\
     &+ \underbrace{\expec[\int_0^t \1{Z(t)=j} f_{Z(s-)}(s,W(s-)) ds]}_* \\
     &+ \underbrace{\expec[\int_0^t \sum_{k \in \mathcal{J} \atop k \neq Z(s-)} \1{Z(t)=j} g_{Z(s-)k}(s,W(s-)) dN_k(s)]}_{**} \\
     &+ \underbrace{\expec[\int_0^t \1{Z(t)=j} h_{Z(s-)}(s,W(s-)) d \varepsilon_{R}(s)]}_{***}.
@@ -2622,11 +2624,11 @@ For $**$ we have
 
 \begin{align*}
 	** =& \mathbbm{E} \left[ \econd[ \int_0^t \sum_{k \in \mathcal{J} \atop k \neq Z(s-)} \1{Z(t)=j} g_{Z(s-)k}(s,W(s-)) dN_k(s)]{Z(t)} \right] \\
-	=& \expec[ \int_0^t \sum_{k \in \mathcal{J} \atop k \neq Z(s-)} \1{Z(t)=j} g_{Z(s-)k}(s,W(s-)) \1{Z(s-)=i} \mu_{ik}(s) \frac{p_{kj}(s,t)}{p_{ij}(s,t)} ds] \\
+	=& \expec[ \int_0^t \sum_{k \in \mathcal{J} \atop k \neq Z(s-)} \1{Z(t)=j} g_{Z(s-)k}(s,W(s-)) \sum_{i \in \mathcal{J}} \1{Z(s-)=i} \mu_{ik}(s) \frac{p_{kj}(s,t)}{p_{ij}(s,t)} ds] \\
 	=& \int_0^t \sum_{i \in \mathcal{J}} p_{0i}(0,s-) \sum_{k \in \mathcal{J} \atop k \neq i} \econd[\1{Z(t)=j} g_{ik}(s,W(s-))]{Z(s-)=i} \mu_{ik}(s) \frac{p_{kj}(s,t)}{p_{ij}(s,t)} ds,
 \end{align*}
 
-where we used that $g_{Z(s-)k}(s,W(s-))$ is predictable and that $\1{Z(-s) \neq k}\1{Z(t)=j}dN_k(s)$ has predictable compensator $\1{Z(t)=j} \sum_{i \in \mathcal{J} \atop i \neq k} \1{Z(s-)=i} \mu_{ik}(s) \frac{p_{kj}(s,t)}{p_{ij}(s,t)}$ (see \cite{Lollike}). EVT SKIFT I MED Z NOGET.
+where we used that $g_{Z(s-)k}(s,W(s-))$ is predictable and that $\1{Z(t)=j}dN_{k}(s)$ has predictable compensator $\1{Z(t)=j} \sum_{i \in \mathcal{J}} \1{Z(s-)=i} \mu_{ik}(s) \frac{p_{kj}(s,t)}{p_{ij}(s,t)}$ (proven in Appendix A in \cite{Lollike}).
 
 Finally, we have for $***$
 
@@ -2639,7 +2641,7 @@ Finally, we have for $***$
 Putting it all together, we have
 
 \begin{align*}
-    \tilde{W}_j(t) =& p_{Z(t_0)j}(t_0,t) \cdot w \\
+    \tilde{W}_j(t) =& p_{0j}(0,t) \cdot w \\
     &+ \int_0^t \sum_{i \in \mathcal{J}} p_{0i}(0,s-) \econd[\1{Z(t)=j} f_{i}(s,W(s-))]{Z(s-)=i} ds \\
     &+ \int_0^t \sum_{i \in \mathcal{J}} p_{0i}(0,s-) \sum_{k \in \mathcal{J} \atop k \neq i} \econd[\1{Z(t)=j} g_{ik}(s,W(s-))]{Z(s-)=i} \mu_{ik}(s) \frac{p_{kj}(s,t)}{p_{ij}(s,t)} ds \\
     &+ \1{t \geq R} \sum_{i \in \mathcal{J}} p_{0i}(0,R-) \econd[\1{Z(t)=j} h_{i}(R,W(R-))]{Z(R-)=i} \\
@@ -2662,11 +2664,11 @@ and so
 Using this and the affine structure of $f$, $g$ and $h$ we obtain
 
 \begin{align}
-\tilde{W}_j(t) =& p_{Z(t_0)j}(t_0,t) \cdot w \\
+\tilde{W}_j(t) =& p_{0j}(0,t) \cdot w \\
 &+ \int_0^t \sum_{i \in \mathcal{J}} p_{0i}(0,s) p_{ij}(s,t) \left( f_i^0(s) + \frac{\tilde{W}_i(s-)}{p_{0i}(0,s)} f_i^1(s) \right) ds \\
 &+ \int_0^t \sum_{i \in \mathcal{J}} p_{0i}(0,s) \sum_{k \in \mathcal{J} \atop k \neq i} \mu_{ik}(s) p_{kj}(s,t) \left( g_{ik}^0(s) + \frac{\tilde{W}_i(s-)}{p_{0i}(0,s)} g_{ik}^1(s) \right) ds \\
 &+ \1{t \geq R}\sum_{i \in \mathcal{J}} p_{0i}(0,R) p_{ij}(R,t) \left( h_i^0(R) + \frac{\tilde{W}_i(R-)}{p_{0i}(0,R)} h_i^1(R) \right) \\
-=& p_{Z(t_0)j}(t_0,t) \cdot w \label{FirstLineA} \\
+=& p_{0j}(0,t) \cdot w \label{FirstLineA} \\
 &+ \int_0^t \sum_{i \in \mathcal{J}} p_{0i}(0,s) p_{ij}(s,t) f_i^0(s) ds \\
 &+ \int_0^t \sum_{i \in \mathcal{J}} p_{ij}(s,t) \tilde{W}_i(s-) f_i^1(s) ds \\
 &+ \int_0^t \sum_{i \in \mathcal{J}} p_{0i}(0,s) \sum_{k \in \mathcal{J} \atop k \neq i} \mu_{ik}(s) p_{kj}(s,t) g_{ik}^0(s) ds \\
@@ -2678,10 +2680,10 @@ Using this and the affine structure of $f$, $g$ and $h$ we obtain
 $\tilde{W}_j(t)$ is not differentiable at $R$ for two reasons. First, the lump sum added via the $h$ function potentially renders $\tilde{W}_j(t)$ discontinuous at this point (and hence not differentiable). Second, even if $h=0$, the point $R$ is potentially a point of discontinuity for $f$ and $g$, which renders the integrals above non-differentiable. On $(0,R)\cup(R,n)$, however, we have by Leibniz' integral rule
 
 \begin{align*}
-\frac{\partial}{\partial t} \tilde{W}_j(t) =& \frac{\partial}{\partial t} p_{Z(t_0)j}(t_0,t) w_0 \\
+\frac{\partial}{\partial t} \tilde{W}_j(t) =& \frac{\partial}{\partial t} p_{Z0j}(0,t) w_0 \\
 &+ p_{Z(t_0j)}(t_0,t) f_j^0(t) \\
 &+ \tilde{W}_i(t-) f_j^1(t) \\
-&+ \sum_{i \in \mathcal{J} \atop i \neq j} p_{Z(t_0)i}(t_0,t) \mu_{ij}(t) g_{ij}^0(t) \\
+&+ \sum_{i \in \mathcal{J} \atop i \neq j} p_{0i}(0,t) \mu_{ij}(t) g_{ij}^0(t) \\
 &+ \sum_{i \in \mathcal{J} \atop i \neq j} \tilde{W}_i(t) \mu_{ij}(t) g_{ij}^1(t) \\
 &+ \int_0^t \sum_{i \in \mathcal{J}} p_{0i}(0,s) \frac{\partial}{\partial t} p_{ij}(s,t) f_i^0(s) ds \\
 &+ \int_0^t \sum_{i \in \mathcal{J}} \frac{\partial}{\partial t} p_{ij}(s,t) \tilde{W}_i(s-) f_i^1(s) ds \\
@@ -2694,28 +2696,31 @@ $\tilde{W}_j(t)$ is not differentiable at $R$ for two reasons. First, the lump s
 We can now use the Kolmogorov forward equations
 
 \begin{align*}
-\frac{\partial}{\partial t} p_{Z(t_0)j}(t_0,t) = \sum_{i \in \mathcal{J} \atop i \neq j} \left( p_{Z(t_0)i}(t_0,t) \mu_{ij}(t) - \mu_{ji}(t) p_{Z(t_0)j}(t_0,t) \right)
+\frac{\partial}{\partial t} p_{0j}(0,t) = \sum_{i \in \mathcal{J} \atop i \neq j} \left( p_{0i}(0,t) \mu_{ij}(t) - \mu_{ji}(t) p_{0j}(0,t) \right)
 \end{align*}
 
 to recognize $\tilde{W}_j(s)$ and $\tilde{W}_i(s-)$ from equations (\ref{FirstLineA}) through (\ref{SecondGlue}) to arrive at
 
 \begin{align*}
-	\frac{\partial}{\partial t} \tilde{W}_j(t) =& p_{Z(t_0j)}(t_0,t) f_j^0(t) + \tilde{W}_i(t-) f_j^1(t) \\
-	&+ \sum_{i \in \mathcal{J} \atop i \neq j} \mu_ij(t) \left( p_{Z(t_0)i}(t_0,t) g_{ij}^0(t) + \tilde{W}_i(t) g_{ij}^1(t) \right) \\
+	\frac{\partial}{\partial t} \tilde{W}_j(t) =& p_{0j}(0,t) f_j^0(t) + \tilde{W}_i(t-) f_j^1(t) \\
+	&+ \sum_{i \in \mathcal{J} \atop i \neq j} \mu_ij(t) \left( p_{0i}(0,t) g_{ij}^0(t) + \tilde{W}_i(t) g_{ij}^1(t) \right) \\
 	&+ \sum_{i \in \mathcal{J} \atop i \neq j} \left( \tilde{W}_i(t) \mu_{ij}(t) - \mu_{ji}(t) \tilde{W}_j(t) \right)
 \end{align*}
 
 The initial value is just
 
 \begin{align*}
-	\tilde{W}_j(t_0) =& \expec[\1{Z(t_0=j)} W(0)] \\
-	=& \1{j=Z(t_0)} \cdot w
+	\tilde{W}_j(0) =& \expec[\1{Z(0)=j} W(0)] \\
+	=& \1{j=0} \cdot w
 \end{align*}
 
-and by inspecting equations (\ref{FirstLineA}) through (\ref{SecondGlue}), the gluing condition at time $R$ follows from the continuity of the transition probabilities
+and by inspecting equations (\ref{FirstLineA}) through (\ref{SecondGlue}), the gluing condition at time $R$ follows from the continuity of the transition probabilities and the Lebesgue integral:
 
 \begin{align*}
-	\tilde{W}_j(R) - \tilde{W}_j(R-) = p_{Z(t_0)j}(t_0,R) h_j^0(R) + \tilde{W}_j(R-) h_j^1(R)
+	\tilde{W}_j(R) - \tilde{W}_j(R-) =& \left(p_{0j}(0,R) - p_{0j}(0,R-)\right) \cdot w \\
+	&+ \int_0^R ... ds - \int_0^{R-} ... ds \\
+	&+ \sum_{i \in \mathcal{J}} p_{0i}(0,R) p_{ij}(R,R) h_i^0(R) + \sum_{i \in \mathcal{J}} p_{ij}(R,t) \tilde{W}_i(R-) h_i^1(R) \\
+	=& p_{0j}(0,R) h_j^0(R) + \tilde{W}_j(R-) h_j^1(R)
 \end{align*}
 
 \newpage

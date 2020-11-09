@@ -329,9 +329,11 @@ let Exchange = Chart.Combine([
                     Chart.Line ([for i in Earlyindex .. SeventyIndex - 1 -> (time.[i], (piSensi + 2.0 * W.[i]/a.[i])/W.[i])],Name="alpha = 2")
                     ])                  
                 |> Chart.WithLegend(Docking=ChartTypes.Docking.Left)
-                |> Chart.WithXAxis(Title="Time of retirement R", TitleFontSize=16.0)
-                |> Chart.WithYAxis(Title="", TitleFontSize=16.0)
+                |> Chart.WithXAxis(Title="Time of retirement R", TitleFontSize=16.0, Min = 60.0)
+                |> Chart.WithYAxis(Title="Exchange ratio", TitleFontSize=16.0)
                 |> Chart.Save "H:\SpecialyNY\Exchange.png"
+
+a.[Rindex]
 
 //Chart.Combine([
 //      Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], YInterestStress.a.[i])],Name="1")
