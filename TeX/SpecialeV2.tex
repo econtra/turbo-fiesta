@@ -145,6 +145,7 @@
 		\hline
 		$R$& Time of retirement. & Section \ref{PayStreams}\\
 		$n$& Time of contract termination. No payments beyond this point. & Section \ref{PayStreams}\\
+		$\varepsilon_{R}$& Dirac delta function. $\varepsilon_{R}(t) = \1{t \geq R}$. & Section \ref{PayStreams}\\
 		&&\\
 		$a(t)$	& Annuity used to calculate the pension benefit rate at time $t$. & Equation (\ref{Annuity}) \\
 		$\bar{r}_t$	& "Beregningsrente". Interest rate curve used for discounting in $a$. & Equation (\ref{Annuity}) \\
@@ -306,14 +307,14 @@ All accounted for, the payment processes take the form
 \end{split}
 \end{align}
 
-Note that -- in contrast to the classical setup -- the payments $b_{Z(t-)}(t)$ and $\triangle B_{Z(t-)}(t)$ depend on the state of the policy holder \textit{just before} time $t$, i.e. $Z(t-)$. This is is done purely for mathematical convenience. However, since the sojourn payments $b_{Z(t-)}(t)$ are paid continuously, we know from \cite{LivStok} that $t$ and $t-$ are interchangeable. The same is true for the retirement lump sum payments $\triangle B_{Z(t-)}(t)$, since $Z(R) = Z(R-)$ a.s.
+where $\varepsilon_{R}(s) = \1{s \geq R}$. Note that -- in contrast to the classical setup -- the payments $b_{Z(t-)}(t)$ and $\triangle B_{Z(t-)}(t)$ depend on the state of the policy holder \textit{just before} time $t$, i.e. $Z(t-)$. This is is done purely for mathematical convenience to obtain the form in the last line of equation (\ref{PaymentProcessDef}). However, since the sojourn payments $b_{Z(t-)}(t)$ are paid continuously, we know from \cite{LivStok} that $t$ and $t-$ are interchangeable. The same is true for the retirement lump sum payments $\triangle B_{Z(t-)}(t)$, since $Z(R) = Z(R-)$ a.s.
 
 \begin{remark}
-	For the sake of readability, only the case with a single discontinuity in the payment processes and a single deterministic lump sum benefit $\triangle b_j$ (both at time of retirement $R$) will be treated in this thesis. However, the results can be extended by more discontinuities and more deterministic lump sums.
+	For the sake of readability, only the case with a single discontinuity in the payment processes and a single deterministic lump sum benefit $\triangle B_j$ (both at time of retirement $R$) will be treated in this thesis. However, the results can be extended to a finite number discontinuities and more deterministic lump sums.
 \end{remark}
 
 \begin{remark}
-	$b_j^{\Uparrow}$ and $b_j^{\Downarrow}$ do not always have different signs. For instance, if $k$ is the disability state, $b_k^{\Uparrow}$ corresponds to a disability benefit, while $b_k^{\Downarrow}$ corresponds to a pension benefit -- both positive rates.
+	$b_j^{\Uparrow}$ and $b_j^{\Downarrow}$ do not always have different signs. For instance, if $k$ is the disability state, $b_k^{\Uparrow}$ is a disability benefit, while $b_k^{\Downarrow}$ is a pension benefit -- both positive rates.
 \end{remark}
 
 \begin{remark}
@@ -340,7 +341,7 @@ Note that the time $t$ technical reserve only depend on the state process $Z$ th
 
 \begin{align*}
 	dV_{Z(t)}^*(t) =& r^*(t) V_{Z(t)}^* dt - b_{Z(t-)}(t) dt - \sum_{k \in \mathcal{J} \atop k \neq Z(t-)} R_{Z(t-)k}^*(t) \mu_{Z(t-)k}^*(t) dt \\
-	&+ \sum_{k \in \mathcal{J} \atop k \neq Z(t-)} \left( V_k^*(t) - V_{Z(t-)}^*(t) \right) dN_k(t), \, \, \, V_{Z(t)}^*(R) =  V_{Z(t)}^*(R-) - \triangle B_{Z(t-)}(R)
+	&+ \sum_{k \in \mathcal{J} \atop k \neq Z(t-)} \left( V_k^*(t) - V_{Z(t-)}^*(t) \right) dN_k(t), \, \, \, V_{Z(R)}^*(R) =  V_{Z(R-)}^*(R-) - \triangle B_{Z(R-)}(R)
 \end{align*}
 
 where $R_{jk}^*$ is the sum at risk for the transition $j \mapsto k$ given by
@@ -353,7 +354,7 @@ As noted in \cite{Lollike}, the dynamics can be rewritten as
 
 \begin{align} \label{ReserveDynamics}
 \begin{split}
-	dV_{Z(t)}^*(t) =& r^*(t) V_{Z(t)}^* - b_{Z(t-)}(t) dt - \sum_{k \in \mathcal{J} \atop k \neq Z(t-)} b_{Z(t)k}(t) dN_k(t) \\
+	dV_{Z(t)}^*(t) =& r^*(t) V_{Z(t)}^* - b_{Z(t-)}(t) dt - \sum_{k \in \mathcal{J} \atop k \neq Z(t-)} b_{Z(t-)k}(t) dN_k(t) \\
 	&- \sum_{k \in \mathcal{J} \atop k \neq Z(t-)} \rho_{Z(t-)k}(t) dt + \sum_{k \in \mathcal{J} \atop k \neq Z(t-)} R_{Z(t-)k}^*(t) \left( dN_k(t) - \mu_{Z(t-)k}(t) dt \right),
 \end{split}
 \end{align}
@@ -370,12 +371,12 @@ Sometimes, it is useful to express the technical reserve as discounted cash flow
 	The technical reserve satisfies
 	
 	\begin{align*}
-		V_{Z(t)}^*(t) = \int_t^n e^{-\int_t^s r^*(u)du} \sum_{j \in \mathcal{J}} p_{Z(t)j}^*(t,s) \left( b_j(s) + \sum_{k \in \mathcal{J} \atop k \neq j} \mu_{jk}^*(s)b_{jk}(s) \right) ds,
+		V_{Z(t)}^*(t) = \int_t^n e^{-\int_t^s r^*(u)du} \sum_{j \in \mathcal{J}} p_{Z(t)j}^*(t,s) \left( b_j(s)ds + \sum_{k \in \mathcal{J} \atop k \neq j} \mu_{jk}^*(s)b_{jk}(s)ds + \triangle B_j(s) d \varepsilon_{R}(s) \right),
 	\end{align*}
 \end{proposition}
 
 \begin{proof}
-	See Proposition \cite{BuchardtMoller}.
+	See Proposition 1 in \cite{BuchardtMoller}.
 \end{proof}
 
 \bigbreak
@@ -387,9 +388,9 @@ In the preceding chapter, we have presented the theoretical foundation for the t
 \newpage
 \section{Prognoses - General Considerations}
 
-A prognosis should be a useful summary of the level of benefits that the policy holder can expect to receive in the future. But at the same time, it has to be  feasibly computable. The challenge is finding an approach that is both these things.
+A prognosis should be a useful summary of the level of benefits that the policy holder can expect to receive in the future. But at the same time, it has to be  feasibly computable. The challenge is finding an approach that is both.
 
-Mathematically, a prognosis is a functional of the payment stream $B: [0,n] \times \Omega \to \mathbbm{R}$. Choices must then be made on how to handle both the time dimension of $B$ and its stochasticity. It is the object of this chapter to elucidate these choices.
+Mathematically speaking, a prognosis is a functional of the payment stream $B: [0,n] \times \Omega \to \mathbbm{R}$. Choices must then be made on how to handle both the time dimension of $B$ and the stochasticity. It is the object of this chapter to elucidate these choices.
 
 We stress again that time 0 should be thought of as the time the prognostication takes place, \textit{not} the time of contract signing.
 
@@ -399,60 +400,62 @@ The chapter is structured as follows:
 
 \begin{itemize}
 	\item First, we make the case for using payment rates -- as opposed to accumulated payments -- as the object of prognostication. Also, the expectation is chosen as the pragmatic tool for handling the event risk of $Z$.
-	\item Second, we broach the issue of which events to condition on in the context of prognoses. We present the classical approach -- what we call \textit{fixed path conditioning} and discuss its merits and shortfalls. In an attempt to remedy these shortfalls, we propose a novel class of conditioning events -- \textit{restricted path conditioning}.
+	\item Second, we broach the issue of which events to condition on when prognosticating. We present the classical approach -- what we call \textit{fixed path conditioning} and discuss its merits and shortfalls. In an attempt to remedy these shortfalls, we propose a novel class of conditioning events -- \textit{restricted path conditioning}.
 	\item Finally, we exemplify the restricted path conditioning in three commonly used life insurance models.
 \end{itemize}
 
 \subsection{Choosing A Functional}
 
-\subsubsection{The $t$-Dimension}
+\subsubsection{The $t$-dimension}
 
 The thesis takes the view that it is benefit rates (e.g. monthly benefits) and single lump sum benefits (e.g. pension endowment or term insurance payout) that is of greatest interest to the policy holder -- not accumulated benefits. Questions such as "What benefit rate can I expect in my first month of retirement?" or "What can I expect to be paid out to my family if I die in 10 years?" are more likely to interest the policy holder than "How many benefits can I expect to receive across my entire lifetime?".
 
-The benefit rates prognosticated should be real (as in inflation-adjusted), as the purpose of pension and life insurance is essentially to ensure that the policy holder has sufficient purchasing power in all stages and events of her life. For this reason, prognoses of real benefits in time $t_0$-currency that she can tie to her everyday consumption are the most useful. Therefore, all payments are assumed to be real and the rate of return $r$ is assumed to be a real rate as well. Of course, this rate might not be easy to model, but that discussion is outside the scope of this thesis.
+The benefit rates prognosticated should be real (inflation-adjusted), as the purpose of pension and life insurance is essentially to ensure that the policy holder has sufficient purchasing power in all stages and events of her life. For this reason, prognoses of real benefits in time 0-currency that she can tie to her everyday consumption are the most useful. Therefore, all payments are assumed to be real and the interest rate $r$ is assumed to be a real rate as well. Of course, this rate might not be easy to model, but that discussion is outside the scope of this thesis.
 
-\subsubsection{The $\omega$-Dimension}
+\subsubsection{The $\omega$-dimension}
 
-When dealing with the realization risk of $Z$ in the context of valuation, the expectation has a privileged position as the summarizing functional of choice. This is because the law of large numbers ensures that the average liability converges towards the expectation as the portfolio increases in size.
+When dealing with the event risk of $Z$ in the context of valuation, the expectation has a privileged position as the summarizing functional of choice. This is because the law of large numbers ensures that the average liability converges towards the expectation as the portfolio increases in size.
 
-In the context of prognoses -- however -- it is not entirely obvious why the expectation should be \textit{the} most interesting functional to the policy holder. After all, few people would probably be satisfied with the justification that "this quantity is your average pension rate across an infinite number of lifetimes". Still, the expectation is the functional pursued in this thesis. The choice is made on practical grounds: Most actuarial techniques for treating the state risk of $Z$ are based on the expectation (or on moments) so in order to build on these techniques, the approach will be expectation-based. As a consequence, the results obtained in the thesis suffer from the usual reproach of the expectation -- that it does not well catch the behaviour in the tails of the distribution.
+In the context of prognoses -- however -- it is not entirely obvious why the expectation should be \textit{the} most interesting functional to the policy holder. After all, the policy holder cannot "diversify her lives" as the company can. Still, the expectation is the functional pursued in this thesis. The choice is made on practical grounds: Most actuarial techniques for treating the event risk of $Z$ are based on the expectation (or on moments) so in order to build on these techniques, the approach will be expectation-based. As a consequence, the results obtained in the thesis suffer from the usual shortcoming of the expectation -- that it does not catch the behaviour in the tails of the distribution very well.
 
 By the above considerations, we are led to formulate the following candidates for prognoses, one for each payment type:
 
 \begin{itemize}
     \item Sojourn benefit rate prognoses
     \begin{align*}
-        \hat{b}(t) = \econd[b_{Z(t)}(t)]{\cdot}
+        \hat{b}(t) = \econd[b_{Z(t-)}(t)]{\bullet}.
     \end{align*}
     \item Retirement lump sum prognoses
     \begin{align*}
-        \triangle B(t) = \econd[\triangle B_{Z(R)}(R)]{\cdot}
+        \triangle \hat{B}(t) = \econd[\triangle B_{Z(R-)}(R)]{\bullet}.
     \end{align*}
     \item State $k$ transition benefit prognoses
     \begin{align*}
-        \hat{b}_{\cdot k}(t) = \econd[b_{Z(t-)k}(t)]{\cdot}
+        \hat{b}_{\cdot k}(t) = \econd[b_{Z(t-)k}(t)]{\bullet}.
     \end{align*}
 \end{itemize}
 
-In the next section, it will be discussed what it is meaningful to insert in place of the dots as the conditioning event.
+Here, the notation $\hat{b}_{\cdot k}(t)$ signifies that it is not known from which state the transition is made, only that it is made into state $k$.
+
+In the next section, it will be discussed what it is meaningful to insert in place of the bullets $\bullet$ as the conditioning events.
 
 \subsection{Conditioning For Prognoses} \label{CondForProg}
 
-We now turn our attention to the question of what to choose as the conditioning event for prognoses. At the one extreme is no conditioning at all. This will result in prognoses that are arguably too low. Take the sojourn prognosis for some time point $t>R$ as an example. There are many $\omega \in \Omega$ where the policy holder dies before time $t$, which would pull the prognosis towards 0, since there are no pension payments in the death state. When assessing the liabilities of the company these $\omega$'s should of course be included. But when giving a policy holder a realistic picture of what to expect in pension benefits, they should not\footnote{An exception is if a benefit rate is paid out to the bereaved for some time after her death}. For this reason, it seems reasonable that prognoses should at least condition on not having made the transition to the death state before time $t$.
+We now turn our attention to the question of what to choose as the conditioning event for prognoses. At the one extreme is no conditioning at all. This will result in prognoses that are arguably too low. Take the sojourn benefit rate prognosis for some time point $t \geq R$ as an example. There are many events on which the policy holder dies before time $t$, which would pull the prognosis towards 0, since there are no payments in the death state. When assessing the liabilities of the company these events should of course be included. But when giving a policy holder a realistic picture of what to expect in benefits, they should not. For this reason, it seems reasonable that prognoses should at least condition on not having made the transition to the death state before time $t$.
 
-This consideration leads us toward the conditioning event that is classically used both in the literature and in the industry: fixed path conditioning.
+This consideration leads toward the conditioning event that is classically used both in the literature and in the industry: fixed path conditioning.
 
 \subsubsection{Fixed Path}
 
-At the extreme opposite of no conditioning is conditioning on the entire state path up until the time of payment, i.e.
+At the extreme opposite of no conditioning is conditioning on the entire state path up until the time of payment, i.e. the event
 
 \begin{align} \label{FixedPathz}
 \left( Z(s) = z(s) : 0 \leq s \leq t \right)
 \end{align}
 
-for some deterministic function $z: [0,t] \to \mathcal{J}$. Many current prognoses do exactly this by conditioning on the policy holder staying active. However, this conditioning eradicates the risk of the state process $Z$ completely, which may lead to overly optimistic prognoses, as $Z$ is assumed to remain in the premium paying state until retirement, which may overestimate the level of benefits paid out. This is the crucial shortfall of the fixed path conditioning that is attempted remedied in the novel conditioning proposed in the next section.
+for some deterministic function $z: [0,t] \to \mathcal{J}$. Many current prognoses do exactly this by conditioning on the policy holder staying active. However, this conditioning eradicates the risk of the state process $Z$ completely, which may lead to overly optimistic prognoses. This is because $Z$ is assumed to remain in the premium paying state until retirement, which may overestimate the level of benefits paid out. This is a shortfall of the fixed path conditioning which is attempted remedied in the novel conditioning proposed in the next section.
 
-Instead of simply staying active, other specific paths -- which includes periods of invalidity or unemployment -- can be investigated in the fixed path setup. The path could even be chosen by the police holder herself in a "what if"-scenario. As $Z$ is then conditionally deterministic, there is no realization risk at all, and -- as we shall see -- calculating these prognoses is quite simple.
+Instead of simply staying active, other specific paths -- which includes periods of disability or unemployment -- can be investigated in the fixed path setup. The path could even be chosen by the police holder herself in a "what if"-scenario. As $Z$ is then conditionally deterministic, there is no event risk at all, and -- as we shall see -- calculating these prognoses is quite simple.
 
 Formally, the fixed path prognoses are:
 
@@ -460,7 +463,7 @@ Formally, the fixed path prognoses are:
 	A sojourn benefit rate fixed path prognosis is a quantity on the form
 	
 	\begin{gather*}
-		\hat{b}^z(t) = \econd[b_{Z(t)}(t)]{Z(s) = z(s) : 0 \leq s \leq t},
+		\hat{b}^z(t) = \econd[b_{Z(t-)}(t)]{Z(s) = z(s) : 0 \leq s \leq t},
 	\end{gather*}
 	
 	for some deterministic path $z: [0,t] \to \mathcal{J}$.
@@ -470,7 +473,7 @@ Formally, the fixed path prognoses are:
 	A retirement lump sum fixed path prognosis is a quantity on the form
 	
 	\begin{gather*}
-		\triangle \hat{B}^z(t) = \econd[\triangle B_{Z(R)}(R)]{Z(s) = z(s) : 0 \leq s \leq R},
+		\triangle \hat{B}^z(R) = \econd[\triangle B_{Z(R-)}(R)]{Z(s) = z(s) : 0 \leq s \leq R},
 	\end{gather*}
 	
 	for some deterministic path $z: [0,t] \to \mathcal{J}$.
@@ -1453,11 +1456,14 @@ We have now arrived at a system of differential equations for a one-dimensional 
 	
 	is characterized by the system of differential equations
 	
-	\begin{align*}
-	\frac{\partial}{\partial t} \tilde{W}_j(t) =& f_j^1(t) \tilde{W}_j(t) + p_{0j}(0,t) f_j^0(t) \\
+	\begin{align} \label{MainEquation}
+\begin{split}
+		\frac{\partial}{\partial t} \tilde{W}_j(t) =& f_j^1(t) \tilde{W}_j(t) + p_{0j}(0,t) f_j^0(t) \\
 	&+ \sum_{k \in \mathcal{J} \atop k \neq j} \mu_{kj}(t) \left( g_{kj}^1(t) \tilde{W}_k(t) + p_{0k}(0,t) g_{kj}^0(t) \right) \\
 	&+ \sum_{k \in \mathcal{J} \atop k \neq j} \left( \mu_{kj}(t) \tilde{W}_k(t) - \mu_{jk}(t) \tilde{W}_j(t) \right),
-	\end{align*}
+\end{split}
+	\end{align}
+
 	
 	for $t \in (0,R)\cup(R,n)$ and $j \in \mathcal{J}$. The initial values are
 	
@@ -2145,7 +2151,7 @@ Having made the assumption, we have
 Then, by the quotient rule, the prognosis sensitivity for the pension benefit start rate is
 
 \begin{align*}
-	\frac{\partial}{\partial R} \hat{b}(R) =& \frac{\partial}{\partial R} \frac{W(R-,R)}{a(R)} \\
+	\frac{\partial}{\partial R} \hat{b}(R,R) =& \frac{\partial}{\partial R} \frac{W(R-,R)}{a(R)} \\
 	=& \frac{\left( \pi(R) + \left(r(R) + \mu(R)\right) W(R-,R) \right) a(R) - W(R-,R) \left( \left(\bar{r}_R(R) + \bar{\mu}_R(R)\right) a(R) - 1 \right)}{\left( a(R) \right)^2} \\
 	=& \frac{\pi(R) a(R)  + W(R-,R) + \left( r(R) - \bar{r}_R(R) + \mu(R) - \bar{\mu}_R(R) \right) W(R-,R) a(R)}{\left( a(R) \right)^2} \\
 	=& \frac{\pi(R)  + W(R-,R) a^{-1}(R) + \left( r(R) - \bar{r}_R(R) + \mu(R) - \bar{\mu}_R(R) \right) W(R-,R)}{ a(R) }
@@ -2162,7 +2168,7 @@ With the added assumption that
 we then obtain
 
 \begin{align} \label{ResultFirst}
-	\frac{\partial}{\partial R} \hat{b}(R) \approx \frac{\pi(R) + W(R-,R) a^{-1}(R)}{a(R)},
+	\frac{\partial}{\partial R} \hat{b}(R,R) \approx \frac{\pi(R) + W(R-,R) a^{-1}(R)}{a(R)},
 \end{align}
 
 which -- again -- is interpreted as the ratio between 1) the increment additional premium paid in $\pi(R)$ plus the increment benefit $W(R-,R) a^{-1}(R)$ saved, and 2) the annuity $a(R)$.
@@ -2187,7 +2193,7 @@ The sensitivity of the pension benefit rate paid out at time $t>R$ is then
 
 \begin{align} \label{SecondCase}
 \begin{split}
-	\frac{\partial}{\partial R} \hat{b}(t) =& \frac{\partial}{\partial R} \frac{W(t-,R)}{a(t)} \\ =& \frac{e^{\int_R^t r(u) - a^{-1}(u) du} \left( \pi (R) + W(R-,R) a^{-1}(R) \right)}{a(t)}
+	\frac{\partial}{\partial R} \hat{b}(t,R) =& \frac{\partial}{\partial R} \frac{W(t-,R)}{a(t)} \\ =& \frac{e^{\int_R^t r(u) - a^{-1}(u) du} \left( \pi (R) + W(R-,R) a^{-1}(R) \right)}{a(t)}
 \end{split}
 \end{align}
 
@@ -2195,7 +2201,7 @@ Note that this is consistent with the result for the first case (equation (\ref{
 
 The sensitivity reveals the infinitesimal effect on pension benefits of pre- or postponing retirement by one year. For a policy holder deciding on her retirement timing, this is crucial information. In the following example, we shall put real number to the abstract quantities and see how different interest scenarios affect the retirement sensitivity.
 
-\begin{example}
+\begin{example} \label{SensNumerics}
 As in Example \ref{Numerics}, premiums are set to 80 t.DKK (real) per annum starting at age 25. We consider three scenarios with varying real return rates; Low (1\%), Mean (3\%) and High (5\%). The table below then shows the value of the reserve at retirement at age 65, i.e. $W(R,R)|_{R=65}$ along with the start benefit $\hat{b}(R)|_{R=65}$.
 
 \begin{table}[H]
@@ -2217,21 +2223,21 @@ Note that the payout interest rate $\bar{r}$ is the same in all three scenarios.
 
 \begin{figure}[H] \label{RSensiGraph}
 	\centering
-	\caption{Retirement sensitivity for the simple savings contract.}
+	\caption{Retirement sensitivity $\frac{\partial}{\partial R} \hat{b}(t,R)|_{R=65}$ for the simple savings contract.}
 	\includegraphics[width=\textwidth]{Rsensi}		
 \end{figure}
 
 There are at least two features worth noting on Figure \ref{RSensiGraph}:
 
 \begin{itemize}
-	\item As can be seen from the starting points of the three curves, the effect on the annual start benefit rate $\hat{b}(R)$ of postponing retirement one year is around 50-80 t.DKK on the annual rate (or equivalently 4-6 t.DKK effect on the monthly rate) -- depending on the rate of return in the savings phase. This figure is of interest to a policy holder considering whether to postpone retirement by a year.
+	\item As can be seen from the starting points of the three curves, the effect on the annual start benefit rate $\hat{b}(R)$ of postponing retirement one year is around 50-80 t.DKK on the annual rate (or equivalently 4-6 t.DKK effect on the monthly rate) -- depending on the interest in the savings phase. This figure is of interest to a policy holder considering whether to postpone retirement by a year.
 	\item This postponement effect then increases/decreases/remains constant for later benefit rates $\hat{b}(t)$, $t>R$ depending on the scenario. For instance -- when $r < \bar{r}$ -- the retirement sensitivity decreases in time because the benefit rate does (as we saw in Example \ref{Numerics}). Intuitively, when most of the reserve is paid out in the early phase of retirement, increasing the reserve by postponing retirement matters most for these early benefit rates.
 \end{itemize}
 \end{example}
 
 In the preceding section, we have obtained explicit results for the retirement time sensitivity for a simple fixed path prognosis. The next section treats the second sensitivity of interest -- the premium level sensitivity. As we shall see, the results are easily obtained for the simple savings contract considered.
 
-\subsubsection{Premium sensitivity}
+\subsubsection{Premium sensitivity} \label{PremSensSect}
 
 Intuitively -- for the simple contract considered here -- if the policy holder, say, doubles her premiums, the prognosis should double as well. This makes sense because the only flow to or from the reserve until retirement is the premium stream. This is exactly what the following calculations show.
 
@@ -2259,16 +2265,30 @@ which says that increasing the premium intensity increases the reserve at a rate
 
 \begin{align} \label{ResDeriv}
 \begin{split}
-		\frac{\partial}{\partial \alpha} \hat{b}(t) =& \frac{\partial}{\partial \alpha }\frac{W(t,R,\alpha)}{a(t)}\\
+		\frac{\partial}{\partial \alpha} \hat{b}(t,R,\alpha) =& \frac{\partial}{\partial \alpha }\frac{W(t,R,\alpha)}{a(t)}\\
 	=& \frac{W(t,R,1)}{a(t)},
 \end{split}
 \end{align}
 
 which -- again -- is constant in $\alpha$. In words, we have shown that increasing premiums paid by increasing $\alpha$ will increase the prognosis at the rate (\ref{ResDeriv}).
 
-\bigskip
-\bigskip
-\bigskip
+\begin{example}[Continuation of Example \ref{SensNumerics}]
+	Building on the contract and the scenarios from Example \ref{SensNumerics}, we have the following graph:
+	
+	\begin{figure}[H] \label{AlphaSensiGraph}
+		\centering
+		\caption{Premium level sensitivity $\frac{\partial}{\partial \alpha} \hat{b}(t,R,\alpha)|_{R=65, \alpha=1}$ for the simple savings contract.}
+		\includegraphics[width=\textwidth]{AlphaSensi}		
+	\end{figure}
+
+Worth noting on Figure \ref{AlphaSensiGraph} is:
+
+\begin{itemize}
+	\item The effect on the annual start benefit rate $\hat{b}(R)$ of increasing premiums paid by one unit (e.g. going from $\alpha=1$ to $\alpha=2$, effectively doubling premiums paid) is around 550-900 t.DKK on the annual rate (or equivalently 45-75 t.DKK effect on the monthly rate) -- as can be seen from the starting points of the three curves.
+	\item Scaling this down, the effect on the annual start benefit rate $\hat{b}(R)$ of increasing premiums paid by one \textit{percent} (e.g. going from $\alpha=1$ to $\alpha=1.01$, in this example paying 8080 DKK instead of 8000) is around 5500-9000 DKK on the annual rate (or equivalently 450-750 DKK effect on the monthly rate).
+	\item As was the case for the retirement sensitivity (Figure \ref{RSensiGraph}), the effect then increases/decreases/remains constant for later benefit rates $\hat{b}(t)$, $t>R$ depending on the scenario.
+\end{itemize}
+\end{example}
 
 Many interesting quantities can be derived the pair of sensitivities $(\frac{\partial}{\partial R} \hat{b}(t),\frac{\partial}{\partial \alpha} \hat{b}(t))$. In the next two sections, we use the sensitivities to graphically present the trade-off facing the policy holder between time of retirement and premium level.
 
@@ -2292,7 +2312,7 @@ for each $t \geq R$. Here, we view $t$ as fixed such that $\hat{b}(t,R,\alpha)$ 
 	\includegraphics[width=\textwidth]{Contour}		
 \end{figure}
 
-Technical points worth noting on Figure 7.2 are:
+Worth noting on Figure 7.2 are:
 
 \begin{itemize}
 	\item The standard parameters $\alpha=1$ and $R=65$ yields a start benefit rate of around 670 t.DKK per annum, which is consistent with earlier results.
@@ -2335,7 +2355,7 @@ Worth noting on Figure 7.3 is:
 
 \begin{itemize}
 	\item For the standard parameters $R=65$ and $\alpha=1$, the exchange ratio is around 0.1. This means that the policy holder signing the simple savings contract at age 25 can retire a year earlier (age 64 instead of 65) with start benefit unchanged at 671 t.DKK annually \textit{if} she pays 88 t.DKK premiums annually instead of 80 t.DKK.
-	\item XX
+	\item The exchange ratio is increasing in time XX
 \end{itemize}
 
 
@@ -2343,66 +2363,105 @@ Worth noting on Figure 7.3 is:
 	As with all other quantities considered in this thesis, the exchange ratio is computed \textit{per} scenario.
 \end{remark}
 
-In the preceding section, intuitive results on sensitivities and exchange ratios were obtained for a simple savings contract. However, the setting had been without insurance event risk. The natural next step is to adapt the results of the preceding section to a setting with insurance risk.
+In the preceding section, explicit results on sensitivities and exchange ratios were obtained for fixed path prognoses for a simple savings contract. Turning to the restricted path prognoses, we re-introduce event risk -- as the state path is no longer fixed -- which renders explicit results unlikely. Instead, we shall be content with characterizing the sensitivities with a system of differential equations.
 
-\newpage
 \subsection{Restricted Path} \label{SensRestr}
 
-When adding event risk, most quantities -- reserves, sensitivities, exchange ratios -- no longer have closed form solutions. Consequently, we have to settle for deriving systems of differential equations describing the sensitivities and solving them numerically.
+When adding event risk, most quantities -- reserves, sensitivities, exchange ratios -- no longer have closed form solutions. Consequently, we have to settle for deriving systems of differential equations describing the sensitivities and solving them numerically. In this section, we sketch out such a scheme and demonstrate that it is consistent with earlier results.
 
-Recall that the sojourn benefit rate prognosis is given by
+The section is structured as follows:
+
+\begin{itemize}
+	\item First -- in Corollary \ref{Corollary} -- we present the system of differential equations necessary to obtain prognosis sensitivities.
+	\item Second -- In Example \ref{Replicate} -- we use this system to replicate the premium level sensitivity found in \ref{PremSensSect}.
+	\item Finally -- in Remark \ref{CloseRemark} -- the section is concluded with some reflections on the specific difficulties of computing the sensitivity in $R$.
+\end{itemize}
+
+We shall use the sojourn benefit rate prognosis $\hat{b}^{\hat{\mathcal{J}}}(t)$ to motivate the problem, but analogous arguments hold for the transition benefit prognosis $\hat{b}^{\hat{\mathcal{J}}}_{\cdot k}(t)$ and the retirement lump sum prognosis $\triangle \hat{B}^{\hat{\mathcal{J}}}(R)$.
+
+Recall from equation (\ref{One}) that the sojourn benefit rate prognosis is given by
 
 \begin{align*}
-	\hat{b}(t)=& \econd[\sum_{i=1}^n W_i(t-)b_{Z(t)}^i]{\{Z(s) \}_{0 \leq s < t} \in \bar{\mathcal{J}}} \\
-	=& \frac{\sum_{j \in \hat{\mathcal{J}}} \tilde{W}_j(t-) b_j(t)}{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,t)}.
+	 \hat{b}^{\hat{\mathcal{J}}}(t) =&\frac{\sum_{j \in \hat{\mathcal{J}}} \tilde{W}_j(t) b_j(t)}{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,t)},
 \end{align*}
 
-It it clear then that in order to calculate the sensitivities $\frac{\partial}{\partial \theta} \hat{b}(t,\theta)$ for $\theta=R,\alpha$, we need the sensitivities of the state-wise reserves, i.e.
+which means that the prognosis sensitivities are given by
 
 \begin{align*}
-	\frac{\partial}{\partial \theta} \tilde{W}_j(t,\theta) = \frac{\partial}{\partial \theta} \expec[\1{Z(t)=j} W(t)]
+	\frac{\partial}{\partial \theta} \hat{b}^{\hat{\mathcal{J}}}(t,\theta) =&\frac{\sum_{j \in \hat{\mathcal{J}}} \frac{\partial}{\partial \theta} \tilde{W}_j(t,\theta) b_j(t,\theta) +\tilde{W}_j(t,\theta) \frac{\partial}{\partial \theta} b_j(t,\theta)}{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,t)}.
 \end{align*}
 
-Since we already have a system of differential equations describing $\tilde{W}_j(t,\theta)$, we can obtain an analogue system describing $\frac{\partial}{\partial \theta} \tilde{W}_j(t,\theta)$ by simply differentiating the differential equations, initial value and gluing condition of Proposition \ref{MainResult} with respect to $\theta$. The result is the following corollary:
+It it clear then that in order to calculate the prognosis sensitivities $\frac{\partial}{\partial \theta} \hat{b}^{\hat{\mathcal{J}}}(t,\theta)$, we need the derivatives of the payment functions $b_j(t,\theta)$ and the of state-wise reserves $\tilde{W}_j(t,\theta)$, i.e.
+
+\begin{align*}
+	\tilde{W}_j^\theta(t,\theta) :=& \frac{\partial}{\partial \theta} \tilde{W}_j(t,\theta) \\
+	=& \frac{\partial}{\partial \theta} \expec[\1{Z(t)=j} W(t)],
+\end{align*}
+
+where we use the superscript $\theta$ to indicate derivative in $\theta$. Since we already have a system of differential equations describing $\tilde{W}_j(t,\theta)$, we can obtain an analogue system describing $\tilde{W}_j^\theta(t,\theta)$ by simply differentiating the differential equations, initial value and gluing condition of Proposition \ref{MainResult} with respect to $\theta$. This approach is inspired by \cite{Kalashnikov}, where the authors use the same technique to obtain a system of differential equations for the sensitivities of \textit{prospective} state-wise reserves.
+
+The result is the following corollary:
 
 \begin{corollary} \label{Corollary}
-	For a process $W$ with initial value $w_0$ and dynamics
+	Consider a process $W$ with initial value $w_0(\theta)$ and dynamics
 	
 	\begin{align*}
-		dW(t,\theta) =& f_{Z(t-)}(t,W(t-)) dt \\
-		&+ \sum_{k \in \mathcal{J} \atop k \neq Z(t-)} g_{Z(t-)k}(t,W(t-)) dN_{k}(t) \\
-		&+ h_{Z(t-)}(t,W(t-)) d \varepsilon_R(t),
+		dW(t,\theta) =& f_{Z(t-)}(t,\theta,W(t-,\theta)) dt \\
+		&+ \sum_{k \in \mathcal{J} \atop k \neq Z(t-)} g_{Z(t-)k}(t,\theta,W(t-,\theta)) dN_{k}(t) \\
+		&+ h_{Z(t-)}(t,\theta,W(t-,\theta)) d \varepsilon_R(t),
 	\end{align*}
 
-	the $\theta$-sensitivity of the state wise reserve
+	for $n$-dimensional deterministic functions $f$, $g$ and $h$ of finite variation that are $\mathcal{C}^0$ on $(0,R) \cup (R,n)$ and on the form
 	
 	\begin{align*}
-		\frac{\partial}{\partial \theta} \tilde{W}_j(t) = \frac{\partial}{\partial \theta} \expec[\1{Z(t)=j} W(t)]
+		f_j(t,\theta,w) =& f_j^0(t,\theta) + f_j^1(t,\theta) \cdot w \\
+		g_{jk}(t,\theta,w) =& g_{jk}^0(t,\theta) + g_{jk}^1(t,\theta) \cdot w \\
+		h_j(t,\theta,w) =& h_j^0(t,\theta) + h_j^1(t,\theta) \cdot w,
 	\end{align*}
 	
-	is characterized by the system of differential equations NOT DONE
+	for $m \times m$-matrices $f_j^1$, $g_{jk}^1$ and $ h_j^1$ and vectors $f_j^0$, $g_{jk}^0$ and $ h_j^0$ of length $m$.
+
+	The $\theta$-sensitivity of the state-wise reserve (assuming it exists)
 	
 	\begin{align*}
-		\frac{\partial}{\partial t} \frac{\partial}{\partial \alpha} \tilde{W}_j(t) =& f_j^1(t) \tilde{W}_j(t) + p_{0j}(0,t) f_j^0(t) \\
-		&+ \sum_{k \in \mathcal{J} \atop k \neq j} \mu_{kj}(t) \left( g_{kj}^1(t) \tilde{W}_k(t) + p_{0k}(0,t) g_{kj}^0(t) \right) \\
-		&+ \sum_{k \in \mathcal{J} \atop k \neq j} \left( \mu_{kj}(t) \tilde{W}_k(t) - \mu_{jk}(t) \tilde{W}_j(t) \right),
+		\tilde{W}_j^\theta(t,\theta) = \frac{\partial}{\partial \theta} \expec[\1{Z(t)=j} W(t,\theta)]
+	\end{align*}
+	
+	is then characterized by the system of differential equations (assuming sufficient differentiability)
+	
+	\begin{align*}
+		\frac{\partial}{\partial t} \tilde{W}_j^\theta(t,\theta) =& \frac{\partial}{\partial \theta} f_j^1(t,\theta) \tilde{W}_j(t,\theta) + \tilde{W}_j^\theta(t,\theta) f_j^1(t,\theta) + p_{0j}(0,t) \frac{\partial}{\partial \theta} f_j^0(t,\theta) \\
+		&+ \sum_{k \in \mathcal{J} \atop k \neq j} \mu_{kj}(t) \left( \frac{\partial}{\partial \theta} g_{kj}^1(t,\theta) \tilde{W}_k(t,\theta) + g_{kj}^1(t,\theta) \tilde{W}_k^\theta(t,\theta) + p_{0k}(0,t) \frac{\partial}{\partial \theta} g_{kj}^0(t,\theta) \right) \\
+		&+ \sum_{k \in \mathcal{J} \atop k \neq j} \left( \mu_{kj}(t) \tilde{W}_k^\theta(t,\theta) - \mu_{jk}(t) \tilde{W}_j^\theta(t,\theta) \right),
 	\end{align*}
 	
 	for $t \in (0,R)\cup(R,n)$ and $j \in \mathcal{J}$. The initial values are
 	
 	\begin{align*}
-		\tilde{W}_j(0) =& \1{j=0} w_0
+		\tilde{W}_j^\theta(0,\theta) =& \1{j=0} \frac{\partial}{\partial \theta} w_0(\theta)
 	\end{align*}
 	
 	and the gluing conditions are
 	
 	\begin{align*}
-		\tilde{W}_j(R) =& \tilde{W}_j(R-) + h_j^1(R) \tilde{W}_j(R-) + p_{0j}(0,R) h_j^0(R)
+		\tilde{W}_j^\theta(R,\theta) =& \tilde{W}_j^\theta(R-,\theta) \\
+		&+ \frac{\partial}{\partial \theta}h_j^1(R,\theta) \tilde{W}_j(R-,\theta) + h_j^1(R,\theta) \tilde{W}_j^\theta(R,\theta) \\
+		&+ p_{0j}(0,R) \frac{\partial}{\partial \theta} h_j^0(R,\theta)
 	\end{align*}
 \end{corollary}
+\begin{proof}
+	As already hinted, the Corollary follows from taking the system obtained in Proposition \ref{MainResult} and differentiate the derivatives in (\ref{MainEquation}) and the boundary conditions with respect to $\theta$. Assuming sufficient differentiability and interchangeability of differentiation, i.e.
+	
+	\begin{align*}
+		\frac{\partial}{\partial \theta} \frac{\partial}{\partial t} \tilde{W}_j(R,\theta) =& \frac{\partial}{\partial t} \frac{\partial}{\partial \theta} \tilde{W}_j(R,\theta) \\
+		=& \frac{\partial}{\partial t} \tilde{W}_j^\theta(R,\theta)
+	\end{align*}
 
-\begin{example}
-	As a sanity check of the corollary, we can reproduce the results of the last section. So assume that $\mathcal{J} = \{ 0 \}$ and that
+	the corollary follows.
+\end{proof}
+
+\begin{example} \label{Replicate}
+	As a sanity check of the corollary, we can reproduce the fixed path results of Section \ref{PremSensSect}. So assume that $\mathcal{J} = \{ 0 \}$ (effectively the fixed path $z=0$) and that
 	
 	\begin{align*}
 		dW(t) =& \left( r(t) + \mu(t) - \1{t \geq R} \frac{1}{a(t)}\right) W(t)dt \\
@@ -2412,40 +2471,53 @@ Since we already have a system of differential equations describing $\tilde{W}_j
 	Then by Corollary \ref{Corollary},
 	
 	\begin{align*}
-		\frac{\partial}{\partial \alpha} \tilde{W}_0(t,R,\alpha) =&  \frac{\partial}{\partial \alpha} \expec[\1{Z(0)=j} W(t,R,\alpha)] \\
-		=&\frac{\partial}{\partial \alpha} W(t,R,\alpha),
+		\tilde{W}_0^\alpha(t,\alpha) =& \frac{\partial}{\partial \alpha} \tilde{W}_0(t,\alpha) \\
+		=& \frac{\partial}{\partial \alpha} \expec[\1{Z(0)=j} W(t,\alpha)] \\
+		=& \frac{\partial}{\partial \alpha} W(t,\alpha),
 	\end{align*}
 
 	is characterized by the differential equation
 	
 	\begin{align*}
-		\frac{\partial}{\partial t} \frac{\partial}{\partial \alpha} W(t,R,\alpha) = \left\{
+		\frac{\partial}{\partial t} \tilde{W}_0^\alpha(t) = \left\{
 		\begin{array}{ll}
-			r(t) \frac{\partial}{\partial \alpha} W(t,R,\alpha) + \pi(t) & \mbox{if } t < R \\
-			\left( r(t) - b(t) \right) \frac{\partial}{\partial \alpha} W(t,R,\alpha) & \mbox{if } t > R
+			\left(r(t) + \mu(t) \right) \tilde{W}_0^\alpha(t,\alpha) + \pi(t) & \mbox{if } t < R \\
+			\left( r(t) + \mu(t) - a^{-1}(t) \right) \tilde{W}_0^\alpha(t,\alpha) & \mbox{if } t \geq R
 		\end{array}
 		\right.,
 	\end{align*}
 
-	with gluing condition $\frac{\partial}{\partial \alpha} W(R,R,\alpha) = \frac{\partial}{\partial \alpha} W(R-,R,\alpha)$.
+	because
+	
+	\begin{align*}
+		\frac{\partial}{\partial \alpha} r(t) = \frac{\partial}{\partial \alpha} \mu(t) = \frac{\partial}{\partial \alpha} a^{-1}(t) =& 0 \\
+		p_{0j}(0,t)=&1
+	\end{align*}
+	
+	The gluing condition is
+	
+	\begin{align*}
+		\tilde{W}_0^\alpha(R,\alpha) = \tilde{W}_0^\alpha(R-,\alpha).
+	\end{align*}
 	
 	Solving this differential equation, we obtain
 	
 	\begin{align*}
-	\frac{\partial}{\partial \alpha} W(t,R,\alpha) =& \left\{
+	\tilde{W}_0^\alpha(t,\alpha) =& \left\{
 		\begin{array}{ll}
-			\int_0^t e^{\int_s^t r(u) du} \pi(s) ds & \mbox{if } t \leq R \\
-			\int_0^R e^{\int_s^R r(u) du} \pi(s) ds \cdot e^{\int_R^t r(u) - b(u) du} & \mbox{if } t > R
+			\int_0^t e^{\int_s^t r(u) + \mu(u) du} \pi(s) ds & \mbox{if } t \leq R \\
+			\int_0^R e^{\int_s^R r(u) + \mu(u) du} \pi(s) ds \cdot e^{\int_R^t r(u) + \mu(u) - a^{-1}(u) du} & \mbox{if } t > R
 		\end{array}
 		\right. \\
-		=& W(t,R,1),
+		=& W(t,1),
 	\end{align*}
 
-	where we used equation (\ref{WAlpha}). We see that this is exactly the sensitivity obtained in the last subsection (see equation (\ref{AlphaDeriv})). This check gives us confidence blah blah
-	
-	It may come as a surprise that $W(t,R,\alpha)$ does not depend on $\alpha$ at all. Note that this is \textit{only} the case because there are no benefits before retirement....
+	where we used equation (\ref{ReserveAfterRetirement}). We see that this is exactly the sensitivity obtained in equation (\ref{AlphaDeriv}). This check gives us confidence that Corollary \ref{Corollary} is sound.
 \end{example}
 
+\begin{remark} \label{CloseRemark}
+	Remark XX omkring at det er svært med $\theta=R$
+\end{remark}
 
 As noted earlier, one can replace $\alpha$ with another contract element to obtain other interesting sensitivities.
 
@@ -2486,7 +2558,7 @@ How much $R$ decrease if premiums increase
 \end{remark}
 
 \begin{example}
-Continuation of Example \ref{ULExample} (Unit Link). Premium paid in is now $\alpha \cdot \pi(t)dt$
+Continuation of Example (Unit Link). Premium paid in is now $\alpha \cdot \pi(t)dt$
 
 $\tilde{W}_j^\alpha(t)$ is characterized by
 
@@ -2512,18 +2584,6 @@ which is obtained by differentiating the system of differential equations for $\
 
 
 \end{example}
-
-\subsubsection{Exchange ratios}
-
-In recent years, there has
-
-Having calculated the prognosis sensitivities in time of retirement $R$ and premium level $\alpha$, an interesting derived quantity is the exchange ratio
-
-\begin{align*}
-	\frac{d \alpha (E)}{d R (E)}
-\end{align*}
-
-that is the rate by which the policy holder must increase her premium level in order to retire one year earlier with the same benefit rate. 
 
 \newpage
 \section{Suggestions for further research}

@@ -170,12 +170,31 @@ let p_12 : double[,] = Array2D.create timePoints timePoints 0.0
 let W : double[] = Array.create timePoints 0.0
 let W_high : double[] = Array.create timePoints 0.0
 let W_low : double[] = Array.create timePoints 0.0
+let Walpha : double[] = Array.create timePoints 0.0
+let Walpha_high : double[] = Array.create timePoints 0.0
+let Walpha_low : double[] = Array.create timePoints 0.0
 let a : double[] = Array.create timePoints 0.0
 let a_high : double[] = Array.create timePoints 0.0
 let a_low : double[] = Array.create timePoints 0.0
 let faktor: double[] = Array.create timePoints 0.0
 let faktor_high: double[] = Array.create timePoints 0.0
 let faktor_low: double[] = Array.create timePoints 0.0
+
+
+    // a
+for i = (timePoints-1) downto 0 do
+    if i = (timePoints-1) then a.[i] <- 0.0
+    else a.[i] <- a.[i+1] + (1.0 - a.[i+1] * (rMV.[i+1] + (m_02MV time.[i+1]))) * delta
+
+for i = (timePoints-1) downto 0 do
+    if i = (timePoints-1) then a_high.[i] <- 0.0
+    else a_high.[i] <- a_high.[i+1] + (1.0 - a_high.[i+1] * rMV_high.[i+1]) * delta
+
+for i = (timePoints-1) downto 0 do
+    if i = (timePoints-1) then a_low.[i] <- 0.0
+    else a_low.[i] <- a_low.[i+1] + (1.0 - a_low.[i+1] * rMV_low.[i+1]) * delta
+
+
 
 for i = 0 to (timePoints-1) do
     for j = (i+1) to (timePoints-1) do
@@ -197,18 +216,15 @@ for i = 0 to (timePoints-1) do
     if i = 0 then W.[i] <- 0.0
     else W_low.[i] <- W_low.[i-1] + (W_low.[i-1] * (rMV_low.[i-1] + (m_02MV time.[i-1])) + piSensi) * delta
 
-    // a
-for i = (timePoints-1) downto 0 do
-    if i = (timePoints-1) then a.[i] <- 0.0
-    else a.[i] <- a.[i+1] + (1.0 - a.[i+1] * (rMV.[i+1] + (m_02MV time.[i+1]))) * delta
+    if i = 0 then Walpha.[i] <- 0.0
+    else Walpha.[i] <- Walpha.[i-1] + ((rMV.[i-1] + (m_02MV time.[i-1]) - (1.0 - (Ind time.[i-1] R)) / a.[i-1]) * Walpha.[i-1] + ((Ind time.[i-1] R) * piSensi + 0.0)) * delta
 
-for i = (timePoints-1) downto 0 do
-    if i = (timePoints-1) then a_high.[i] <- 0.0
-    else a_high.[i] <- a_high.[i+1] + (1.0 - a_high.[i+1] * rMV_high.[i+1]) * delta
+    if i = 0 then Walpha_high.[i] <- 0.0
+    else Walpha_high.[i] <- Walpha_high.[i-1] + ((rMV_high.[i-1] + (m_02MV time.[i-1]) - (1.0 - (Ind time.[i-1] R)) / a.[i-1]) * Walpha_high.[i-1] + ((Ind time.[i-1] R) * piSensi + 0.0)) * delta
 
-for i = (timePoints-1) downto 0 do
-    if i = (timePoints-1) then a_low.[i] <- 0.0
-    else a_low.[i] <- a_low.[i+1] + (1.0 - a_low.[i+1] * rMV_low.[i+1]) * delta
+    if i = 0 then Walpha_low.[i] <- 0.0
+    else Walpha_low.[i] <- Walpha_low.[i-1] + ((rMV_low.[i-1] + (m_02MV time.[i-1]) - (1.0 - (Ind time.[i-1] R)) / a.[i-1]) * Walpha_low.[i-1] + ((Ind time.[i-1] R) * piSensi + 0.0)) * delta
+
 
     // faktors
 for i = 0 to (timePoints-1) do
@@ -293,17 +309,27 @@ for i = 0 to (timePoints-1) do
 //              |> Chart.WithLegend(Title="")
 //              |> Chart.Save "H:\SpecialyNY\BenefitsNy.png"
 
-//let RSensi = Chart.Combine([
-//                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], faktor_low.[i]*(piSensi + W_low.[Rindex]/a.[Rindex])/a.[i]/1000.0)],Name="r < r_bar")
-//                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], faktor.[i]*(piSensi + W.[Rindex]/a.[Rindex])/a.[i]/1000.0)],Name="r = r_bar")
-//                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], faktor_high.[i]*(piSensi + W_high.[Rindex]/a.[Rindex])/a.[i]/1000.0)],Name="r > r_bar")
-//                    ])                  
-//                |> Chart.WithLegend(Docking=ChartTypes.Docking.Left)
-//                |> Chart.WithXAxis(Title="Age", TitleFontSize=16.0, Min = R)
-//                |> Chart.WithYAxis(Title="Retirement sensitivity for annual benefits in t.DKK", TitleFontSize=16.0)
-//                |> Chart.Save "H:\SpecialyNY\Rsensi.png"
+let RSensi = Chart.Combine([
+                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], faktor_low.[i]*(piSensi + W_low.[Rindex]/a.[Rindex])/a.[i]/1000.0)],Name="r < r_bar")
+                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], faktor.[i]*(piSensi + W.[Rindex]/a.[Rindex])/a.[i]/1000.0)],Name="r = r_bar")
+                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], faktor_high.[i]*(piSensi + W_high.[Rindex]/a.[Rindex])/a.[i]/1000.0)],Name="r > r_bar")
+                    ])                  
+                |> Chart.WithLegend(Docking=ChartTypes.Docking.Left)
+                |> Chart.WithXAxis(Title="Age", TitleFontSize=16.0, Min = R)
+                |> Chart.WithYAxis(Title="Retirement sensitivity for annual benefits in t.DKK", TitleFontSize=16.0)
+                |> Chart.Save "H:\SpecialyNY\Rsensi.png"
 
-//W_high.[Rindex]/a.[Rindex]
+let AlphaSensi = Chart.Combine([
+                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], Walpha_low.[i]/a.[i]/1000.0)],Name="Low")
+                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], Walpha.[i]/a.[i]/1000.0)],Name="Mean")
+                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], Walpha_high.[i]/a.[i]/1000.0)],Name="High")
+                    ])                  
+                |> Chart.WithLegend(Docking=ChartTypes.Docking.Left)
+                |> Chart.WithXAxis(Title="Age", TitleFontSize=16.0, Min = R)
+                |> Chart.WithYAxis(Title="Premium level sensitivity for annual benefits in t.DKK", TitleFontSize=16.0)
+                |> Chart.Save "H:\SpecialyNY\AlphaSensi.png"
+
+
 
 //let LumpSum = Chart.Combine([
 //                    Chart.Line ([for i in Rindex .. SeventyIndex -> (time.[i], 1.0)],Name="Fixed Path Prognosis")
@@ -323,17 +349,17 @@ for i = 0 to (timePoints-1) do
 //                |> Chart.WithYAxis(Title="", TitleFontSize=16.0)
 //                |> Chart.Save "H:\SpecialyNY\TermNy.png"
 
-let Exchange = Chart.Combine([
-                    Chart.Line ([for i in Earlyindex .. SeventyIndex - 1 -> (time.[i], (piSensi + 0.5 * W.[i]/a.[i])/W.[i])],Name="alpha = 0.5")
-                    Chart.Line ([for i in Earlyindex .. SeventyIndex - 1 -> (time.[i], (piSensi + 1.0 * W.[i]/a.[i])/W.[i])],Name="alpha = 1")
-                    Chart.Line ([for i in Earlyindex .. SeventyIndex - 1 -> (time.[i], (piSensi + 2.0 * W.[i]/a.[i])/W.[i])],Name="alpha = 2")
-                    ])                  
-                |> Chart.WithLegend(Docking=ChartTypes.Docking.Left)
-                |> Chart.WithXAxis(Title="Time of retirement R", TitleFontSize=16.0, Min = 60.0)
-                |> Chart.WithYAxis(Title="Exchange ratio", TitleFontSize=16.0)
-                |> Chart.Save "H:\SpecialyNY\Exchange.png"
+//let Exchange = Chart.Combine([
+//                    Chart.Line ([for i in Earlyindex .. SeventyIndex - 1 -> (time.[i], (piSensi + 0.5 * W.[i]/a.[i])/W.[i])],Name="alpha = 0.5")
+//                    Chart.Line ([for i in Earlyindex .. SeventyIndex - 1 -> (time.[i], (piSensi + 1.0 * W.[i]/a.[i])/W.[i])],Name="alpha = 1")
+//                    Chart.Line ([for i in Earlyindex .. SeventyIndex - 1 -> (time.[i], (piSensi + 2.0 * W.[i]/a.[i])/W.[i])],Name="alpha = 2")
+//                    ])                  
+//                |> Chart.WithLegend(Docking=ChartTypes.Docking.Left)
+//                |> Chart.WithXAxis(Title="Time of retirement R", TitleFontSize=16.0, Min = 60.0)
+//                |> Chart.WithYAxis(Title="Exchange ratio", TitleFontSize=16.0)
+//                |> Chart.Save "H:\SpecialyNY\Exchange.png"
 
-a.[Rindex]
+
 
 //Chart.Combine([
 //      Chart.Line ([for i in 0 .. (timePoints-1) -> (time.[i], YInterestStress.a.[i])],Name="1")
