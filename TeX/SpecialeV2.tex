@@ -491,10 +491,10 @@ Formally, the fixed path prognoses are:
 
 \subsubsection{Restricted Path} \label{RestrPathSect}
 
-The conditioning proposed in this thesis is an attempt to bridge the two extremes of no conditioning and conditioning on an entire state path. The idea is to condition on the event that the policy holder does not make some specified transitions until the payout time $t$ (e.g. die, surrender or convert to free policy), i.e. remains in some subset of states $\hat{\mathcal{J}} \subset \mathcal{J}$ until time $t$. Formally put, restricted path conditioning involves events on the form
+The conditioning proposed in this thesis is an attempt to bridge the two extremes of no conditioning and conditioning on an entire state path. The idea is to condition on the event that the policy holder does not make some specified transitions until the payment time $t$ (e.g. die, surrender or convert to free policy), i.e. remains in some subset of states $\hat{\mathcal{J}} \subset \mathcal{J}$ until time $t$. Formally put, restricted path conditioning involves events on the form
 
 \begin{align} \label{FirstCond}
-	\left( Z(s) \in \hat{\mathcal{J}} : 0 \leq s \leq t \right)
+	\left( Z(s) \in \hat{\mathcal{J}} : 0 \leq s < t \right).
 \end{align}
 
 With this conditioning, we retain the risk of the state process, but -- as we shall argue -- only the events relevant for prognoses.
@@ -502,18 +502,15 @@ With this conditioning, we retain the risk of the state process, but -- as we sh
 We restrict ourselves to subsets $\hat{\mathcal{J}} \subset \mathcal{J}$ satisfying
 
 \begin{itemize}
-	\item $Z$ is in $\hat{\mathcal{J}}$ at the time of prognostication, i.e. $Z(t_0) \in \hat{\mathcal{J}}$.
-	\item $Z$ cannot return to which $\hat{\mathcal{J}}$ once left. Formally $\mu_{kj} = 0$ for all $k \notin \hat{\mathcal{J}}$ and $j \in \hat{\mathcal{J}}$. With this assumption, we have
+	\item $Z$ is in $\hat{\mathcal{J}}$ at the time of prognostication, i.e. $Z(0) \in \hat{\mathcal{J}}$.
+	\item $Z$ cannot return to $\hat{\mathcal{J}}$ once left. Formally $\mu_{kj} = 0$ for all $k \notin \hat{\mathcal{J}}$ and $j \in \hat{\mathcal{J}}$. With this assumption, we have
 	
 	\begin{align} \label{FirstAssump}
-		\left( Z(s) \in \hat{\mathcal{J}} : 0 \leq s \leq t \right) = \left( Z(t) \in \hat{\mathcal{J}} \right),
+		\left( Z(s) \in \hat{\mathcal{J}} : 0 \leq s < t \right) = \left( Z(t-) \in \hat{\mathcal{J}} \right),
 	\end{align}
 	
-	because if $Z$ is in $\hat{\mathcal{J}}$ just before time $t$, then it has been there for all $s < t$. Since we only treat subsets $\hat{\mathcal{J}}$ with this restriction, we will prefer to write the shorter formulation on the right hand side of (\ref{FirstAssump}) throughout the thesis. The restriction is made to make the mathematics more tractable, but from a practical standpoint it is not overly restrictive, as the examples later in the chapter will demonstrate. 
+	because if $Z$ is in $\hat{\mathcal{J}}$ just before time $t$, then it has been there for all $s < t$. Since we only treat subsets $\hat{\mathcal{J}}$ with this restriction, we will prefer to write the shorter formulation on the right hand side of (\ref{FirstAssump}) throughout the thesis. The restriction is made to make the mathematics more tractable, but from a practical standpoint it is not overly restrictive, as the examples in Section \ref{SectExa} will demonstrate. 
 \end{itemize}
-
-
-FIGURE
 
 Having formalized the class of conditioning events, we are now ready to give a formal definition of sojourn prognoses and retirement lump sum prognoses:
 
@@ -531,7 +528,7 @@ Having formalized the class of conditioning events, we are now ready to give a f
 	A retirement lump sum restricted path prognosis is a quantity on the form
 	
 	\begin{gather*}
-		\triangle \hat{B}^{\hat{\mathcal{J}}}(t) = \econd[\triangle B_{Z(R-)}(R)]{Z(R-) \in \bar{\mathcal{J}}},
+		\triangle \hat{B}^{\hat{\mathcal{J}}}(R) = \econd[\triangle B_{Z(R-)}(R)]{Z(R-) \in \bar{\mathcal{J}}},
 	\end{gather*}
 	
 	for some subset $\hat{\mathcal{J}} \subset \mathcal{J}$.
@@ -542,20 +539,20 @@ Having formalized the class of conditioning events, we are now ready to give a f
 For the sojourn prognoses and the retirement lump sum prognoses, the conditioning in (\ref{FirstCond}) will suffice. For the state $k$ transition prognosis ($k \notin \hat{\mathcal{J}}$), however, we introduce the event
 
 \begin{align} \label{SecondCond}
-	\left( Z(s) \in \hat{\mathcal{J}} : 0 \leq s < t\right) \cup \left(Z(t) = k \right)
+	\left( Z(s) \in \hat{\mathcal{J}} : 0 \leq s < t\right) \cup \left(Z(t) = k \right),
 \end{align}
 
-for some state $k \notin \hat{\mathcal{J}}$. With assumption XX, the event (\ref{SecondCond}) becomes
+for some state $k \notin \hat{\mathcal{J}}$. With the assumption that $Z$ cannot return to $\hat{\mathcal{J}}$ once left, the event (\ref{SecondCond}) becomes
 
 \begin{align} \label{SecondAssump}
-	\left( Z(t-) \in \hat{\mathcal{J}}\right) \cup \left(Z(t) = k \right)
+	\left( Z(t-) \in \hat{\mathcal{J}}\right) \cup \left(Z(t) = k \right).
 \end{align}
 
-The difference between the event in (\ref{FirstAssump}) and the event in (\ref{SecondAssump}) is subtle but important. The event (\ref{FirstAssump}) is equivalent to stating that $Z$ leaves $ \hat{\mathcal{J}}$ later than time $t$. The event (\ref{SecondAssump}) states that $Z$ leaves $\hat{\mathcal{J}}$ \textit{exactly} at time $t$ through the state $k$. Both events are interesting in their own right:
+The difference between the event (\ref{FirstAssump}) and the event (\ref{SecondAssump}) is subtle but important. The event (\ref{FirstAssump}) is equivalent to stating that $Z$ leaves $ \hat{\mathcal{J}}$ at time $t$ or later. The event (\ref{SecondAssump}) states that $Z$ leaves $\hat{\mathcal{J}}$ \textit{exactly} at time $t$ through the state $k$. Both events are interesting in their own right:
 
 \begin{itemize}
-	\item For a prognosis based on the event (\ref{FirstAssump}), it could be interesting to consider the mean time until exit from $\hat{\mathcal{J}}$, given that exit has not happened at time $t$ and given that the eventual exit happens through state $k$. Further pursuit of this idea is however outside the scope of the thesis.
-	\item Instead, we let (\ref{SecondAssump}) be the conditioning event of the state $k$ transition prognoses. This is a way of formally answering the policy holder's question "If I die at time $t$ exactly, how much can I expect to be paid out to the bereaved".
+	\item For a prognosis based on the event (\ref{FirstAssump}), one could consider the mean time until exit from $\hat{\mathcal{J}}$, given that exit has not happened at time $t$ and given that the eventual exit happens through state $k$. Further pursuit of this idea is however outside the scope of the thesis.
+	\item Instead, we let (\ref{SecondAssump}) be the conditioning event of the state $k$ transition prognoses. This is a way of formally answering the policy holder's question "If I die at time $t$ exactly, how much can I expect to be paid out to the bereaved?".
 \end{itemize}
 
 With this is mind, we can define the transition prognoses:
@@ -564,7 +561,7 @@ With this is mind, we can define the transition prognoses:
 	A state $k$ transition benefit restricted path prognosis is a quantity on the form
 	
 	\begin{gather*}
-		\hat{b}_{\cdot k}^R(t) = \econd[b_{Z(t-)k}(t)]{Z(t-) \in \hat{\mathcal{J}}, Z(t)=k},
+		\hat{b}_{\cdot k}^{\hat{\mathcal{J}}}(t) = \econd[b_{Z(t-)k}(t)]{Z(t-) \in \hat{\mathcal{J}}, Z(t)=k},
 	\end{gather*}
 	
 	for some subset $\hat{\mathcal{J}} \subset \mathcal{J}$ and $k \notin \hat{\mathcal{J}}$.
@@ -576,7 +573,7 @@ With this is mind, we can define the transition prognoses:
 
 \newpage
 
-\subsection{Examples}
+\subsection{Examples} \label{SectExa}
 
 Having introduced the novel restricted path conditioning -- and the resulting prognoses -- some examples are in order. We close this chapter by exemplifying the prognoses in three classical models:
 
@@ -589,7 +586,7 @@ Having introduced the novel restricted path conditioning -- and the resulting pr
 First up is the alive-dead model:
 
 \subsubsection{The Alive-Dead Model} \label{ExampleOne}
-In the simple alive-dead model, as we shall see, the proposed conditioning approach actually coincides with the classical conditioning (i.e. staying active).
+In the simple alive-dead model, as we shall see, the restricted path prognoses actually coincides with the classical fixed path prognoses.
 
 \begin{figure}[H]\label{fig: alive-death}
 	\begin{center}
@@ -635,28 +632,34 @@ In the simple alive-dead model, as we shall see, the proposed conditioning appro
 	\end{center}
 \end{figure}
 
-For the time $t$ sojourn benefit rate prognosis, we condition on the policy holder not having died before time $t$ (because the events where she has already died by then doesn't interest her with respect to her prognoses). So we let $\hat{\mathcal{J}} = \{ 0 \}$ and the prognosis is
+For the time $t$ sojourn benefit rate restricted path prognosis, we condition on the policy holder not having died before time $t$ (because the events where she has already died by then doesn't interest her with respect to her prognoses). Letting $\hat{\mathcal{J}} = \{ 0 \}$, the prognosis is
 
 \begin{align*}
-    \econd[b_{Z(t-)}(t)]{Z(t-) \in \hat{\mathcal{J}}} = \econd[b_0(t)]{Z(t-) = 0},
+    b^{\hat{\mathcal{J}}}(t) =& \econd[b_{Z(t-)}(t)]{Z(t-) \in \hat{\mathcal{J}}} \\
+    =& \econd[b_0(t)]{Z(t-) = 0},
 \end{align*}
 
-which is the same conditioning as the classical prognoses. Likewise for the retirement lump sum prognosis:
+which is a fixed path prognosis for $z=0$. Likewise for the retirement lump sum prognosis:
 
 \begin{align*}
-    \econd[\triangle b_{Z(R-)}(R)]{Z(R-) \in \hat{\mathcal{J}}} = \econd[\triangle b_0(R)]{Z(R-) = 0},
+    \triangle B^{\hat{\mathcal{J}}}(R) =& \econd[\triangle b_{Z(R-)}(R)]{Z(R-) \in \hat{\mathcal{J}}} \\
+    =& \econd[\triangle b_0(R)]{Z(R-) = 0}.
 \end{align*}
 
-which is also the classical conditioning. With regard to the only transition benefit prognosis, the state $1$ transition, we have
+With regard to the only transition benefit prognosis, the state $1$ transition, we have
 
 \begin{align*}
-\econd[b_{Z(t-)1}(t)]{Z(t-) \in \hat{\mathcal{J}}, Z(t)=1} =& \econd[b_{01}(t)]{Z(t-)=0, Z(t)=1} \\
-=& \econd[b_{01}(t)]{\triangle N_1(t) = 1},
+\hat{b}_{\cdot 1}^{\hat{\mathcal{J}}}(t) =& \econd[b_{Z(t-)1}(t)]{Z(t-) \in \hat{\mathcal{J}}, Z(t)=1} \\
+=& \econd[b_{01}(t)]{Z(t-)=0, Z(t)=1},
 \end{align*}
 
-This prognosis gives the policy holder an estimate of what she will leave to her bereaved in the event of her death \textit{exactly} at time $t$.
+which is also a fixed path prognosis for $z(s)=\1{s \geq t}$. This prognosis gives the policy holder an estimate of what she will leave to her bereaved in the event of her death \textit{exactly} at time $t$.
 
-Section \ref{ExampleOne} demonstrates that in the alive-death model, the conditioning approach proposed doesn't really bring anything new to the table, as it coincides with the classical conditioning of staying active until payout time $t$. This is because "not dying" is the same event as "staying active". This is no longer the case in the active-disabled-death model, as the next example shows.
+\bigskip
+\bigskip
+\bigskip
+
+The above example demonstrates that in the alive-death model, the restricted path prognoses don't really bring anything new to the table, as they simplify to fixed path prognoses. This is no longer the case in the active-disabled-death model, as the next example shows.
 
 \subsubsection{The Disability Model} \label{DisModel}
 
@@ -712,34 +715,38 @@ Consider the active-disabled-dead model:
 	\end{center}
 \end{figure}
 
-In this model, most classical prognoses -- e.g. \cite{NinnaReitzel} -- condition on the policy holder staying active all the way up to the time of payout $t$, e.g. the event $\left( Z(s) 0 : 0 \leq s < t \right)$. Instead we only assume that the policy holder does not die -- she might become disabled. So we let $\hat{\mathcal{J}} = \{ 0, 1 \}$, such that the time $t$ sojourn benefit prognosis becomes
+In this model, most classical prognoses -- e.g. \cite{NinnaReitzel} -- condition on the policy holder staying active all the way up to the time of payment $t$, e.g. the event $\left( Z(s) = 0 : 0 \leq s < t \right)$. Instead we only assume that the policy holder does not die (she might become disabled). So we let $\hat{\mathcal{J}} = \{ 0, 1 \}$, so that the time $t$ sojourn benefit prognosis becomes
 
 \begin{align*}
-    \econd[b_{Z(t-)}(t)]{Z(t-) \in \hat{\mathcal{J}}}.
+    b^{\hat{\mathcal{J}}}(t) = \econd[b_{Z(t-)}(t)]{Z(t-) \in \hat{\mathcal{J}}}.
 \end{align*}
 
-Again, and for the same reason as given above, this conditioning excludes death before time $t$. However, it retains two important elements of risk that the classical conditioning does not:
+Again, and for the same reason as given above, this prognosis excludes death before time $t$. However, it retains two important elements of risk that the fixed path prognosis does not:
 
 \begin{itemize}
-    \item The time $t$ sojourn benefit rate may not be the same in states 0 and 1, e.g. $b_0 \neq b_1$.
-    \item The benefit may also depend on the past state path $\{ Z(s) \}_{0 \leq s < t}$, which is fixed in the classical conditioning, but only restricted to $\hat{\mathcal{J}}$ in the proposed conditioning. This means that $Z$ may leave the premium paying state 0 for periods before $t$, which for some types of contracts may reduce the benefit at time $t$.
+    \item The time $t$ sojourn benefit rate may not be the same in states 0 and 1, e.g. $b_0(t) \neq b_1(t)$.
+    \item The benefit may also depend on the past state path $\{ Z(s) \}_{0 \leq s < t}$, which is no longer fixed, but only restricted to $\hat{\mathcal{J}}$. This means that $Z$ may leave the premium paying state 0 for periods before $t$, which for some types of contracts may reduce the benefit at time $t$.
 \end{itemize}
 
 The same arguments go for the retirement lump sum benefit prognosis, which is simply
 
 \begin{align*}
-\econd[\triangle B_{Z(R-)}(R)]{Z(R-) \in \hat{\mathcal{J}}}.
+\triangle B^{\hat{\mathcal{J}}}(R) = \econd[\triangle B_{Z(R-)}(R)]{Z(R-) \in \hat{\mathcal{J}}}.
 \end{align*}
 
 With respect to the transition prognosis for the dead state $2$, the policy holder is interested in knowing what she can expect to have paid out to her bereaved in case of her death at time $t$. The prognosis is
 
 \begin{align} \label{FirstTransProg}
-    \econd[b_{Z(t-)2}(t)]{Z(t-) \in \hat{\mathcal{J}}, Z(t)=2},
+    \hat{b}_{\cdot 2}^{\hat{\mathcal{J}}}(t) = \econd[b_{Z(t-)2}(t)]{Z(t-) \in \hat{\mathcal{J}}, Z(t)=2},
 \end{align}
 
 which is the expected death sum paid out given death at exactly time $t$. The prognosis takes into account that the transition can be made from state 0 or from state 1 (which matters if $b_{02} \neq b_{12}$), and that the state process can have moved freely between 0 and 1 up until $t$, which for some contracts affect the benefit paid out.
 
-The advantages of the proposed conditioning showed themselves already in the active-disabled-death model just presented. However, as we move to a more complex model with policy holder options, new interesting choices for $\hat{\mathcal{J}}$ show up.
+\bigskip
+\bigskip
+\bigskip
+
+The advantages of the restricted path prognoses showed themselves already in the active-disabled-death model just presented. However, as we move to a more complex model with policy holder options, new interesting choices for $\hat{\mathcal{J}}$ show up.
 
 \subsubsection{Multi-State Model With Policy Holder Options}
 
@@ -847,8 +854,8 @@ The reason for excluding the surrender and free policy states from $\hat{\mathca
 The relevant sojourn benefit prognosis and retirement lump sum prognosis are, respectively, 
 
 \begin{align*}
-&\econd[b_{Z(t-)}(t)]{Z(t-) \in \hat{\mathcal{J}}} \\
-&\econd[\triangle B_{Z(R-)}(R)]{Z(R-) \in \hat{\mathcal{J}}},
+b^{\hat{\mathcal{J}}}(t) =& \econd[b_{Z(t-)}(t)]{Z(t-) \in \hat{\mathcal{J}}} \\
+\triangle B^{\hat{\mathcal{J}}}(R) =& \econd[\triangle B_{Z(R-)}(R)]{Z(R-) \in \hat{\mathcal{J}}},
 \end{align*}
 
 i.e. the expected rate (respectively lump sum) paid out at time $t$ (respectively time $R$), given that the policy holder has not died, surrendered or invoked the free policy option until time $t$.
@@ -856,7 +863,7 @@ i.e. the expected rate (respectively lump sum) paid out at time $t$ (respectivel
 An interesting prognosis for the surrender payment is
 
 \begin{align*}
-\econd[b_{0J}(t)]{Z(t-) \in \hat{\mathcal{J}}, Z(t)=J}.
+\hat{b}_{\cdot J}^{\hat{\mathcal{J}}}(t) = \econd[b_{Z(t-)J}(t)]{Z(t-) \in \hat{\mathcal{J}}, Z(t)=J}.
 \end{align*}
 
 for $t \in [0,n]$ the time of surrender. This is exactly the expected sum paid out upon surrender at time $t$, given that the policy holder has not died, surrendered or invoked the free policy option up until time $t$.
@@ -873,22 +880,16 @@ for $t \in [t,n]$ the time of free policy conversion. We stress again that these
 \bigbreak
 \bigbreak
 
-In the preceding chapter, we have motivated and presented definitions for three different prognoses, one for each type of payment typical for life insurance contracts:
+In the preceding chapter, we have motivated and presented definitions for two different classes of conditioning -- fixed- and restricted path -- and three different types of payment typical for life insurance contracts -- sojourn, deterministic retirement lump sums and transition benefits.
 
-\begin{itemize}
-	\item Sojourn benefit rate prognoses ().
-	\item Retirement lump sum benefit prognoses (def. XX).
-	\item Transition benefit prognoses (def. XX).
-\end{itemize}
+In the two following chapters, the focus is on the computation of these prognoses. Chapter \ref{ChapGuaranteedBen} deals with the prognostication of nominal payments. In this case, prognoses will be expressible through weighted averages of the payment function with transition probabilities acting as weights.
 
-In the two following chapters, the focus is on the computation of these prognoses. Chapter \ref{ChapGuaranteedBen} deals with the prognostication of nominal payments. In this case, closed form expressions
-
-In Chapter \ref{ChapReserveDepBen}, we deal with the case of reserve-dependent benefits, which encompasses many popular contract types, including Unit Link and Participating Life Insurance. In this case, 
+In Chapter \ref{ChapReserveDepBen}, we deal with the case of reserve-dependent benefits, which encompasses many popular contract types, including some variants of Unit Link and Participating Life Insurance. In this case, the so-called \textit{state wise retrospective reserves} will act as weights.
 
 \newpage
 \section{Prognoses -- Nominal benefits} \label{ChapGuaranteedBen}
 
-In this chapter, we calculate the prognoses presented in Chapter 3 for a life insurance contract with nominal payments only. By \textit{nominal}, we mean that all payments are settled at the signing of the contract in accordance with the equivalence principle. Thus the payments at time $T$ do not depend on the the past state path of the policy holder $\{ Z(s) \}_{0 < s < T}$ or on any financial performance, but only on the state at payment time,  i.e. $Z(T-)$. As we shall see, this feature gives the prognoses a particularly simple form compared to the case of reserve-dependent benefits.
+In this chapter, we calculate the prognoses for a life insurance contract with nominal payments only. By \textit{nominal}, we mean that all payments are settled at the signing of the contract in accordance with the equivalence principle. Thus the payments at time $t$ do not depend on the the past state path of the policy holder $\{ Z(s) \}_{0 < s < t}$ or on any financial performance, but only on the state just before payment time,  i.e. $Z(t-)$. As we shall see, this feature gives the prognoses a particularly simple form compared to the case of reserve-dependent benefits.
 
 The chapter is structured as follows:
 
@@ -900,25 +901,34 @@ The chapter is structured as follows:
 
 \subsection{Fixed Path}
 
-In the case of nominal benefits, the rates depend solely on the state of the policy holder at payment time $t$ or $R$ (and $t-$ for transition benefits). This information is obviously known in the fixed path conditioning and so the prognoses are trivially
+In the case of nominal benefits, the rates depend solely on the state of the policy holder at payment time $t-$ (or $R-$). This information is obviously known in the fixed path conditioning and so the prognoses are trivially
 
 \begin{align*}
-	\econd[b_{Z(t)}(t)]{Z(s) = z(s) : 0 \leq s \leq t} =& b_{z(t)}(t), \\
-	\econd[\triangle B_{Z(R)}(R)]{Z(s) = z(s) : 0 \leq s \leq R} =& \triangle B_{z(R)}(R), \\
-	\econd[b_{Z(t-)k}(t)]{ Z(s) = z(s) : 0 \leq s \leq t} =& \1{z(t-) \neq k} \1{z(t) = k} b_{z(t-) k}(t),
+	\hat{b}^z(t) =& \econd[b_{Z(t-)}(t)]{Z(s) = z(s) : 0 \leq s \leq t} \\
+	=& b_{z(t-)}(t),
+\end{align*}
+
+\begin{align*}
+	\triangle \hat{B}^z(R) =& \econd[\triangle B_{Z(R-)}(R)]{Z(s) = z(s) : 0 \leq s \leq R} \\
+	=& \triangle B_{z(R-)}(R),
+\end{align*}
+
+\begin{align*}
+	\hat{b}_{\cdot k}^z(t) =& \econd[b_{Z(t-)k}(t)]{ Z(s) = z(s) : 0 \leq s \leq t}\\
+	=& \1{z(t-) \neq k} \1{z(t) = k} b_{z(t-) k}(t),
 \end{align*}
 
 for some $k \in \mathcal{J}$ and some deterministic function $z: [0,t] \to \mathcal{J}$.
 
 \subsection{Restricted Path}
 
-In the case of restricted path conditioning, it it not known in which state the policy holder is at time of payout -- only that she is in the subset $\hat{\mathcal{J}} \subset \mathcal{J}$. The prognoses are then readily calculated:
+In the case of restricted path conditioning, it it not known which state the policy holder is in at time of payment -- only that she is in the subset $\hat{\mathcal{J}} \subset \mathcal{J}$. The prognoses are then readily calculated:
 
 \begin{proposition} \label{SojournWithoutBonus}
-The time $t$ sojourn benefit rate prognosis in the case with guaranteed benefits is given by
+The time $t$ sojourn benefit rate restricted path prognosis in the case with nominal benefits is given by
 
 \begin{align*}
-    \econd[b_{Z(t-)}(t)]{Z(t-) \in \hat{\mathcal{J}}}
+    b^{\hat{\mathcal{J}}}(t)
     &= \frac{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,t) b_j(t)}{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,t)}
 \end{align*}
 for some subset $\hat{\mathcal{J}} \subset \mathcal{J}$.
@@ -926,7 +936,8 @@ for some subset $\hat{\mathcal{J}} \subset \mathcal{J}$.
 
 \begin{proof}
 \begin{align*}
-   	\econd[b_{Z(t-)}(t)]{Z(t-) \in \hat{\mathcal{J}}} &= \sum_{j \in \mathcal{J}} \econd[\1{Z(t-)=j}]{Z(t-) \in \hat{\mathcal{J}}} b_j(t) \\
+   	b^{\hat{\mathcal{J}}}(t) =& \econd[b_{Z(t-)}(t)]{Z(t-) \in \hat{\mathcal{J}}} \\
+   	&= \sum_{j \in \mathcal{J}} \econd[\1{Z(t-)=j}]{Z(t-) \in \hat{\mathcal{J}}} b_j(t) \\
     &= \frac{\sum_{j \in \hat{\mathcal{J}}} \expec[ 1_{\{Z(t-)=j\}} ] b_j(t)}{\probability[Z(t-) \in \hat{\mathcal{J}}]} \\
     &= \frac{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,t) b_j(t)}{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,t)}
 \end{align*}
@@ -939,11 +950,10 @@ We see that the prognosis is simply the weighted average over $j \in \hat{\mathc
 The retirement lump sum prognosis takes a similar form:
 
 \begin{proposition} \label{RetireWithoutBonus}
-The retirement lump sum prognosis in the case without bonus is given by
+The retirement lump sum benefit restricted path prognosis in the case with nominal benefits is given by
 
 \begin{align*}
-    \expec[ \triangle b_{Z(R-)}(R) | Z(R-) \in \hat{\mathcal{J}}]
-    &= \frac{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,R) \triangle b_j(R)}{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,R)},
+    \triangle B^{\hat{\mathcal{J}}}(R) &= \frac{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,R) \triangle B_j(R)}{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,R)},
 \end{align*}
 
 for some subset $\bar{\mathcal{J}} \subset \mathcal{J}$.
@@ -951,35 +961,18 @@ for some subset $\bar{\mathcal{J}} \subset \mathcal{J}$.
 
 \begin{proof}
 \begin{align*}
-	\econd[\triangle b_{Z(R-)}(R)]{Z(R-) \in \hat{\mathcal{J}}} &= \sum_{j \in \mathcal{J}} \econd[\1{Z(R-)=j}]{Z(R-) \in \hat{\mathcal{J}}} \triangle b_j(R) \\
-	&= \frac{\sum_{j \in \hat{\mathcal{J}}} \expec[ 1_{\{Z(R-)=j\}} ] \triangle b_j(R)}{\probability[Z(R-) \in \hat{\mathcal{J}}]} \\
-	&= \frac{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,R) \triangle b_j(R)}{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,R)}
+	\triangle B^{\hat{\mathcal{J}}}(R) =& \econd[\triangle B_{Z(R-)}(R)]{Z(R-) \in \hat{\mathcal{J}}} \\
+	&= \sum_{j \in \mathcal{J}} \econd[\1{Z(R-)=j}]{Z(R-) \in \hat{\mathcal{J}}} \triangle B_j(R) \\
+	&= \frac{\sum_{j \in \hat{\mathcal{J}}} \expec[ 1_{\{Z(R-)=j\}} ] \triangle B_j(R)}{\probability[Z(R-) \in \hat{\mathcal{J}}]} \\
+	&= \frac{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,R) \triangle B_j(R)}{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,R)}
 \end{align*}
 
 where we again used the continuity of $p_{0j}(0,t)$.
 \end{proof}
 
-Again, the prognosis is simply a weighted average of the lump sum payouts of the states $j$, with weights given by the probability of being in state $j$ at time of retirement $R$.
+Again, the prognosis is simply a weighted average of the payment functions, with weights given by the probability of being in state $j$ at time of retirement $R$.
 
-\begin{remark}[Reducing the state space] \label{ReducedStateSpace}
-We can arrive at these two first prognoses -- sojourn and retirement lump sum -- via a slightly different approach. Define a new Markov chain $\hat{Z}$ on the state space $\hat{\mathcal{J}}$ with transition probabilities SLET MÅSKE
-
-\begin{align*}
-    \hat{p}_{ij}(s,t) =& \pcond[\hat{Z}(t) = j]{\hat{Z}(s) = i} \\
-    :=& \frac{p_{ij}(s,t)}{\sum_{j \in \hat{\mathcal{J}}} p_{ij}(s,t)}, \, \, \, \, \, i,j \in \hat{\mathcal{J}}, \, \, s < t,
-\end{align*}
-
-We then obtain the sojourn prognosis
-
-\begin{align*}
-    \expec[b_{\hat{Z}(t)}(t)] =& \sum_{j \in \hat{\mathcal{J}}} \hat{p}_{0j}(0,t) b_j(t) \\
-    =& \frac{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(t_0,t) b_j(t)}{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(t_0,t)},
-\end{align*}
-
-which is identical to Proposition \ref{SojournWithoutBonus}. So the sojourn and retirement lump sum prognoses can be obtained by reducing the state space and normalizing the transition probabilities accordingly. However, as we shall see, this approach does not work for the transition prognoses, because the intensities out of $\hat{\mathcal{J}}$ matter. So reducing the chain from $Z$ to $\hat{Z}$ throws away needed information.
-\end{remark}
-
-As we have seen, the transition benefit prognosis takes a slightly different form, as the conditioning event differs from the sojourn and the lump sum case -- recall the discussion in Section \ref{CondForProg}. To calculate the transition prognoses, we need a lemma:
+As we have seen, the transition benefit prognosis takes a slightly different form, as the conditioning event differs from the sojourn and the lump sum case -- recall the discussion in Section \ref{RestrPathSect}. To calculate the transition prognoses, we need a lemma:
 
 \begin{lemma} \label{Split}
 	Given an $F^Z$-adapted process W, we have for $j \in \hat{\mathcal{J}}$ and $k \notin \hat{\mathcal{J}}$
@@ -995,30 +988,31 @@ As we have seen, the transition benefit prognosis takes a slightly different for
 The prognosis now follows:
 
 \begin{proposition} \label{TransitionWithoutBonus}
-The state $k$ transition benefit prognosis in the case without bonus is given by
+The state $k$ transition benefit restricted path prognosis in the case with nominal benefits is given by
 
 \begin{align*}
-    \econd[b_{Z(t-)k}(t)]{Z(t-) \in \hat{\mathcal{J}}, Z(t)=k} = \frac{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,t) \mu_{jk}(t) b_{jk}(t)}{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,t) \mu_{jk}(t)},
+    b^{\hat{\mathcal{J}}}_{\cdot k}(t) = \frac{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,t) \mu_{jk}(t) b_{jk}(t)}{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,t) \mu_{jk}(t)},
 \end{align*}
 
 for some subset $\hat{\mathcal{J}} \subset \mathcal{J}$ and $k \notin \bar{\mathcal{J}}$.
 \end{proposition}
 \begin{proof}
-The result follows immediately from Lemma \ref{Split} (letting $W=0$) since
+The result follows immediately from Lemma \ref{Split} (letting $W=1$) since
 
 \begin{align*}
-	\econd[b_{Z(t-)k}(t)]{Z(t-) \in \hat{\mathcal{J}}, Z(t)=k} =& \sum_{j \in \hat{\mathcal{J}}} \econd[\1{Z(t-)=j}]{Z(t-) \in \hat{\mathcal{J}}, Z(t) = k} b_{jk}(t) \\
+	b^{\hat{\mathcal{J}}}_{\cdot k}(t) =& \econd[b_{Z(t-)k}(t)]{Z(t-) \in \hat{\mathcal{J}}, Z(t)=k} \\
+	=& \sum_{j \in \hat{\mathcal{J}}} \econd[\1{Z(t-)=j}]{Z(t-) \in \hat{\mathcal{J}}, Z(t) = k} b_{jk}(t) \\
 	=&\frac{\sum_{j \in \hat{\mathcal{J}}} \expec[\1{Z(t-)=j}] \mu_{jk}(t) b_{jk}(t)}{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,t) \mu_{jk}(t)} \\
 	=&\frac{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,t) \mu_{jk}(t) b_{jk}(t)}{\sum_{j \in \hat{\mathcal{J}}} p_{0j}(0,t) \mu_{jk}(t)},
 \end{align*}
 
-where we also used the continuity of $p_{0j}(0,t)$
+where we again used the continuity of $p_{0j}(0,t)$
 \end{proof}
 
 Again, the prognosis take the form of a weighted average of payment functions $b_{jk}(t)$. This time, however, the weights are the probabilities -- given a transition into state $k$ at time $t$ -- that the transition happened from state $j$. These weights $p_{0j}(0,t) \mu_{jk}(t)$ resemble probability density functions -- i.e. the (generalized) survival function $p_{0j}(0,t)$ times the intensity $\mu_{jk}(t)$. This is rather intuitive, since what we're after is the probability of making the transition $j \mapsto k$ in a small time interval around $t$.
 
 \begin{remark}
-	From Propositions XX, XX and XX, it is clear that the problem of calculating prognoses in the case without bonus is only as complex as calculating the transition probabilities $p_{0j}(0,t)$. Outside of very simple models, where these probabilities can be found analytically, this requires solving the Kolmogorov forward differential equations in a one-dimensional time grid. As we shall see the case with bonus requires solving a forward differential equation containing the transition probabilities....
+	From Propositions \ref{SojournWithoutBonus}, \ref{RetireWithoutBonus} and \ref{TransitionWithoutBonus}, it is clear that the problem of calculating prognoses in the case with nominal benefits is only as complex as calculating the transition probabilities $p_{0j}(0,t)$. Outside of very simple models, where these probabilities can be found analytically, this requires solving the Kolmogorov forward differential equations in a one-dimensional time grid. As we shall see, the case with reserve-dependent benefits requires solving a system of forward differential equations. In fact, this system will be shown to be a generalization of the Kolmogorov forward differential equations. This means that the restricted path prognoses for nominal benefits is just a special case of the restricted path prognoses for reserve-dependent benefits.
 \end{remark}
 
 \subsection{Examples}
