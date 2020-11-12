@@ -309,25 +309,25 @@ for i = 0 to (timePoints-1) do
 //              |> Chart.WithLegend(Title="")
 //              |> Chart.Save "H:\SpecialyNY\BenefitsNy.png"
 
-let RSensi = Chart.Combine([
-                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], faktor_low.[i]*(piSensi + W_low.[Rindex]/a.[Rindex])/a.[i]/1000.0)],Name="r < r_bar")
-                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], faktor.[i]*(piSensi + W.[Rindex]/a.[Rindex])/a.[i]/1000.0)],Name="r = r_bar")
-                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], faktor_high.[i]*(piSensi + W_high.[Rindex]/a.[Rindex])/a.[i]/1000.0)],Name="r > r_bar")
-                    ])                  
-                |> Chart.WithLegend(Docking=ChartTypes.Docking.Left)
-                |> Chart.WithXAxis(Title="Age", TitleFontSize=16.0, Min = R)
-                |> Chart.WithYAxis(Title="Retirement sensitivity for annual benefits in t.DKK", TitleFontSize=16.0)
-                |> Chart.Save "H:\SpecialyNY\Rsensi.png"
+//let RSensi = Chart.Combine([
+//                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], faktor_low.[i]*(piSensi + W_low.[Rindex]/a.[Rindex])/a.[i]/1000.0)],Name="r < r_bar")
+//                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], faktor.[i]*(piSensi + W.[Rindex]/a.[Rindex])/a.[i]/1000.0)],Name="r = r_bar")
+//                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], faktor_high.[i]*(piSensi + W_high.[Rindex]/a.[Rindex])/a.[i]/1000.0)],Name="r > r_bar")
+//                    ])                  
+//                |> Chart.WithLegend(Docking=ChartTypes.Docking.Left)
+//                |> Chart.WithXAxis(Title="Age", TitleFontSize=16.0, Min = R)
+//                |> Chart.WithYAxis(Title="Retirement sensitivity for annual benefits in t.DKK", TitleFontSize=16.0)
+//                |> Chart.Save "H:\SpecialyNY\Rsensi.png"
 
-let AlphaSensi = Chart.Combine([
-                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], Walpha_low.[i]/a.[i]/1000.0)],Name="Low")
-                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], Walpha.[i]/a.[i]/1000.0)],Name="Mean")
-                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], Walpha_high.[i]/a.[i]/1000.0)],Name="High")
-                    ])                  
-                |> Chart.WithLegend(Docking=ChartTypes.Docking.Left)
-                |> Chart.WithXAxis(Title="Age", TitleFontSize=16.0, Min = R)
-                |> Chart.WithYAxis(Title="Premium level sensitivity for annual benefits in t.DKK", TitleFontSize=16.0)
-                |> Chart.Save "H:\SpecialyNY\AlphaSensi.png"
+//let AlphaSensi = Chart.Combine([
+//                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], Walpha_low.[i]/a.[i]/1000.0)],Name="Low")
+//                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], Walpha.[i]/a.[i]/1000.0)],Name="Mean")
+//                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], Walpha_high.[i]/a.[i]/1000.0)],Name="High")
+//                    ])                  
+//                |> Chart.WithLegend(Docking=ChartTypes.Docking.Left)
+//                |> Chart.WithXAxis(Title="Age", TitleFontSize=16.0, Min = R)
+//                |> Chart.WithYAxis(Title="Premium level sensitivity for annual benefits in t.DKK", TitleFontSize=16.0)
+//                |> Chart.Save "H:\SpecialyNY\AlphaSensi.png"
 
 
 
@@ -345,7 +345,7 @@ let AlphaSensi = Chart.Combine([
 //                    Chart.Line ([for i in 0 .. Rindex - 1 -> (time.[i], (YMV.p00.[0,i] * (m_02MV time.[i]))/(YMV.p00.[0,i] * (m_02MV time.[i]) + YMV.p01.[0,i] * (m_12MV time.[i])))],Name="Restricted Path Prognosis")
 //                    ])                  
 //                |> Chart.WithLegend(Docking=ChartTypes.Docking.Left)
-//                |> Chart.WithXAxis(Title="Time of death T", TitleFontSize=16.0, Min = t_0)
+//                |> Chart.WithXAxis(Title="Age at death", TitleFontSize=16.0, Min = t_0)
 //                |> Chart.WithYAxis(Title="", TitleFontSize=16.0)
 //                |> Chart.Save "H:\SpecialyNY\TermNy.png"
 
