@@ -310,14 +310,14 @@ for i = 0 to (timePoints-1) do
 //              |> Chart.Save "H:\SpecialyNY\BenefitsNy.png"
 
 //let RSensi = Chart.Combine([
-//                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], faktor_low.[i]*(piSensi + W_low.[Rindex]/a.[Rindex])/a.[i]/1000.0)],Name="r < r_bar")
-//                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], faktor.[i]*(piSensi + W.[Rindex]/a.[Rindex])/a.[i]/1000.0)],Name="r = r_bar")
-//                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], faktor_high.[i]*(piSensi + W_high.[Rindex]/a.[Rindex])/a.[i]/1000.0)],Name="r > r_bar")
+//                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], faktor_low.[i]*(piSensi + W_low.[Rindex]/a.[Rindex])/a.[i]/1000.0)],Name="Low")
+//                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], faktor.[i]*(piSensi + W.[Rindex]/a.[Rindex])/a.[i]/1000.0)],Name="Mean")
+//                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], faktor_high.[i]*(piSensi + W_high.[Rindex]/a.[Rindex])/a.[i]/1000.0)],Name="High")
 //                    ])                  
 //                |> Chart.WithLegend(Docking=ChartTypes.Docking.Left)
 //                |> Chart.WithXAxis(Title="Age", TitleFontSize=16.0, Min = R)
 //                |> Chart.WithYAxis(Title="Retirement sensitivity for annual benefits in t.DKK", TitleFontSize=16.0)
-//                |> Chart.Save "H:\SpecialyNY\Rsensi.png"
+//                |> Chart.Save "H:\SpecialyNY\Rsensiny.png"
 
 //let AlphaSensi = Chart.Combine([
 //                    Chart.Line ([for i in Rindex .. Lateindex -> (time.[i], Walpha_low.[i]/a.[i]/1000.0)],Name="Low")
@@ -349,15 +349,12 @@ for i = 0 to (timePoints-1) do
 //                |> Chart.WithYAxis(Title="", TitleFontSize=16.0)
 //                |> Chart.Save "H:\SpecialyNY\TermNy.png"
 
-//let Exchange = Chart.Combine([
-//                    Chart.Line ([for i in Earlyindex .. SeventyIndex - 1 -> (time.[i], (piSensi + 0.5 * W.[i]/a.[i])/W.[i])],Name="alpha = 0.5")
-//                    Chart.Line ([for i in Earlyindex .. SeventyIndex - 1 -> (time.[i], (piSensi + 1.0 * W.[i]/a.[i])/W.[i])],Name="alpha = 1")
-//                    Chart.Line ([for i in Earlyindex .. SeventyIndex - 1 -> (time.[i], (piSensi + 2.0 * W.[i]/a.[i])/W.[i])],Name="alpha = 2")
-//                    ])                  
-//                |> Chart.WithLegend(Docking=ChartTypes.Docking.Left)
-//                |> Chart.WithXAxis(Title="Time of retirement R", TitleFontSize=16.0, Min = 60.0)
-//                |> Chart.WithYAxis(Title="Exchange ratio", TitleFontSize=16.0)
-//                |> Chart.Save "H:\SpecialyNY\Exchange.png"
+let Exchange = Chart.Combine([
+                    Chart.Line ([for i in Earlyindex .. SeventyIndex - 1 -> (time.[i], (piSensi + 1.0 * W.[i]/a.[i])/W.[i])],Name="alpha = 1")
+                    ])                  
+                |> Chart.WithXAxis(Title="Time of retirement R", TitleFontSize=16.0, Min = 60.0)
+                |> Chart.WithYAxis(Title="Exchange ratio", TitleFontSize=16.0, Min = 0.08)
+                |> Chart.Save "H:\SpecialyNY\ExchangeNEW.png"
 
 
 
